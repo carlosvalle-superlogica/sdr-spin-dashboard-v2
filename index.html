@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDR Dashboard - Auditoria SPIN Selling</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', system-ui, sans-serif; }
+        .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); padding: 1.5rem; }
+        
+        /* Sistema de Cores Automático para os Cards de Feedback */
+        .borda-vermelho { border-left: 5px solid #ef4444; }
+        .borda-amarelo { border-left: 5px solid #f59e0b; }
+        .borda-verde { border-left: 5px solid #10b981; }
+        .borda-azul { border-left: 5px solid #3b82f6; }
+        
+        .script-box { background-color: #0f172a; border-left: 3px solid #64748b; padding: 1rem; border-radius: 0.5rem; font-style: italic; }
+    </style>
+</head>
+<body class="p-4 md:p-10">
+    <div class="max-w-7xl mx-auto">
+        
+        <header class="flex flex-col md:flex-row justify-between items-center mb-10 border-b border-slate-700 pb-6">
+            <div>
+                <h1 class="text-3xl font-extrabold text-white tracking-tight">🎙️ Auditoria de SDRs</h1>
+                <p class="text-blue-400 mt-1 font-medium">Inteligência de Vendas & SPIN Selling</p>
+            </div>
+            <div id="status-box" class="mt-4 md:mt-0 px-4 py-2 bg-slate-800 rounded-full text-sm font-semibold border border-slate-600 flex items-center gap-2">
+                <span class="relative flex h-3 w-3">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                </span>
+                Procurando dados na nuvem...
+            </div>
+        </header>
+
+        <div id="tela-espera" class="text-center mt-20">
+            <h2 class="text-2xl font-bold text-slate-300">O Robô está analisando as ligações ⚙️</h2>
+            <p class="text-slate-500 mt-4 max-w-lg mx-auto">Se você acabou de subir um CSV, a Inteligência Artificial está escutando os áudios neste momento. Esta página será atualizada automaticamente quando o banco de dados for gerado.</p>
+        </div>
+
+        <div id="dashboard-conteudo" class="hidden">
+            <div class="flex flex-wrap gap-4 mb-8 bg-slate-800 p-4 rounded-xl border border-slate-700">
+                <div class="flex flex-col">
+                    <label class="text-xs text-slate-400 mb-1 uppercase tracking-wider font-bold">Ano</label>
+                    <select id="filtro-ano" class="bg-slate-900 border border-slate-600 text-white p-2 rounded-lg outline-none focus:border-blue-500 w-32"></select>
+                </div>
+                <div class="flex flex-col">
+                    <label class="text-xs text-slate-400 mb-1 uppercase tracking-wider font-bold">Mês</label>
+                    <select id="filtro-mes" class="bg-slate-900 border border-slate-600 text-white p-2 rounded-lg outline-none focus:border-blue-500 w-40"></select>
+                </div>
+                <div class="flex flex-col flex-1 min-w-[200px]">
+                    <label class="text-xs text-slate-400 mb-1 uppercase tracking-wider font-bold">SDR Analisado</label>
+                    <select id="filtro-sdr" class="bg-slate-900 border border-slate-600 text-white p-2 rounded-lg outline-none focus:border-blue-500 w-full"></select>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+                <div class="card flex flex-col items-center justify-center">
+                    <h2 class="text-xl font-bold text-white mb-2 w-full text-left">Competências SPIN Selling</h2>
+                    <p class="text-sm text-slate-400 mb-4 w-full text-left">Domínio técnico nas etapas da metodologia.</p>
+                    <div class="w-full max-w-sm">
+                        <canvas id="spinRadarChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card flex flex-col items-center justify-center">
+                    <h2 class="text-xl font-bold text-white mb-2 w-full text-left">Evolução de Notas</h2>
+                    <p class="text-sm text-slate-400 mb-4 w-full text-left">Média geral das últimas ligações analisadas.</p>
+                    <div class="w-full">
+                        <canvas id="evolucaoLineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="text-2xl font-bold text-white mb-6 border-b border-slate-700 pb-2">Feedbacks Táticos & Correções</h2>
+                <div id="lista-feedbacks" class="space-y-6">
+                    </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // O código Javascript avançado para desenhar os gráficos e ler o JSON
+        // será implementado na nossa próxima etapa para manter o código limpo!
+        
+        // Simulação básica de verificação do arquivo
+        fetch('consolidated_data.json')
+            .then(response => {
+                if(response.ok) {
+                    document.getElementById('tela-espera').classList.add('hidden');
+                    document.getElementById('dashboard-conteudo').classList.remove('hidden');
+                    document.getElementById('status-box').innerHTML = '✅ Dados sincronizados';
+                    document.getElementById('status-box').classList.replace('bg-slate-800', 'bg-emerald-900');
+                    document.getElementById('status-box').classList.replace('border-slate-600', 'border-emerald-600');
+                }
+            })
+            .catch(error => console.log('Aguardando JSON...'));
+    </script>
+</body>
+</html>
