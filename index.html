@@ -30,6 +30,12 @@
                 <button onclick="switchTab('equipe')" id="menu-equipe" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition">
                     <i class="fa-solid fa-users w-5"></i> Equipe SDR
                 </button>
+                <button onclick="switchTab('auditorias')" id="menu-auditorias" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition">
+                    <i class="fa-solid fa-phone-volume w-5"></i> Auditorias
+                </button>
+                <button onclick="switchTab('playbooks')" id="menu-playbooks" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition">
+                    <i class="fa-solid fa-book-open w-5"></i> Playbooks
+                </button>
             </nav>
         </div>
         <div class="text-xs text-gray-500 border-t border-gray-800 pt-4 text-center">
@@ -39,24 +45,45 @@
 
     <div class="flex-1 flex flex-col overflow-y-auto p-8 custom-scrollbar">
         
-        <div class="flex justify-between items-center mb-8">
+        <div class="flex justify-between items-center mb-6">
             <div>
                 <h1 id="page-title" class="text-3xl font-bold text-white">Visão Geral</h1>
                 <p id="page-subtitle" class="text-sm text-gray-400 mt-1">Consolidação do processo de vendas corporativo.</p>
             </div>
-            <div class="bg-emerald-950/50 text-emerald-400 border border-emerald-800 px-4 py-1.5 rounded-full text-xs font-semibold flex items-center gap-2">
-                <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span> Painel Ativo
+            <div class="bg-indigo-950 text-indigo-400 border border-indigo-800 px-4 py-1.5 rounded-full text-xs font-semibold flex items-center gap-2">
+                <span class="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></span> Painel Ativo
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 card-dark p-4 rounded-xl mb-8">
+            <div>
+                <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold block mb-1.5">Ano</label>
+                <select id="filter-ano" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-300 rounded-lg p-2 text-sm focus:border-indigo-500 focus:outline-none">
+                    <option value="todos">Todos os anos</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold block mb-1.5">Mês</label>
+                <select id="filter-mes" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-300 rounded-lg p-2 text-sm focus:border-indigo-500 focus:outline-none">
+                    <option value="todos">Todos os meses</option>
+                </select>
+            </div>
+            <div>
+                <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold block mb-1.5">SDR Analisado</label>
+                <select id="filter-sdr" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-300 rounded-lg p-2 text-sm focus:border-indigo-500 focus:outline-none">
+                    <option value="todos">Todos os SDRs</option>
+                </select>
             </div>
         </div>
 
         <div id="tab-geral" class="space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="card-dark p-6 rounded-xl shadow-lg">
-                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider">Nota Média (Empresa)</span>
+                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider">Nota Média Geral</span>
                     <h2 id="media-geral" class="text-4xl font-extrabold text-white mt-2">--</h2>
                 </div>
                 <div class="card-dark p-6 rounded-xl shadow-lg">
-                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider">Auditorias Realizadas</span>
+                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider">Total de Ligações</span>
                     <h2 id="total-ligacoes" class="text-4xl font-extrabold text-indigo-400 mt-2">--</h2>
                 </div>
                 <div class="card-dark p-6 rounded-xl shadow-lg">
@@ -66,20 +93,20 @@
             </div>
             
             <div class="card-dark p-6 rounded-xl">
-                <h3 class="text-lg font-bold text-white mb-4">Registro Geral de Chamadas Atendidas</h3>
+                <h3 class="text-lg font-bold text-white mb-4">Casos Críticos Recentes</h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-gray-800 text-gray-400 text-sm">
-                                <th class="pb-3">Representante SDR</th>
-                                <th class="pb-3">Data e Hora</th>
+                                <th class="pb-3">SDR</th>
+                                <th class="pb-3">Data da Atividade</th>
                                 <th class="pb-3">Duração</th>
-                                <th class="pb-3">Nota Global</th>
-                                <th class="pb-3 text-right">Análise Completa</th>
+                                <th class="pb-3">Nota SPIN</th>
+                                <th class="pb-3 text-right">Ação</th>
                             </tr>
                         </thead>
                         <tbody id="tabela-criticos" class="text-sm divide-y divide-gray-800">
-                            <tr><td colspan="5" class="py-4 text-center text-gray-500">Buscando informações consolidadas...</td></tr>
+                            <tr><td colspan="5" class="py-4 text-center text-gray-500">Aguardando filtros...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -87,6 +114,42 @@
         </div>
 
         <div id="tab-equipe" class="hidden grid grid-cols-1 md:grid-cols-3 gap-6 items-start"></div>
+
+        <div id="tab-auditorias" class="hidden card-dark p-6 rounded-xl">
+            <h3 class="text-lg font-bold text-white mb-4">Histórico Completo de Ligações Auditadas</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-gray-800 text-gray-400 text-sm">
+                            <th class="pb-3">SDR</th>
+                            <th class="pb-3">Data</th>
+                            <th class="pb-3">Título do Contato</th>
+                            <th class="pb-3">Duração</th>
+                            <th class="pb-3">Nota</th>
+                            <th class="pb-3 text-right">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-todas-auditorias" class="text-sm divide-y divide-gray-800"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tab-playbooks" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="card-dark p-6 rounded-xl">
+                <h3 class="text-xl font-bold text-indigo-400 mb-2">Estrutura SPIN Selling</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Mapeamento operacional das perguntas executadas nas ligações auditadas pela Inteligência Artificial.</p>
+                <div class="mt-4 space-y-3 text-sm">
+                    <div class="p-3 bg-gray-900/50 border border-gray-800 rounded-lg"><strong class="text-white">S - Situação:</strong> Entendimento do cenário atual do lead.</div>
+                    <div class="p-3 bg-gray-900/50 border border-gray-800 rounded-lg"><strong class="text-white">P - Problema:</strong> Investigação de dores e insatisfações.</div>
+                    <div class="p-3 bg-gray-900/50 border border-gray-800 rounded-lg"><strong class="text-white">I - Implicação:</strong> Impacto negativo de não resolver a dor.</div>
+                    <div class="p-3 bg-gray-900/50 border border-gray-800 rounded-lg"><strong class="text-white">N - Necessidade:</strong> O valor e benefício da solução proposta.</div>
+                </div>
+            </div>
+            <div class="card-dark p-6 rounded-xl flex flex-col justify-center items-center text-center text-gray-500">
+                <i class="fa-solid fa-layer-group text-4xl mb-3 text-gray-700"></i>
+                <p class="text-sm">Parâmetros de conformidade comercial aplicados por ID de chamada.</p>
+            </div>
+        </div>
 
     </div>
 
@@ -123,16 +186,18 @@
 
     <script>
         let database = {};
+        const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
         function switchTab(tab) {
-            ['geral', 'equipe'].forEach(t => {
+            ['geral', 'equipe', 'auditorias', 'playbooks'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
                 document.getElementById(`menu-${t}`).classList.remove('sidebar-active');
             });
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
             document.getElementById(`menu-${tab}`).classList.add('sidebar-active');
             
-            document.getElementById('page-title').innerText = tab === 'geral' ? "Visão Geral" : "Equipe SDR";
+            const titles = { geral: "Visão Geral", equipe: "Equipe SDR", auditorias: "Histórico de Auditorias", playbooks: "Playbooks Metodológicos" };
+            document.getElementById('page-title').innerText = titles[tab];
         }
 
         async function init() {
@@ -140,17 +205,95 @@
                 const response = await fetch('consolidated_data.json?v=' + Date.now());
                 if (!response.ok) throw new Error("Arquivo não encontrado.");
                 database = await response.json();
-                renderDashboard();
+                
+                buildFilterDropdowns();
+                applyFilters();
             } catch (e) {
                 console.error("Erro ao carregar os dados:", e);
                 document.getElementById('tabela-criticos').innerHTML = `<tr><td colspan="5" class="py-4 text-center text-amber-500">Aguardando o primeiro processamento completo do robô no GitHub Actions...</td></tr>`;
             }
         }
 
-        function renderDashboard() {
+        function buildFilterDropdowns() {
             const chamadas = Object.values(database);
+            const anos = new Set();
+            const meses = new Set();
+            const sdrs = new Set();
+
+            chamadas.forEach(c => {
+                if (c.sdr) sdrs.add(c.sdr);
+                if (c.data) {
+                    const cleanDate = c.data.split(' ')[0].replace(/\//g, '-');
+                    const parts = cleanDate.split('-');
+                    if (parts.length === 3) {
+                        let year = parts[0].length === 4 ? parts[0] : parts[2];
+                        let monthIdx = parts[0].length === 4 ? parseInt(parts[1]) - 1 : parseInt(parts[1]) - 1;
+                        if (year) anos.add(year);
+                        if (monthIdx >= 0 && monthIdx < 12) meses.add(monthNames[monthIdx]);
+                    }
+                }
+            });
+
+            const populateSelect = (id, items) => {
+                const select = document.getElementById(id);
+                // Reseta mantendo a primeira opção padrão
+                select.innerHTML = select.options[0].outerHTML;
+                Array.from(items).sort().forEach(item => {
+                    const opt = document.createElement('option');
+                    opt.value = item;
+                    opt.innerText = item;
+                    select.appendChild(opt);
+                });
+            };
+
+            populateSelect('filter-ano', anos);
+            populateSelect('filter-mes', meses);
+            populateSelect('filter-sdr', sdrs);
+        }
+
+        function applyFilters() {
+            const anoSel = document.getElementById('filter-ano').value;
+            const mesSel = document.getElementById('filter-mes').value;
+            const sdrSel = document.getElementById('filter-sdr').value;
+            
+            let filtrados = Object.values(database);
+
+            filtrados = filtrados.filter(c => {
+                let matchAno = true;
+                let matchMes = true;
+                let matchSdr = true;
+
+                if (sdrSel !== 'todos' && c.sdr !== sdrSel) matchSdr = false;
+
+                if (c.data) {
+                    const cleanDate = c.data.split(' ')[0].replace(/\//g, '-');
+                    const parts = cleanDate.split('-');
+                    if (parts.length === 3) {
+                        let year = parts[0].length === 4 ? parts[0] : parts[2];
+                        let monthIdx = parts[0].length === 4 ? parseInt(parts[1]) - 1 : parseInt(parts[1]) - 1;
+                        let nameMes = monthNames[monthIdx];
+
+                        if (anoSel !== 'todos' && year !== anoSel) matchAno = false;
+                        if (mesSel !== 'todos' && nameMes !== mesSel) matchMes = false;
+                    }
+                } else if (anoSel !== 'todos' || mesSel !== 'todos') {
+                    return false;
+                }
+
+                return matchAno && matchMes && matchSdr;
+            });
+
+            renderDashboard(filtrados);
+        }
+
+        function renderDashboard(chamadas) {
             if (chamadas.length === 0) {
-                document.getElementById('tabela-criticos').innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-500">Nenhuma ligação com áudio válido processada ainda.</td></tr>`;
+                document.getElementById('total-ligacoes').innerText = "0";
+                document.getElementById('media-geral').innerText = "0.0";
+                document.getElementById('casos-criticos').innerText = "0";
+                document.getElementById('tabela-criticos').innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-500">Nenhuma ligação encontrada para o filtro selecionado.</td></tr>`;
+                document.getElementById('tabela-todas-auditorias').innerHTML = `<tr><td colspan="6" class="py-4 text-center text-gray-500">Nenhum registro.</td></tr>`;
+                document.getElementById('tab-equipe').innerHTML = '';
                 return;
             }
 
@@ -163,6 +306,7 @@
             document.getElementById('media-geral').innerText = mediaGlobal;
             document.getElementById('casos-criticos').innerText = criticos;
 
+            // Agrupamento por SDR
             const sdrs = {};
             chamadas.forEach(c => {
                 const sdrNome = c.sdr || "Desconhecido";
@@ -170,6 +314,7 @@
                 sdrs[sdrNome].push(c);
             });
 
+            // Renderiza Grid de Cartões da Equipe
             const gridEquipe = document.getElementById('tab-equipe');
             gridEquipe.innerHTML = '';
             
@@ -209,32 +354,54 @@
                 gridEquipe.appendChild(card);
             });
 
-            const tabela = document.getElementById('tabela-criticos');
-            tabela.innerHTML = '';
-            
             const chamadasOrdenadas = chamadas.sort((a,b) => parseInt(b.id || 0) - parseInt(a.id || 0));
 
+            // Renderiza Tabela de Casos Críticos (Visão Geral)
+            const tabelaCriticos = document.getElementById('tabela-criticos');
+            tabelaCriticos.innerHTML = '';
+            const listaCriticos = chamadasOrdenadas.filter(c => (parseFloat(c.nota_spin) || 0) < 6);
+            
+            if(listaCriticos.length === 0) {
+                tabelaCriticos.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-500">Nenhum caso crítico detectado sob estes filtros.</td></tr>`;
+            } else {
+                listaCriticos.forEach(c => {
+                    const nota = parseFloat(c.nota_spin) || 0;
+                    const tr = document.createElement('tr');
+                    tr.className = "border-b border-gray-800/60 hover:bg-gray-800/30 transition";
+                    tr.innerHTML = `
+                        <td class="py-3.5 font-semibold text-white flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-rose-500"></div> ${c.sdr || "N/A"}</td>
+                        <td class="py-3.5 text-gray-400">${c.data || "--"}</td>
+                        <td class="py-3.5 text-gray-400"><i class="fa-regular fa-clock text-gray-600 mr-1"></i> ${c.duracao || "--"}</td>
+                        <td class="py-3.5"><span class="px-2.5 py-1 rounded-md text-xs font-bold bg-rose-950/80 text-rose-400 border border-rose-900">${nota.toFixed(1)}</span></td>
+                        <td class="py-3.5 text-right"><button onclick="openSDRModal('${c.sdr}', '${c.id}')" class="text-indigo-400 hover:underline font-semibold">Ver</button></td>
+                    `;
+                    tabelaCriticos.appendChild(tr);
+                });
+            }
+
+            // Renderiza Tabela do Histórico Completo
+            const tabelaHistorico = document.getElementById('tabela-todas-auditorias');
+            tabelaHistorico.innerHTML = '';
             chamadasOrdenadas.forEach(c => {
                 const nota = parseFloat(c.nota_spin) || 0;
                 const corBadge = nota < 6 ? 'bg-rose-950/80 text-rose-400 border border-rose-900' : 'bg-emerald-950/80 text-emerald-400 border border-emerald-900';
-                
                 const tr = document.createElement('tr');
                 tr.className = "border-b border-gray-800/60 hover:bg-gray-800/30 transition";
                 tr.innerHTML = `
-                    <td class="py-3.5 pl-2 font-semibold text-white flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full ${nota < 6 ? 'bg-rose-500' : 'bg-emerald-500'}"></div> ${c.sdr || "N/A"}</td>
-                    <td class="py-3.5 text-gray-400 font-medium">${c.data || "--"}</td>
-                    <td class="py-3.5 text-gray-400 font-medium"><i class="fa-regular fa-clock text-gray-600 mr-1"></i> ${c.duracao || "--"}</td>
-                    <td class="py-3.5"><span class="px-2.5 py-1 rounded-md text-xs font-bold shadow-sm ${corBadge}">${nota.toFixed(1)}</span></td>
-                    <td class="py-3.5 text-right pr-2"><button onclick="openSDRModal('${c.sdr}', '${c.id}')" class="text-indigo-400 hover:text-indigo-300 hover:underline font-semibold bg-indigo-950/30 px-3 py-1.5 rounded-lg border border-indigo-900/50 transition">Auditoria <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i></button></td>
+                    <td class="py-3.5 font-semibold text-white">${c.sdr}</td>
+                    <td class="py-3.5 text-gray-400">${c.data}</td>
+                    <td class="py-3.5 text-gray-400 max-w-xs truncate">${c.titulo}</td>
+                    <td class="py-3.5 text-gray-400">${c.duracao}</td>
+                    <td class="py-3.5"><span class="px-2.5 py-1 rounded-md text-xs font-bold ${corBadge}">${nota.toFixed(1)}</span></td>
+                    <td class="py-3.5 text-right"><button onclick="openSDRModal('${c.sdr}', '${c.id}')" class="text-indigo-400 hover:underline font-semibold">Análise</button></td>
                 `;
-                tabela.appendChild(tr);
+                tabelaHistorico.appendChild(tr);
             });
         }
 
         function openSDRModal(nome, callIdToSelect = null) {
             const modal = document.getElementById('modal-sdr');
             document.getElementById('modal-sdr-name').innerText = nome;
-            
             const listaContainer = document.getElementById('modal-lista-chamadas');
             listaContainer.innerHTML = '';
 
@@ -294,7 +461,7 @@
                                 <span class="text-xs text-gray-500 font-medium"><i class="fa-regular fa-calendar mr-1"></i> ${c.data || 'N/A'}</span>
                             </div>
                             <h3 class="text-2xl font-black text-white mt-2 leading-tight">${titulo}</h3>
-                            <p class="text-sm text-gray-400 mt-2 font-medium"><i class="fa-solid fa-stopwatch text-gray-500 mr-1.5"></i> Duração do Áudio Original: ${c.duracao}</p>
+                            <p class="text-sm text-gray-400 mt-2 font-medium"><i class="fa-solid fa-stopwatch text-gray-500 mr-1.5"></i> Duração: ${c.duracao}</p>
                         </div>
                         <a href="${c.audio_url}" target="_blank" class="shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-5 py-2.5 rounded-xl font-bold transition flex items-center gap-2 shadow-lg shadow-indigo-900/20">
                             <i class="fa-solid fa-circle-play text-lg"></i> Ouvir no HubSpot
@@ -304,7 +471,7 @@
                     <div class="bg-gray-800/30 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
                         <div>
                             <span class="text-xs text-gray-400 uppercase font-black tracking-widest block mb-1">Score Final SPIN</span>
-                            <p class="text-sm text-gray-500 font-medium">Classificação dada pela inteligência artificial Llama-3.</p>
+                            <p class="text-sm text-gray-500 font-medium">Classificação gerada pelo modelo Llama-3.</p>
                         </div>
                         <span class="text-5xl font-black ${nota < 6 ? 'text-rose-500' : 'text-emerald-500'} bg-gray-900 px-6 py-2 rounded-xl border border-gray-800 shadow-inner">${nota.toFixed(1)}</span>
                     </div>
