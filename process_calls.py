@@ -53,20 +53,24 @@ def process_all_calls():
     print(f"✅ Arquivo de dados encontrado: {CSV_FILE}")
     prompt_content = load_prompt()
     
-    # Carrega base de dados com segurança
     db = {}
     if os.path.exists(CONSOLIDATED_FILE):
         try:
             with open(CONSOLIDATED_FILE, 'r', encoding='utf-8') as f:
                 db = json.load(f)
         except json.JSONDecodeError:
-            print("Aviso: O arquivo JSON atual estava corrompido. Iniciando um novo.")
+            print("Aviso: O arquivo JSON estava vazio ou inválido. Iniciando um novo.")
             db = {}
 
     with open(CSV_FILE, mode='r', encoding='utf-8-sig') as f:
-        reader = csv.DictReader(f, delimiter=';')
+        # DETECÇÃO AUTOMÁTICA DE DELIMITADOR (VÍRGULA OU PONTO E VÍRGULA)
+        sample = f.read(2048)
+        delimiter = ';' if ';' in sample else ','
+        f.seek(0)
         
+        reader = csv.DictReader(f, delimiter=delimiter)
         linhas_processadas = 0
+        
         for row in reader:
             call_id = row.get("ID do objeto")
             sdr_name = row.get("Atividade atribuída a") or "SDR Não Identificado"
@@ -76,21 +80,18 @@ def process_all_calls():
             duration = row.get("Duração da chamada (HH:mm:ss)") or "00:00"
             title = row.get("Título da chamada") or "Chamada de Vendas"
 
-            # Filtros rígidos
             if not call_id or not audio_url or not audio_url.startswith("http"):
                 continue
             
             if result not in ["Ligação atendida", "Connected", "Atendida"]:
                 continue
 
-            # Bypass se já estiver analisado
             if call_id in db:
                 continue
 
             print(f"-> [NOVA] Analisando ID {call_id} | SDR: {sdr_name}...")
             
             try:
-                # Tratamento de Timeout na extração do áudio (HubSpot)
                 req = urllib.request.Request(
                     audio_url, 
                     headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
@@ -98,7 +99,6 @@ def process_all_calls():
                 with urllib.request.urlopen(req, timeout=60) as response:
                     audio_bytes = response.read()
 
-                # Etapa 1: Transcrição Whisper
                 transcription = client.audio.transcriptions.create(
                     file=("audio.mp3", io.BytesIO(audio_bytes)),
                     model="whisper-large-v3",
@@ -106,12 +106,10 @@ def process_all_calls():
                 )
                 texto_ligacao = transcription.text
 
-                # Prevenção: Áudios vazios ou mudos
                 if len(texto_ligacao.strip()) < 10:
-                    print(f"Aviso: Áudio {call_id} muito curto ou sem fala. Ignorando.")
+                    print(f"Aviso: Áudio {call_id} sem fala detectada. Ignorando.")
                     continue
 
-                # Etapa 2: Auditoria SPIN (Modo JSON Forçado para evitar quebras)
                 prompt_sistema = (
                     f"{prompt_content}\n\n"
                     "REGRA CRÍTICA DO SISTEMA: Responda APENAS com um objeto JSON válido. "
@@ -126,19 +124,17 @@ def process_all_calls():
                         {"role": "user", "content": f"Transcrição:\n\n{texto_ligacao}"}
                     ],
                     temperature=0.2,
-                    response_format={"type": "json_object"} # Trava de segurança de API
+                    response_format={"type": "json_object"}
                 )
 
                 clean_text = clean_json_response(chat_completion.choices[0].message.content)
                 analysis_data = json.loads(clean_text)
                 
-                # Conversão segura da nota
                 try:
                     nota = float(analysis_data.get("nota_spin", 0))
                 except (ValueError, TypeError):
                     nota = 0.0
 
-                # Gravação no Banco de Dados
                 db[call_id] = {
                     "id": call_id,
                     "sdr": sdr_name,
@@ -147,14 +143,13 @@ def process_all_calls():
                     "duracao": duration,
                     "audio_url": audio_url,
                     "nota_spin": nota,
-                    "avaliacao": analysis_data.get("avaliacao", "Análise não retornou detalhes."),
+                    "avaliacao": analysis_data.get("avaliacao", "Análise sem detalhes."),
                     "sugestoes": analysis_data.get("sugestoes", "Sem sugestões."),
                     "transcricao": texto_ligacao
                 }
                 
                 linhas_processadas += 1
                 
-                # Save contínuo (se cair a meio, não perde nada)
                 with open(CONSOLIDATED_FILE, 'w', encoding='utf-8') as sf:
                     json.dump(db, sf, ensure_ascii=False, indent=4)
 
@@ -162,18 +157,18 @@ def process_all_calls():
                 time.sleep(3)
 
             except json.JSONDecodeError:
-                print(f"Erro: O Groq não devolveu um JSON válido para o ID {call_id}.")
+                print(f"Erro: Falha ao decodificar JSON da IA para o ID {call_id}.")
                 time.sleep(3)
                 continue
             except URLError as e:
-                print(f"Erro de Rede: Falha ao baixar o áudio {call_id} do HubSpot. {e}")
+                print(f"Erro de Rede: Falha ao baixar áudio do HubSpot para ID {call_id}. {e}")
                 continue
             except Exception as e:
-                print(f"Erro inesperado no processamento do ID {call_id}: {e}")
+                print(f"Erro inesperado no ID {call_id}: {e}")
                 time.sleep(3)
                 continue
 
-    print(f"\n✅ FIM: {linhas_processadas} chamadas foram processadas e salvas com segurança!")
+    print(f"\n✅ SUCESSO: {linhas_processadas} chamadas consolidadas com segurança!")
 
 if __name__ == "__main__":
     try:
