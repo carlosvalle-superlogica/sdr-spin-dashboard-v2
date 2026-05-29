@@ -52,7 +52,7 @@ def safe_float(val, default=0.0):
         return default
 
 def calcular_segundos(duracao_str):
-    """Converte strings de duração formatadas (HH:mm:ss ou mm:ss) in segundos totais."""
+    """Converte strings de duração formatadas (HH:mm:ss ou mm:ss) em segundos totais."""
     try:
         partes = duracao_str.split(':')
         if len(partes) == 3: 
@@ -163,12 +163,16 @@ def process_all_calls():
             txt_verif = (title + " " + json.dumps(row)).lower()
             produto_detectado = "CRM" if any(p in txt_verif for p in ["crm", "creci", "corretor"]) else "ERP"
 
+            # Trava de Segurança Isolada para Download de Áudio (Timeout de 15 segundos)
             try:
-                # 1. Download do Áudio da Gravação
                 req = urllib.request.Request(audio_url, headers={'User-Agent': 'Mozilla/5.0'})
-                with urllib.request.urlopen(req, timeout=45) as response: 
+                with urllib.request.urlopen(req, timeout=15) as response: 
                     audio_bytes = response.read()
+            except Exception as e:
+                print(f"   ⚠️ [TIMEOUT/ERRO DOWNLOAD] Servidor de áudio falhou ou demorou muito: {e}. Pulando...")
+                continue
 
+            try:
                 # Prevenção Ativa Contra Erro 413: Mede o tamanho em MB antes de enviar para a API
                 tamanho_mb = len(audio_bytes) / (1024 * 1024)
                 if tamanho_mb > 25.0:
