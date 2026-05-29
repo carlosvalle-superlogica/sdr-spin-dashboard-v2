@@ -1,1 +1,462 @@
-{}
+{
+    "110301127342": {
+        "id": "110301127342",
+        "sdr": "Anderson Alencar",
+        "produto": "ERP",
+        "data": "2026-05-28 09:13",
+        "duracao": "00:03:10",
+        "wps": 1.91,
+        "nota_spin": 1.5,
+        "nota_op": 8.2,
+        "urgencia": "SIM",
+        "deal_url": "[https://app.hubspot.com/contacts/](https://app.hubspot.com/contacts/)20131994/deal/60686314620/",
+        "audio_url": "https://api-na1.hubspot.com/recording/auth/provider/hublets/v1/external-url-retriever/getAuthRecording/portal/20131994/engagement/110301127342",
+        "notas_s_p_i_n": {
+            "s": 2.0,
+            "p": 3.0,
+            "i": 0.0,
+            "n": 1.0
+        },
+        "formulario": {
+            "escuta": {
+                "r": "Sim",
+                "e": "Evidência textual curta"
+            },
+            "validacao": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "compreensao": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "objecoes": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "linguagem": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "receptividade": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "rapport": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "discurso": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "compreensao_cliente": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "clareza": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "sla": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "spin": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "dor": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "gestao": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "passos_ro": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "produto": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "gatilhos": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            }
+        },
+        "parecer": "### 1. PARECER E POSTURA CONSULTIVA\nO SDR demonstrou uma postura consultiva, mas com alguns pontos de melhoria. Ele conseguiu estabelecer uma conexão com o lead e entender suas necessidades, mas não foi capaz de tomar as rédeas da conversa e foi reativo em alguns momentos.\n\n### 2. O QUE ERROU\n- O SDR não fez perguntas investigativas de follow-up para entender melhor as necessidades do lead.\n- Ele aceitou respostas prontas sem fazer uma análise mais profunda das necessidades do lead.\n- O SDR não gerou desconforto ou mensuração de perdas no lead durante a etapa de Implicação (I).\n- Ele não fez uma análise mais profunda das necessidades do lead e apenas se limitou a entender as necessidades superficiais.\n\n### 3. COMO DEVERIA TER FEITO\n- O SDR deveria ter feito perguntas investigativas de follow-up para entender melhor as necessidades do lead, como:\n  - Qual é o principal desafio que você está enfrentando com o seu atual sistema de gestão de leads?\n  - Como você gostaria de ver o nosso sistema RP se integrando com o seu atual sistema de gestão de leads?\n- Ele deveria ter feito uma análise mais profunda das necessidades do lead e não apenas se limitado a entender as necessidades superficiais.\n- O SDR deveria ter gerado desconforto ou mensuração de perdas no lead durante a etapa de Implicação (I) para entender melhor as necessidades do lead.\n\n### 4. CAUSA E EFEITO NO FUNIL DE VENDAS\n- A falta de perguntas investigativas de follow-up e a análise superficial das necessidades do lead podem ter levado a uma conversa superficial e não profunda.\n- Isso pode ter afetado a qualidade da conversa e levado a uma conversa que não foi capaz de gerar interesse real no lead.\n- Além disso, a falta de desconforto ou mensuração de perdas no lead durante a etapa de Implicação (I) pode ter levado a uma conversa que não foi capaz de entender as necessidades reais do lead.",
+        "sugestoes": "O SDR deve se preparar para a próxima conversa com o lead, fazendo perguntas investigativas de follow-up para entender melhor as necessidades do lead e gerando desconforto ou mensuração de perdas no lead durante a etapa de Implicação (I). Além disso, ele deve fazer uma análise mais profunda das necessidades do lead e não apenas se limitar a entender as necessidades superficiais.",
+        "transcricao": " Alô, bom dia, Romeu. Meu nome é Anderson da Superlógica, tudo bem? Tudo bem, Anderson. Maravilha. Eu recebi aqui o seu cadastro com interesse no nosso sistema RP. Isso é sistema como? É o sistema RP referente a de boletos, locação. não sei se foi isso eu não lembro eu tenho clicado em algumas coisas sobre CRM é o imobiliário, ah sim o CRM também você tem interesse ou é somente no CRM a ideia seria no CRM, ah sim o CRM é onde você faz a gestão dos seus leads no dia a dia Isso. Perfeito. E hoje você possui algum CRM? Não. Perfeito. E hoje como você faz referente aos seus leads? É tudo manualmente? Tudo manual. Em cada portal responde, entra em cada portal, verifica quem respondeu e quem não respondeu. Ah, perfeito. E hoje vocês possuem quantos imóveis à venda? Tirando os lançamentos, aqueles lançamentos, mas im pronto assim menos de 20 Uns 15 Uma m assim n E de loca quantos em m voc possui Uns 20 tamb Uns 20 também? Mas foca mais a venda mesmo, foca mais a venda. Perfeito. E a creche que você utiliza, a sua creche é pessoa física ou jurídica? Tem as duas. Perfeito. Entendi, e hoje você quer automatizar então o seu sistema, certo? Perfeito Perfeito, tem mais alguma outra coisa que você queira no sistema? Não, é possível, é só poder juntar todos os portais num único local Perfeito Hoje você possui algum horário para a gente conseguir apresentar para você nosso sistema? Como que funciona? Pode ser de tarde, entre duas e três horas fica bom. Deixa eu verificar aqui, só um momento. Pode ser às 14h então? Pode, pode ser. Perfeito. Eu tenho um e-mail aqui, que é o romeomelo.com. Seria esse mesmo? Isso, perfeito. E atualmente hoje você seria o proprietário, certo? Isso, certo. E hoje vocês são em quantos? Cinco. Cinco? Perfeito, então Eu vou encaminhar pra você então O nosso invite E aí eu encaminho também pelo WhatsApp E eu só peço que você entre pelo computador Pra ter uma visão também mais ampla da apresentação Tá bom Obrigado, viu? Ótimo dia pra você, tchau"
+    },
+    "110299452539": {
+        "id": "110299452539",
+        "sdr": "Anderson Alencar",
+        "produto": "ERP",
+        "data": "2026-05-28 08:48",
+        "duracao": "00:04:04",
+        "wps": 2.03,
+        "nota_spin": 1.5,
+        "nota_op": 8.2,
+        "urgencia": "SIM",
+        "deal_url": "[https://app.hubspot.com/contacts/](https://app.hubspot.com/contacts/)20131994/deal/60657457008/",
+        "audio_url": "https://api-na1.hubspot.com/recording/auth/provider/hublets/v1/external-url-retriever/getAuthRecording/portal/20131994/engagement/110299452539",
+        "notas_s_p_i_n": {
+            "s": 2.0,
+            "p": 3.0,
+            "i": 0.0,
+            "n": 1.0
+        },
+        "formulario": {
+            "escuta": {
+                "r": "Sim",
+                "e": "Evidência textual curta"
+            },
+            "validacao": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "compreensao": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "objecoes": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "linguagem": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "receptividade": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "rapport": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "discurso": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "compreensao_cliente": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "clareza": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "sla": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "spin": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "dor": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "gestao": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "passos_ro": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "produto": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "gatilhos": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            }
+        },
+        "parecer": "### 1. PARECER E POSTURA CONSULTIVA\nO SDR demonstrou uma postura reativa e não autoritária, aceitando respostas prontas sem fazer perguntas investigativas de follow-up. A etapa de Implicação (I) não gerou desconforto ou mensuração de perdas no lead.\n\n### 2. O QUE ERROU\n- O SDR não tomou as rédeas da conversa e foi reativo, aceitando respostas prontas sem fazer perguntas investigativas de follow-up.\n- O SDR não identificou as dores do cliente e não ofereceu soluções personalizadas.\n- O SDR não fez perguntas para entender melhor as necessidades do cliente e não gerou interesse no produto.\n- O SDR não utilizou o SPIN para gerar desconforto e mensurar perdas no lead.\n\n### 3. COMO DEVERIA TER FEITO\n- O SDR deveria ter tomado as rédeas da conversa e feito perguntas investigativas de follow-up para entender melhor as necessidades do cliente.\n- O SDR deveria ter identificado as dores do cliente e oferecido soluções personalizadas.\n- O SDR deveria ter feito perguntas para entender melhor as necessidades do cliente e gerar interesse no produto.\n- O SDR deveria ter utilizado o SPIN para gerar desconforto e mensurar perdas no lead.\n\n### 4. CAUSA E EFEITO NO FUNIL DE VENDAS\n- A falta de postura autoritária e a reatividade do SDR geraram uma conversa superficial e não geraram interesse no produto.\n- A falta de identificação das dores do cliente e a falta de soluções personalizadas geraram uma perda de oportunidade de venda.\n- A falta de perguntas investigativas de follow-up e a falta de utilização do SPIN geraram uma perda de controle da conversa e uma perda de oportunidade de venda.\n\nPlano de Ação Curto:\n- O SDR deve se preparar melhor para a próxima conversa e tomar as rédeas da conversa.\n- O SDR deve identificar as dores do cliente e oferecer soluções personalizadas.\n- O SDR deve fazer perguntas para entender melhor as necessidades do cliente e gerar interesse no produto.\n- O SDR deve utilizar o SPIN para gerar desconforto e mensurar perdas no lead.",
+        "sugestoes": "O SDR deve se preparar melhor para a próxima conversa e tomar as rédeas da conversa. Além disso, deve identificar as dores do cliente e oferecer soluções personalizadas, fazer perguntas para entender melhor as necessidades do cliente e gerar interesse no produto, e utilizar o SPIN para gerar desconforto e mensurar perdas no lead.",
+        "transcricao": " Alô, bom dia. Bom dia. Oi, Jair. Meu nome é Anderson da Superlógica. Tudo bem? De onde? Da Superlógica. Tá. É o que é isso? Eu estou entrando em contato com você. Escreveu no nosso site para saber mais sobre o nosso sistema, né? Seria o sistema de lead. E aí, estou entrando em contato. Até falei com você ontem. Você até me falou que você seria corretor autônomo, certo? É, sou corretor autônomo. Perfeito. E hoje você tem interesse No que no sistema exatamente Para eu te auxiliar no que Na verdade por outro lado eu queria saber como que esse neg como que funciona o que realmente você entrega. Hoje o nosso CRM, que é como o nome da ferramenta que nós utilizamos, é a parte que organiza todo o atendimento e a gestão dos leads no dia a dia. Então na prática ele funciona assim, todos os leads eles chegam, tanto site, portais, WhatsApp, anúncios, ele entra em um lugar só. Você acompanha cada cliente dentro do funil, tanto do novo contato, atendimento, visita, proposta, até o fechamento. Você consegue distribuir... Você apenas só administra os milhos, né? Uhum. E aí você faz toda essa parte de atendimento. Tá bom. Então, tudo vai ficar na... pra você verificar, né, como que fica essa parte. e hoje você possui quantos imóveis à venda? Eu trabalho com terceiros, com imóvel de terceiros. Hoje eu tenho uma m de 20 an 20 E de loca Loca tem um Tem quatro, cinco. Cinco, não. Perfeito. E atualmente, hoje, você não utiliza esse sistema? Não. O que eu anuncio no LX, no LX, o LX tem... Ele bota também no Ibarreal. Ah, então você faz o anúncio pelo OLX Mas aí como que você Faz o controle desse líder? Por planilha? Não O líder, por sinal, está vindo muito pouco Eu anoto aqui no caderninho E ligo Às vezes é só um vídeo frio E não tem retorno nenhum Entendeu? Entendi Então você quer algo também mais Para te ajudar nessa parte, né? De organização organização não, porque organização não tem nem o que organizar eu quero captar imóvel quero captar cliente tamb at mesmo para voc ter um site Um site tamb te ajudaria nessa parte De você conseguir Eu tenho um site Não funcionou É complicado Eu tenho um site Não funcionou direito Como eu não boto no Instagram É o meu filho que vai De Instagram Facebook E hoje a sua cresce Ela é pessoa física ou jurídica? Pessoa física Pessoa física, perfeito E deixa eu te perguntar Hoje você teria algum horário Para a gente conseguir fazer uma apresentação Para você do nosso sistema Mas não me interessa não Porque para administrar Seria bom para uma empresa grande Que tem muito índice Mas eu sou pequeno Sou sozinho Eu não tenho muito para administrar não Vamos ver, um, dois, três É? Eu não sou de dois Não faz não Tudo bem então Muito obrigado"
+    },
+    "110302913136": {
+        "id": "110302913136",
+        "sdr": "Pris Akemi Rosa Hirata",
+        "produto": "ERP",
+        "data": "2026-05-28 10:15",
+        "duracao": "00:07:19",
+        "wps": 2.27,
+        "nota_spin": 4.0,
+        "nota_op": 8.2,
+        "urgencia": "SIM",
+        "deal_url": "[https://app.hubspot.com/contacts/](https://app.hubspot.com/contacts/)20131994/deal/60665361205/",
+        "audio_url": "https://api-na1.hubspot.com/recording/auth/provider/hublets/v1/external-url-retriever/getAuthRecording/portal/20131994/engagement/110302913136",
+        "notas_s_p_i_n": {
+            "s": 6.0,
+            "p": 5.0,
+            "i": 2.0,
+            "n": 3.0
+        },
+        "formulario": {
+            "escuta": {
+                "r": "Sim",
+                "e": "Evidência textual curta"
+            },
+            "validacao": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "compreensao": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "objecoes": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "linguagem": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "receptividade": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "rapport": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "discurso": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "compreensao_cliente": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "clareza": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "sla": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "spin": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "dor": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "gestao": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "passos_ro": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "produto": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            },
+            "gatilhos": {
+                "r": "Sim",
+                "e": "Evidência textual completa"
+            }
+        },
+        "parecer": "### 1. PARECER E POSTURA CONSULTIVA\nO SDR demonstrou autoridade e postura consultiva inicialmente, mas não conseguiu criar desconforto ou mensuração de perdas no lead. A conversa foi mais reativa do que proativa, com o SDR respondendo às perguntas do lead sem fazer perguntas investigativas de follow-up.\n\n### 2. O QUE ERROU\n- O SDR não identificou as necessidades reais do lead e não fez perguntas investigativas para entender melhor o seu problema.\n- O SDR não explorou as objeções do lead e não apresentou soluções para superá-las.\n- O SDR não fez uma apresentação clara e concisa do produto e não destacou as vantagens únicas.\n- O SDR não fez uma demonstração do produto e não mostrou como ele pode resolver os problemas do lead.\n- O SDR não fez uma discussão sobre os custos e benefícios do produto e não apresentou uma proposta de valor clara.\n\n### 3. COMO DEVERIA TER FEITO\n- O SDR deveria ter feito perguntas investigativas para entender melhor as necessidades do lead e identificar as objeções.\n- O SDR deveria ter apresentado soluções para superar as objeções e destacado as vantagens únicas do produto.\n- O SDR deveria ter feito uma apresentação clara e concisa do produto e mostrado como ele pode resolver os problemas do lead.\n- O SDR deveria ter feito uma demonstração do produto e mostrado como ele pode resolver os problemas do lead.\n- O SDR deveria ter feito uma discussão sobre os custos e benefícios do produto e apresentado uma proposta de valor clara.\n\n### 4. CAUSA E EFEITO NO FUNIL DE VENDAS\n- A falta de identificação das necessidades reais do lead e a falta de perguntas investigativas levaram a uma conversa reativa e não proativa.\n- A falta de apresentação clara e concisa do produto e a falta de demonstração do produto levaram a uma falta de compreensão do lead sobre as vantagens únicas do produto.\n- A falta de discussão sobre os custos e benefícios do produto e a falta de apresentação de uma proposta de valor clara levaram a uma falta de confiança do lead na capacidade do produto de resolver seus problemas.\n- A falta de identificação das objeções do lead e a falta de apresentação de soluções para superá-las levaram a uma falta de comprometimento do lead em adquirir o produto.",
+        "sugestoes": "O SDR deve fazer perguntas investigativas para entender melhor as necessidades do lead e identificar as objeções. Em seguida, deve apresentar soluções para superar as objeções e destacar as vantagens únicas do produto. Além disso, deve fazer uma apresentação clara e concisa do produto e mostrar como ele pode resolver os problemas do lead. Finalmente, deve fazer uma demonstração do produto e mostrar como ele pode resolver os problemas do lead.",
+        "transcricao": " Qual que é o nome? Ela é Xizaki? Alô? Alô? Oi, então? Oi, é Fábio? Sim. Oi, Fábio, é a Pris aqui da Superlógica, tudo bom? Tudo jóia, e você? Tudo jóia também, Fábio. Fábio, eu estou entrando em contato contigo, você preencheu ontem o nosso formulário para saber a informação sobre o sistema de gestão para imóveis, é isso mesmo? Isso, correto. Ah, maravilha. Fábio, até para alinhar um pouco aqui no nosso atendimento, esse primeiro contato é mais para eu entender o que você está buscando hoje no sistema, depois, fazendo sentido, nós agendamos com o especialista uma demonstração para você conhecer o sistema e apresentar também os planos, tá? Claro. Hoje você está buscando por qual sistema? A gente opera na plataforma da Remax, não sei se você conhece. Certo. Então a gente quer, na verdade, um sistema de CRM, que eu posso fazer todo esse acompanhamento. A gente já tem algumas coisas de sites, até na própria plataforma Remax, e eu utilizo também aquele cliquei e mudei. Mas precisava ter uma situação de um CRM Para a gente acompanhar a funil, fazer tudo isso, né? Aham, sim Esse sistema é próprio da Remax? É próprio da Remax É um sistema chamado iList Como que chama? iList iList? É, iList Ah, tá iList, tá A nesse sistema Voc faz toda a parte ali da gest ou n Ele focado mais em alguma outra coisa Tem algumas coisas de gest e tem alguma distribui tamb no próprio site da própria Remax também. Certo. E hoje, o que você está buscando aí? Seria alguma funcionalidade diferente para estar gerenciando o seu dia a dia? Tem alguma questão nesse sentido? É uma questão mesmo de ter um CRN mesmo, de ter acompanhamento, registro de informações, tudo isso. E às vezes, sabe o que é mais importante para mim? O cadastramento do próprio cliente. Em que eu consiga ter as informações dentro de um sistema e eu não sei se aí você tem isso. Em que gere para mim um cadastro mesmo do cliente. Para que do cadastro, tanto locação como venda, eu possa direcionar, o jurídico possa direcionar ao comercial e assim sucessivamente. Ah, sim. No caso aí seria com os imóveis tudo vinculado? Tudo vinculado, justamente. Tá certo. Eu acredito que dá certo também nessa questão. Hoje você está com quantos imóveis? São 52 na base. Tá. É imobiliária mesmo, né? É imobiliária mesmo, cresce jurídico mesmo. Tá. Hoje, de onde que chega a demanda para você? No caso, os leads é de algum portal? Portal LX, portal WebMóvel, tem esse cliquei e mudei, que já são mais 11 portais dentro desse. Ah, certo. Cliquei e mudei. E questões de acesso, média quantos? Olha eu acho que tem que ter o ciclo Para voc registrar os im as informa Os corretores teriam que ter essa base de informa mas a administrativa Então, hoje, em torno de umas 15 pessoas. Seriam 15 acessos? 15 acessos. Tá, maravilha. No caso, esses imóveis que você me passou, os inativos também, você está contando nesse número? Não, só os ativos. Tá, aí com inativos, você saberia me dizer qual seria uma média? Se eu for contar, deve ter mais uns 16 inativos já. São vendas, devolução e assim por si só. Tá, maravilha. No caso, então, Fábio, o sistema vai te ajudar nessa questão que você comentou de acompanhar o funil de vendas, acompanhar as etapas, que cada lead se encontra, fazer realmente a gestão comercial dos corretores. Nós integramos com os principais portais, é o OLX, WebMóvel, são mais de 70 portais que a gente consegue integrar. Tem um site também vinculado, que seria a White Label, que é onde você consegue estar recebendo também a demanda. Eu acredito que de mais de funcionalidade você vai conseguir ter noção na apresentação, na demonstração. Eu queria ver contigo se a gente conseguiria estar marcando essa apresentação. Eu tenho aqui alguns horários para hoje. Como é que você está de agenda? Hoje eu acho que eu não vou conseguir. Eu vou ter uma reunião agora e às três horas já vai ter outra. Daí eu não sei o quanto tempo vai demorar. Tá, pode ser amanhã? Amanhã? Amanhã é sexta. Isso amanh dia 29 Ser que ter n seria melhor para mim Para mim na ter seria mais tranquilo T deixa eu ver aqui A apresentação dura em torno de 45 minutos, né? A gente estava um horário inteiro até para conseguir fazer com tranquilidade, né? Que às vezes tem algumas dúvidas, mas dura ali em torno de mais ou menos uns 45 minutos. Aí, no caso, para você ficar melhor, seria só na terça-feira mesmo? Ou na segunda-feira de manhã. Poderia ser na segunda-feira de manhã, por volta de umas 10, 11 horas. Na segunda-feira de manhã? Tá, pode ser na segunda-feira de manhã, então. Eu vou fazer o agendamento, então, aqui para você. Daí, só uma questão, Fábio, na parte ali de migração do sistema. Hoje ela está sendo feita de forma manual, tá? Então, aí no caso você teria que cadastrar manualmente os imóveis que você tem ali no sistema ali de forma manual, tá bom? Tá bom. Não vejo problema não. Deixa eu só confirmar o seu e-mail para eu subir na agenda aqui. É o fábio.ela... É outro e-mail? Não, é sem ponto. Fábio... É tudo junto. Tudo junto. HE... É... H... Ela... Ela... Ela Rio, né? Arroba hotmail.com? Pode ser esse. Tá. Eu vou mandar para você o link no seu e-mail, mas fica tranquilo que na segunda-feira de manhã eu vou já entrar em contato para confirmar a agenda. Aí eu já mando para você pelo seu WhatsApp também para você acessar. Daí só uma solicitação para você acessar o link por um computador notebook, tudo bem? Tudo bem, sem problema. Tá bom então, Fábio. Então ficou combinado aqui na segunda-feira às 10 horas. Tá ótimo então. Muito obrigado. Obrigada, eu que agradeço. Tchau, tchau."
+    },
+    "110302852222": {
+        "id": "110302852222",
+        "sdr": "Camila Mendonça",
+        "produto": "ERP",
+        "data": "2026-05-28 10:12",
+        "duracao": "00:05:30",
+        "wps": 2.08,
+        "nota_spin": 3.0,
+        "nota_op": 8.2,
+        "urgencia": "SIM",
+        "deal_url": "[https://app.hubspot.com/contacts/](https://app.hubspot.com/contacts/)20131994/deal/60672400286/",
+        "audio_url": "https://api-na1.hubspot.com/recording/auth/provider/hublets/v1/external-url-retriever/getAuthRecording/portal/20131994/engagement/110302852222",
+        "notas_s_p_i_n": {
+            "s": 6.0,
+            "p": 4.0,
+            "i": 0.0,
+            "n": 2.0
+        },
+        "formulario": {
+            "escuta": {
+                "r": "Sim",
+                "e": "Evidência textual curta"
+            },
+            "validacao": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "compreensao": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "objecoes": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "linguagem": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "receptividade": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "rapport": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "discurso": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "compreensao_cliente": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "clareza": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "sla": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "spin": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "dor": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "gestao": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "passos_ro": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "produto": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            },
+            "gatilhos": {
+                "r": "Sim",
+                "e": "Evidência textual longa"
+            }
+        },
+        "parecer": "### 1. PARECER E POSTURA CONSULTIVA\nO SDR demonstrou autoridade e postura consultiva inicialmente, mas foi reativo em alguns momentos. A conversa foi bem estruturada, mas o SDR não foi capaz de medir a implicação do lead em relação ao produto ou serviço.\n\n### 2. O QUE ERROU\n- O SDR aceitou respostas prontas sem fazer perguntas investigativas de follow-up, o que reduziu a nota da etapa de Implicação (I) para 0.0.\n- O SDR não explorou as objeções do lead de forma aprofundada, o que pode ter afetado a qualidade da conversa.\n- O SDR não utilizou o SPIN de forma eficaz, o que pode ter reduzido a nota da etapa de Implicação (I).\n\n### 3. COMO DEVERIA TER FEITO\n- O SDR deveria ter feito perguntas investigativas de follow-up para explorar as objeções do lead e aumentar a nota da etapa de Implicação (I).\n- O SDR deveria ter utilizado o SPIN de forma eficaz para explorar as necessidades do lead e aumentar a nota da etapa de Implicação (I).\n- O SDR deveria ter explorado as objeções do lead de forma aprofundada para aumentar a qualidade da conversa.\n\n### 4. CAUSA E EFEITO NO FUNIL DE VENDAS\n- A falta de exploração das objeções do lead e a falta de utilização eficaz do SPIN podem ter reduzido a nota da etapa de Implicação (I), o que pode ter afetado a qualidade da conversa e a probabilidade de fechamento.\n- A falta de exploração das objeções do lead e a falta de utilização eficaz do SPIN podem ter aumentado a probabilidade de rejeição do lead, o que pode ter afetado a qualidade da conversa e a probabilidade de fechamento.",
+        "sugestoes": "O SDR deve trabalhar em melhorar a exploração das objeções do lead e a utilização eficaz do SPIN para aumentar a nota da etapa de Implicação (I) e melhorar a qualidade da conversa. Além disso, o SDR deve trabalhar em melhorar a capacidade de medir a implicação do lead em relação ao produto ou serviço.",
+        "transcricao": " O que é o que? Milimóveis, Thiago, bom dia. Thiago, bom dia. Aqui é a Camila da Superlógica, tudo bem? Tudo bom, Camila. Thiago, eu estou entrando em contato contigo A Ana me fez aqui uma indicação Onde vocês haviam demonstrado interesse Por conhecer também o nosso CRM de vendas Está correto? Sim, sim Ah, maravilha Depois a gente fez contato no WhatsApp Ah, legal Thiago, eu faço esse contato contigo Só para alinhar algumas informações E nós já validamos aqui A melhor data e horário para você para que a gente possa agendar aqui a nossa apresentação, tudo bem? Tudo bem, sempre bem. Combinado. Você me informa, por gentileza, o creche da imobiliária que vocês atuam é o creche jurídico, certo? Sim. Deixa eu achar ele aqui, porque eu não sei de cadastro. Certo. Confere a pergunta, eu acho que é 3010, certo? Est a no cart mas O cr 9997 A letra 9997. Isso. Perfeito, Thiago. E hoje, para a venda, você sabe me dizer uma média de quantos imóveis vocês têm? Não, não descardeço, porque o setor de vendas não é comigo. Eu trabalho no setor de locação. Nós não temos um setor específico ou um mercado especificamente. Hoje eu gerencio o escritório, mas nosso público maior é na locação. Ah, certo. Perfeito. E, Tiago, hoje você sabe me dizer se vocês já divulgam os imóveis de vocês através de algum portal? Sim, nós divulgamos com o nosso site da plataforma da Kenwo. Ele tem vínculo com a LX, Viva Real... Os app móveis, né? Os app móveis, exatamente. A plataforma LX como um todo. Ah, bacana. E vocês atuam hoje na imobiliária em quantos corretores? Cinco. Cinco perfeito Essas eram as informa que eu precisava validar contigo Tiago para que a gente possa agendar ali a nossa apresenta A apresenta feita via meeting ent eu oriento que voc assistam pelo computador para ter uma melhor visualização ali da plataforma, das funcionalidades, que o meu especialista já vai compartilhando a tela com vocês. Perfeito. Eu só vou pedir que esse agendamento seja feito um pouco mais para frente, porque a proprietária da imobiliária é responsável por ela estar em usagem médica. Então, ela só retorna no final da próxima semana. Ah, certo. Tem mais pra frente. Certo. No final ali da próxima semana, aí, semana que vem, tem um feriado na quinta-feira. Na sexta-feira, dia 5, vocês vão estar funcionando? Como é que vai estar pra vocês? Menina, quando é trabalho de feriado, é que faz a boa? Boa surpresa Dia 4 É Eu estou passando fake news Deixa eu ver aqui Dia 4 Eu acho que não Mas não aqui É Corpus Christi Oh menina Mentira Que coisa gostosa de ouvir Verdade T vendo Liguei pra te dar boas novas muito bom Que del Ai, ótimo. Então, a princípio, não funcionaremos. Nem quatro, nem cinco. Certo. Então, a gente pode deixar aqui alinhado, Tiago, pro dia 8, que é a próxima segunda-feira. Sem ser da primeira, da segunda semana ali de junho. Pode ser? Então, vamos fechar pro dia 9. Na segunda, sempre um dia corrido, ainda mais depois dos feriados. Ah, certo. Perfeito. Para você, fica melhor no período da manhã ou da tarde? Da manhã, da manhã. Eu já deixo antecipado com a Mila, para que ela coloque na agenda dela. Então, pelo horário da manhã. Combinado. O primeiro horário no período da manhã que nós temos para terça-feira vai ser das 10 horas. Pode ser? Pode ser, sem problemas. Combinado, então. Eu vou encaminhar um invite para o seu e-mail, Tiago, E esse número que a gente está se falando é o WhatsApp também? Sim, se puder mandar no WhatsApp Que a gente conta aí esse alinhamento do ajudamento Combinado Eu vou deixar tanto por e-mail Quanto uma mensagem ali pelo WhatsApp também Qualquer dúvida você pode me chamar por ali Que é o meu número direto de contato, tá bom? Perfeito Combinado então, Thiago Obrigada pela atenção, viu? Eu te agradeço pela boa notícia Eu não estava sentindo Coisa boa Obrigado Bom trabalho Obrigada, você também, tchau, tchau"
+    },
+    "110325763732": {
+        "id": "110325763732",
+        "sdr": "Letícia Galante",
+        "produto": "ERP",
+        "data": "2026-05-28 16:36",
+        "duracao": "00:06:54",
+        "wps": 2.64,
+        "nota_spin": 6.2,
+        "nota_op": 8.2,
+        "urgencia": "NÃO",
+        "deal_url": "[https://app.hubspot.com/contacts/](https://app.hubspot.com/contacts/)20131994/deal/60694051676/",
+        "audio_url": "https://api-na1.hubspot.com/recording/auth/provider/hublets/v1/external-url-retriever/getAuthRecording/portal/20131994/engagement/110325763732",
+        "notas_s_p_i_n": {
+            "s": 8.0,
+            "p": 7.0,
+            "i": 6.0,
+            "n": 4.0
+        },
+        "formulario": {
+            "escuta": {
+                "r": "Sim",
+                "e": "Evidência textual curta"
+            },
+            "validacao": {
+                "r": "Não",
+                "e": "Evidência textual curta"
+            },
+            "compreensao": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "objecoes": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "linguagem": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "receptividade": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "rapport": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "discurso": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "compreensao_cliente": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "clareza": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "sla": {
+                "r": "Não",
+                "e": "Evidência"
+            },
+            "spin": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "dor": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "gestao": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "passos_ro": {
+                "r": "Não",
+                "e": "Evidência"
+            },
+            "produto": {
+                "r": "Sim",
+                "e": "Evidência"
+            },
+            "gatilhos": {
+                "r": "Sim",
+                "e": "Evidência"
+            }
+        },
+        "parecer": "### 1. PARECER E POSTURA CONSULTIVA\nO SDR apresentou uma postura consultiva, mas não conseguiu gerar desconforto ou mensuração de perdas no lead. A conversa foi mais reativa do que proativa, com o SDR respondendo às perguntas do lead sem fazer perguntas investigativas de follow-up.\n\n### 2. O QUE ERROU\n- O SDR não identificou as necessidades reais do lead e não fez perguntas para entender melhor o cenário.\n- O SDR não conseguiu medir a magnitude das perdas ou do desconforto do lead.\n- O SDR não fez uma análise detalhada das necessidades do lead e não apresentou soluções personalizadas.\n- O SDR não conseguiu gerar interesse no produto ou serviço.\n\n### 3. COMO DEVERIA TER FEITO\n- O SDR deveria ter feito perguntas mais profundas para entender as necessidades reais do lead.\n- O SDR deveria ter medido a magnitude das perdas ou do desconforto do lead.\n- O SDR deveria ter apresentado soluções personalizadas para atender às necessidades do lead.\n- O SDR deveria ter gerado interesse no produto ou serviço.\n\n### 4. CAUSA E EFEITO NO FUNIL DE VENDAS\n- A falta de uma postura consultiva e a falta de perguntas investigativas de follow-up podem ter levado a uma conversa reativa e não proativa.\n- A falta de uma análise detalhada das necessidades do lead pode ter levado a uma apresentação não personalizada.\n- A falta de interesse no produto ou serviço pode ter levado a uma perda de oportunidade de venda.\n\nPlano de Ação:\n- O SDR deve se preparar para fazer perguntas mais profundas para entender as necessidades reais do lead.\n- O SDR deve medir a magnitude das perdas ou do desconforto do lead.\n- O SDR deve apresentar soluções personalizadas para atender às necessidades do lead.\n- O SDR deve gerar interesse no produto ou serviço.",
+        "sugestoes": "O SDR deve se preparar para a próxima conversa com perguntas mais profundas e uma análise detalhada das necessidades do lead. Além disso, o SDR deve medir a magnitude das perdas ou do desconforto do lead e apresentar soluções personalizadas para atender às necessidades do lead.",
+        "transcricao": " Alô? Guilherme? Oi Oi, Letícia aqui da Superlógica, tudo bem? Tudo bem Opa, que maravilha Guilherme, esse primeiro contato é rápido Na verdade eu quero te ouvir Entender o que você está buscando para a venda, para a locação Que tipo de sistema seria como que você já trabalha hoje para a gente poder marcar uma apresentação realmente direcionada, ver se a gente está dentro do que você precisa. Tá bom. Hoje eu não tenho sistema de gestão, eu trabalho tudo no Excel. Eu tenho de 150 a 200 contratos ativos de aluguel e a minha ideia era tanto aluguel quanto venda. Então, basicamente, seria isso. Tem que ver com... Eu gostaria de uma apresentação e também a questão como é que funciona o preço de vocês. Maravilha. Normalmente é isso que eu alinho contigo para a gente poder marcar uma apresentação, porque a gente tem planos diferentes para cada necessidade, para cada cenário. Você comentou aqui comigo que hoje faz tudo por planilha a questão da gestão dessas locações, desses contratos. E hoje, a partir de contratos, vou te explicar porque são duas frentes diferentes. Para a venda, o que você está buscando? É a parte de divulgação, CRM, site, integração com os portais para que você possa fazer a sua gestão comercial? Ou seria algo ali para financiamento loteamento Conta um pouquinho para mim N para mim hoje site eu tenho Se Se tu tiver um modelo melhor perfeito n h problema mas mais at o CRM de venda Colocar todas as informações num único lugar, ter um controle melhor dos leads, é mais ou menos o objetivo, é esse. Na minha cidade, uma cidade pequena, eu não vejo muito pessoal usar portal de venda de imóvel. Não é assim algo que seja tão necessário. Maravilha. E hoje você utiliza o site, ele é próprio? Ou você utiliza... É próprio. Tá. Próprio. Maravilha. É um ponto importante. Hoje a gente consegue te atender nas duas frentes, tá? Se você não tivesse um site, a gente disponibilizaria a parte de site e CRM. E hoje, no caso que você já tem, a gente aproveita o seu. Então, integra o CRM juntamente com o site que você já tem, tá? Hoje, um ponto sempre importante que eu gosto de entender com você. Na parte de vendas, mais ou menos como está a sua carteira? Quantos imóveis disponíveis? De 100 a 150. De 100 a 150. Um ponto muito importante, Guilherme. Hoje, como você não utiliza nada de CRM, a primeira importação, obviamente, para cá, seria de forma manual. Porque como a gente não tem dados de que sistema extrair, eu gosto sempre de explicar para o cliente esse ponto. que às vezes ele fala assim, ah, não queria cadastrar. Mas como a gente não tem de onde trazer essas informações, nenhuma outra base, por exemplo, ah, eu usava o Kenlo, eu usava o Tecmo, não consegue trazer. Agora, nesse caso, o primeiro contato, ele é manual. E hoje vocês estão em quantos corretores a na parte de vendas e loca Seria usu de CRM Olha eu tenho eu e mais quatro corretor t Eu tenho dois funcionários do aluguel. Maravilha. Então, seria cinco corretores contando com você, mas... Se tu vai me cobrar por usuário, eu posso diminuir corretor porque eu tenho um... O meu sócio aqui tem 70 anos, então ele não usa computador. Eu tenho outro corretor que também não usa. Então, se você for me cobrar por usuário, eu posso fazer um plano menor. Não, maravilha. Eu levanto esses dados contigo até para o meu especialista conseguir te apresentar planos que se encaixem na sua necessidade. Mas aí ele consegue te explicar. Esse plano comporta tantos usuários. Não, os usuários são ilimitados. Ele vai te apresentar tudo na reunião que eu marco para você ver planos e valores. Agora, voltando um pouquinho para a parte de locação, Guilherme. Hoje, como está a parte de recebimento? está por PIX, por boleto, qual banco que você trabalha? Eu trabalho só com Cicred, e o recebimento é variado, ele é boleto, PIX, pagamento na imobiliária. Maravilha. Segura incêndio você trabalha, terceiriza, é uma frente que sai na sua região, como que está? A gente não usa, mas eu queria começar a usar. Eu não sei se vocês têm alguma coisa, Eu já falei com o banco, só que a gente não deu o prosseguimento, mas eu acho que é uma renda extra que dá para ter também. Sim, sim. Mas eu não uso hoje. Aqui a gente tem também essa parte de seguro que você consegue fazer por dentro do sistema. A gente trabalha com uma seguradora que se chama Alfa, mas aí meu especialista consegue te passar cada indicação que fecha, voc ganha um comissionamento ali um meio de fazer uma renda a mais para para dentro da imobili O Guilherme o que eu quero ver com voc Para a gente alinhar essa apresentação, ela é via MIT, tá? Meu especialista vai te apresentar o sistema, você vai interagir com as ferramentas, entender como que funciona cada plano, valor e definir o que faz mais sentido aí para o seu cenário. Hoje, sendo muito sincera com você, eu já não tenho mais horários disponível, mas amanhã eu ainda consigo te encaixar no horário aqui no período da tarde. Como que está a sua agenda? Para mim, eu prefiro no início da tarde. No início da tarde? Pode ser duas horas, duas e vinte, duas e meia, três. Maravilha, eu consigo te encaixar aqui às duas e meia, pode ser? Pode. Maravilha, fala para mim só o seu e-mail. É guilherme.perufo.com.br Maravilha, é o mesmo que você se cadastrou aqui. Já vou te encaminhar um invite. Um ponto importante, Guilherme, por ser uma apresentação interativa, é necessário que você entre pelo computador. Então, a minha especialista vai estar ali ao vivo, eu vou te mandar um link, um lembrete amanhã, ver se está tudo certo, se você não teve nenhum imprevisto, para selar o nosso compromisso. E aí é só entrar pelo link que eu vou te mandar ali, que ela já vai estar na sala para te atender, tá bom? Tá bom, perfeito Combinado, então Guilherme, qualquer dúvida Eu estou à disposição, o WhatsApp que eu vou falar contigo Agora, que eu vou te chamar, é o meu pessoal Porque você está falando ali pelo chat Do site, e aí eu vou te chamar Pelo meu pessoal, qualquer coisa você pode me chamar Tá bom? Tá bom, obrigada Obrigada, é eu, até, tchau, tchau"
+    }
+}
