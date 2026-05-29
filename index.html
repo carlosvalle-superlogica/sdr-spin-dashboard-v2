@@ -513,7 +513,7 @@
             return '<span class="badge-na px-2 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider">N/A</span>';
         }
 
-        // FORMATADOR MARKDOWN: Converte ### do GPT em subtítulos em destaque
+        // Formata o retorno do ChatGPT (Markdown) em HTML limpo e estilizado
         function formatMarkdown(text) {
             if (!text) return '';
             return text.replace(/###\s(.*?)(?=\n|$)/g, '<span class="block mt-5 mb-2 text-white font-bold uppercase tracking-wider border-b border-gray-700 pb-1">$1</span>')
@@ -527,7 +527,6 @@
             document.getElementById('modal-title').innerText = `Auditoria: ${c.sdr}`;
             document.getElementById('modal-subtitle').innerText = `ID: ${c.id} | Produto: ${c.produto} | Duração: ${c.duracao}`;
             
-            // LIMPADOR DE URL: Extrai o ID do negócio caso haja formatação corrompida na base de dados
             let safeUrl = c.deal_url;
             if (safeUrl && safeUrl.includes('](')) {
                 const match = safeUrl.match(/deal\/(\d+)/);
@@ -578,16 +577,16 @@
                 
                 <div class="bg-gray-800/40 border border-gray-700/60 rounded-xl p-6 mb-6 relative overflow-hidden border-l-4 border-indigo-500 pdf-no-break">
                     <h4 class="text-xs font-black text-white uppercase tracking-widest flex items-center gap-2 mb-4 border-b border-gray-700 pb-3">
-                        <i class="fa-solid fa-gavel text-indigo-400 text-lg"></i> Relatório de Enablement Multiagente
+                        <i class="fa-solid fa-gavel text-indigo-400 text-lg"></i> Relatório de Enablement
                     </h4>
                     <div class="text-sm text-gray-300 whitespace-pre-line leading-relaxed font-medium">
-                        ${formatMarkdown(c.parecer) || 'Ainda não foi gerado um parecer técnico para esta chamada.'}
+                        ${formatMarkdown(c.parecer) || 'Ainda não foi gerado um parecer técnico.'}
                     </div>
                 </div>
                 
                 <div class="bg-rose-950/20 border border-rose-900/40 rounded-xl p-6 mb-6 relative overflow-hidden border-l-4 border-rose-500 pdf-no-break">
                     <h4 class="text-xs font-black text-rose-300 uppercase tracking-widest flex items-center gap-2 mb-4 border-b border-rose-900/50 pb-3">
-                        <i class="fa-solid fa-bullseye text-rose-500 text-lg"></i> Próximos Passos de Treinamento
+                        <i class="fa-solid fa-bullseye text-rose-500 text-lg"></i> Próximos Passos
                     </h4>
                     <div class="text-sm text-rose-100/90 whitespace-pre-line leading-relaxed font-medium">
                         ${formatMarkdown(c.sugestoes) || 'Sem pontos de ação traçados.'}
@@ -605,6 +604,7 @@
             document.getElementById('modal-sdr').classList.remove('hidden');
         }
 
+        // Função Genial para exportar o PDF (Reestruturada para Retrato / Empilhado Verticalmente)
         function exportarDossiePDF() {
             const btn = document.getElementById('btn-gerar-pdf');
             const originalText = btn.innerHTML;
@@ -612,29 +612,47 @@
 
             const element = document.getElementById('printable-dossier').cloneNode(true);
             
-            // Fim do Corte Esquerdo/Direito: Forçando tamanho de 1000px em modo Retrato
+            // Força a largura para 800px (medida exata do A4) e quebra a estrutura Lado a Lado
             element.classList.remove('max-w-7xl', 'h-[95vh]');
-            element.style.width = '1000px'; 
+            element.style.width = '800px'; 
             element.style.height = 'auto';
             element.style.margin = '0';
             element.style.padding = '20px';
             
-            // Ativa o Anti-Guilhotina: não quebra páginas no meio das divs
+            // Anti-Guilhotina
             const avoidBreaks = element.querySelectorAll('.bg-gray-900\\/50, .pdf-no-break');
             avoidBreaks.forEach(el => {
                 el.style.pageBreakInside = 'avoid';
                 el.style.breakInside = 'avoid';
             });
 
-            // Libera os scroll-bars para não esconder textos
+            // Reorganiza o layout de Lado a Lado (Row) para Empilhado (Column) para o PDF Retrato!
             const bodyScroll = element.querySelector('#modal-body-scroll');
-            if(bodyScroll) { bodyScroll.style.overflow = 'visible'; bodyScroll.style.height = 'auto'; }
+            if(bodyScroll) { 
+                bodyScroll.classList.remove('flex'); 
+                bodyScroll.style.display = 'block'; 
+                bodyScroll.style.overflow = 'visible'; 
+                bodyScroll.style.height = 'auto'; 
+            }
             
             const matriz = element.querySelector('#modal-matriz');
-            if(matriz) { matriz.style.overflow = 'visible'; matriz.style.height = 'auto'; }
+            if(matriz) { 
+                matriz.classList.remove('w-1/3', 'border-r', 'overflow-y-auto'); 
+                matriz.style.width = '100%';
+                matriz.style.borderRight = 'none';
+                matriz.style.borderBottom = '1px solid #1f2937';
+                matriz.style.marginBottom = '20px';
+                matriz.style.overflow = 'visible'; 
+                matriz.style.height = 'auto'; 
+            }
             
             const tecnico = element.querySelector('#modal-tecnico');
-            if(tecnico) { tecnico.style.overflow = 'visible'; tecnico.style.height = 'auto'; }
+            if(tecnico) { 
+                tecnico.classList.remove('w-2/3', 'overflow-y-auto'); 
+                tecnico.style.width = '100%';
+                tecnico.style.overflow = 'visible'; 
+                tecnico.style.height = 'auto'; 
+            }
 
             const transcricaoBox = element.querySelector('#box-transcricao');
             if(transcricaoBox) {
@@ -643,33 +661,33 @@
                 transcricaoBox.style.overflow = 'visible';
             }
 
-            // Oculta botões que não devem ir para o PDF
+            // Oculta botões do layout no PDF final
             const linksContainer = element.querySelector('#modal-links');
             if(linksContainer) linksContainer.style.display = 'none';
             const closeBtn = element.querySelector('#btn-close-modal');
             if(closeBtn) closeBtn.style.display = 'none';
 
-            // Cria Wrapper no top-left cravado no eixo X e Y em zero para não perder o lado esquerdo
+            // Wrapper seguro, posicionado no topo-esquerda extremo e transparente (Corrige o corte lateral)
             const wrapper = document.createElement('div');
             wrapper.style.position = 'absolute';
             wrapper.style.top = '0px';
             wrapper.style.left = '0px';
-            wrapper.style.width = '600px';
+            wrapper.style.width = '800px';
             wrapper.style.zIndex = '-9999';
-            wrapper.style.opacity = '0'; // Continua invisível, mas no lugar certo!
+            wrapper.style.opacity = '0'; 
             wrapper.style.backgroundColor = '#0b0f19'; 
             wrapper.appendChild(element);
             document.body.appendChild(wrapper);
 
             const sdrName = document.getElementById('modal-title').innerText.replace('Auditoria: ', '');
 
-            // PDF em Formato RETRATO (Portrait) com Zoom e escala ajustada
+            // PDF em Formato RETRATO (Portrait) com largura fixa correspondente ao A4
             const opt = {
-                margin:       [10, 10, 10, 10],
+                margin:       [5, 5, 5, 5],
                 filename:     `Auditoria_SDR_${sdrName.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, scrollX: 0, scrollY: 0, windowWidth: 1000 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' } // Alterado para Retrato
+                html2canvas:  { scale: 2, scrollX: 0, scrollY: 0, windowWidth: 800 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' } 
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
