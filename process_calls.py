@@ -4,16 +4,17 @@ import json
 import urllib.request
 from urllib.error import URLError, HTTPError
 from datetime import datetime
-import google.generativeai as genai
+from groq import Groq
 
 # ==========================================
 # 1. CONFIGURAÇÕES E VARIÁVEIS DE AMBIENTE
 # ==========================================
-GEMINI_KEY = os.environ.get("GEMINI_API_KEY")
-if not GEMINI_KEY:
-    raise ValueError("ERRO CRÍTICO: GEMINI_API_KEY não encontrada nos Secrets do GitHub!")
+GROQ_KEY = os.environ.get("GROQ_API_KEY")
+if not GROQ_KEY:
+    raise ValueError("ERRO CRÍTICO: GROQ_API_KEY não encontrada nos Secrets do GitHub!")
 
-genai.configure(api_key=GEMINI_KEY)
+# Inicializa o cliente do Groq
+client = Groq(api_key=GROQ_KEY)
 
 # Lista de possíveis nomes para o arquivo para evitar erro de extensão dupla
 CSV_CANDIDATES = ["dados_chamadas.csv", "dados_chamadas.csv.csv"]
@@ -103,7 +104,6 @@ def process_all_calls():
             result = row.get("Call outcome") or row.get("Resultado da chamada")
 
             # Filtro: Só analisa chamadas com áudio e válidas
-            # Nota: Ajustado para o status do seu CSV que veio como "Connected" ou "Ligação atendida"
             if not call_id or not audio_url:
                 continue
             
@@ -135,17 +135,31 @@ def process_all_calls():
                     with urllib.request.urlopen(req, timeout=45) as response:
                         audio_bytes = response.read()
 
-                    model = genai.GenerativeModel(
-                        "gemini-1.5-flash",
-                        generation_config={"response_mime_type": "application/json"}
+                    # ETAPA 1: O Groq transcreve o áudio usando o Whisper
+                    transcription = client.audio.transcriptions.create(
+                        file=("audio.wav", audio_bytes),
+                        model="whisper-large-v3",
+                        response_format="json"
                     )
-                    
-                    response_ai = model.generate_content([
-                        {"mime_type": "audio/wav", "data": audio_bytes},
-                        prompt_content
-                    ])
+                    texto_ligacao = transcription.text
 
-                    clean_text = clean_json_response(response_ai.text)
+                    # ETAPA 2: O Groq analisa a transcrição com o Llama 3
+                    chat_completion = client.chat.completions.create(
+                        model="llama3-70b-8192",
+                        messages=[
+                            {
+                                "role": "system", 
+                                "content": f"{prompt_content}\n\nIMPORTANTE: Retorne APENAS um objeto JSON válido. Não inclua textos antes ou depois."
+                            },
+                            {
+                                "role": "user", 
+                                "content": f"Analise a seguinte transcrição da ligação:\n\n{texto_ligacao}"
+                            }
+                        ],
+                        temperature=0.3
+                    )
+
+                    clean_text = clean_json_response(chat_completion.choices[0].message.content)
                     analysis_data = json.loads(clean_text)
                     
                     with open(saved_analysis_path, 'w', encoding='utf-8') as sf:
