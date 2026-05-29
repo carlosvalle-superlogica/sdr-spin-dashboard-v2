@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDR Auditor - Inteligência de Vendas</title>
-    <script src="[https://tailwindcss.com](https://tailwindcss.com)"></script>
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { background-color: #0b0f19; color: #f3f4f6; font-family: 'Inter', sans-serif; }
         .sidebar-active { background: linear-gradient(90deg, rgba(99,102,241,0.15) 0%, rgba(99,102,241,0) 100%); border-left: 4px solid #6366f1; color: #ffffff; }
@@ -63,7 +63,7 @@
                     <h2 id="total-ligacoes" class="text-4xl font-extrabold text-indigo-400 mt-2">--</h2>
                 </div>
                 <div class="card-dark p-6 rounded-xl shadow-lg">
-                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider">Atenção Crítica (< 6)</span>
+                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider">Atenção Crítica (&lt; 6)</span>
                     <h2 id="casos-criticos" class="text-4xl font-extrabold text-rose-500 mt-2">--</h2>
                 </div>
             </div>
@@ -120,7 +120,6 @@
             
             <div class="flex-1 flex overflow-hidden">
                 <div class="w-1/3 border-r border-gray-800 overflow-y-auto p-4 space-y-2 custom-scrollbar bg-gray-900" id="modal-lista-chamadas"></div>
-                
                 <div class="w-2/3 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-[#0b0f19]" id="modal-conteudo-chamada">
                     <div class="text-center py-12 text-gray-500">
                         <i class="fa-solid fa-file-waveform text-5xl mb-4 block text-gray-700"></i>
@@ -148,7 +147,6 @@
 
         async function init() {
             try {
-                // Prevenção de Cache com timestamp na URL
                 const cacheBuster = new Date().getTime();
                 const response = await fetch(`consolidated_data.json?t=${cacheBuster}`);
                 
@@ -157,7 +155,7 @@
                 renderDashboard();
             } catch (e) {
                 console.error("Erro ao carregar o sistema:", e);
-                document.getElementById('tabela-criticos').innerHTML = `<tr><td colspan="5" class="py-4 text-center text-rose-500">Erro ao carregar banco de dados. Certifique-se de que o robô executou com sucesso.</td></tr>`;
+                document.getElementById('tabela-criticos').innerHTML = `<tr><td colspan="5" class="py-4 text-center text-rose-500">Aguardando a conclusão do processamento do robô no GitHub Actions...</td></tr>`;
             }
         }
 
@@ -168,17 +166,16 @@
                 return;
             }
 
-            // Cálculos Globais com Proteção (NaN fallback)
             const total = chamadas.length;
             const somaNotas = chamadas.reduce((acc, c) => acc + (parseFloat(c.nota_spin) || 0), 0);
             const mediaGlobal = (somaNotas / total).toFixed(1);
             const criticos = chamadas.filter(c => (parseFloat(c.nota_spin) || 0) < 6).length;
 
+            // IDS CORRIGIDOS AQUI (EVITA TRAVAMENTO DO JS)
             document.getElementById('total-ligacoes').innerText = total;
             document.getElementById('media-geral').innerText = mediaGlobal;
             document.getElementById('casos-criticos').innerText = criticos;
 
-            // Organizar dados por SDR
             const sdrs = {};
             chamadas.forEach(c => {
                 const sdrNome = c.sdr || "Desconhecido";
@@ -186,7 +183,6 @@
                 sdrs[sdrNome].push(c);
             });
 
-            // Construir Cards da Equipe
             const gridEquipe = document.getElementById('tab-equipe');
             gridEquipe.innerHTML = '';
             
@@ -194,7 +190,6 @@
                 const lista = sdrs[nome];
                 const mediaSDR = (lista.reduce((acc, c) => acc + (parseFloat(c.nota_spin) || 0), 0) / lista.length).toFixed(1);
                 
-                // Tratamento seguro para extrair iniciais de nomes
                 let iniciais = "SD";
                 if (nome && nome !== "Desconhecido") {
                     const partes = nome.split(' ').filter(n => n.length > 0);
@@ -207,7 +202,7 @@
                 card.onclick = () => openSDRModal(nome);
                 card.innerHTML = `
                     <div class="flex items-center gap-4 mb-5">
-                        <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-700 rounded-xl flex items-center justify-center font-black text-white text-xl shadow-inner">${iniciais}</div>
+                        <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-700 rounded-xl flex items-center justify-center font-bold text-white text-xl shadow-inner">${iniciais}</div>
                         <div>
                             <h4 class="font-bold text-white text-lg">${nome}</h4>
                             <span class="text-xs text-indigo-400 font-semibold tracking-wide">Representante Vendas</span>
@@ -227,11 +222,9 @@
                 gridEquipe.appendChild(card);
             });
 
-            // Construir Tabela Geral (Ordenada das mais recentes para mais antigas)
             const tabela = document.getElementById('tabela-criticos');
             tabela.innerHTML = '';
             
-            // Ordem decrescente básica pelo ID do HubSpot (que é sequencial)
             const chamadasOrdenadas = chamadas.sort((a,b) => parseInt(b.id || 0) - parseInt(a.id || 0));
 
             chamadasOrdenadas.forEach(c => {
@@ -287,7 +280,6 @@
 
             modal.classList.remove('hidden');
             
-            // Se foi passado um ID específico para abrir, abre ele, senão abre o primeiro
             if (callIdToSelect) {
                 const chamadaEspecifica = listaFiltrada.find(c => c.id === callIdToSelect);
                 if (chamadaEspecifica) {
@@ -305,7 +297,6 @@
             const nota = parseFloat(c.nota_spin) || 0;
             const titulo = c.titulo || "Chamada de Vendas";
             
-            // Timeout ultra-rápido só para dar a sensação visual de refresh
             setTimeout(() => {
                 const conteudo = document.getElementById('modal-conteudo-chamada');
                 conteudo.innerHTML = `
@@ -354,12 +345,10 @@
             document.getElementById('modal-sdr').classList.add('hidden');
         }
 
-        // Fecha modal ao clicar fora
         document.getElementById('modal-sdr').addEventListener('click', function(e) {
             if (e.target === this) closeModal();
         });
 
-        // Inicia aplicação
         window.onload = init;
     </script>
 </body>
