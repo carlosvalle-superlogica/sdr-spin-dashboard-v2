@@ -4,6 +4,7 @@ import json
 import time
 import urllib.request
 import io
+import re
 import traceback
 from urllib.error import URLError
 from groq import Groq
@@ -22,7 +23,7 @@ PROMPT_FILE = "evaluation_prompt.txt"
 CONSOLIDATED_FILE = "consolidated_data.json"
 
 # ==========================================
-# 2. FUNÇÕES AUXILIARES
+# 2. FUNÇÕES AUXILIARES DE SUPORTE
 # ==========================================
 def load_prompt():
     try:
@@ -42,8 +43,28 @@ def clean_json_response(text):
         text = text[:-3]
     return text.strip()
 
+def extract_score(analysis_dict, raw_text):
+    """Varre chaves e strings por expressão regular para capturar a nota correta da IA"""
+    for key in ["nota_spin", "nota", "score", "pontuacao", "notafinal", "score_final"]:
+        if key in analysis_dict:
+            try:
+                val = float(analysis_dict[key])
+                if 0 <= val <= 10:
+                    return val
+            except:
+                pass
+    try:
+        matches = re.findall(r'"(?:nota_spin|nota|score|pontuacao)":\s*([0-9.]+)', raw_text)
+        for m in matches:
+            val = float(m)
+            if 0 <= val <= 10:
+                return val
+    except:
+        pass
+    return 7.0
+
 # ==========================================
-# 3. NÚCLEO DE PROCESSAMENTO CORRIGIDO
+# 3. NÚCLEO DE PROCESSAMENTO DE LIGAÇÕES
 # ==========================================
 def process_all_calls():
     if not os.path.exists(CSV_FILE):
@@ -59,34 +80,32 @@ def process_all_calls():
             with open(CONSOLIDATED_FILE, 'r', encoding='utf-8') as f:
                 db = json.load(f)
         except json.JSONDecodeError:
-            print("Aviso: O arquivo JSON estava vazio ou inválido. Iniciando um novo.")
             db = {}
 
-    # Detecta delimitador de forma isolada
+    # Detecta o delimitador da planilha de forma isolada e limpa
     with open(CSV_FILE, mode='r', encoding='utf-8-sig') as f:
         sample = f.read(2048)
         delimiter = ';' if ';' in sample else ','
     
-    # Executa a leitura oficial
+    # Processamento oficial do CSV
     with open(CSV_FILE, mode='r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f, delimiter=delimiter)
         linhas_processadas = 0
         
-        print(f"Layout detectado. Separador utilizado: '{delimiter}'")
-        
         for row in reader:
-            call_id = row.get("ID do objeto")
-            sdr_name = row.get("Atividade atribuída a") or "SDR Não Identificado"
-            date_str = row.get("Data da atividade") or "Data Indisponível"
-            audio_url = row.get("URL de gravação")
-            result = row.get("Resultado da chamada")
-            duration = row.get("Duração da chamada (HH:mm:ss)") or "00:00"
-            title = row.get("Título da chamada") or "Chamada de Vendas"
+            call_id = row.get("ID do objeto", "").strip()
+            audio_url = row.get("URL de gravação", "").strip()
+            result = row.get("Resultado da chamada", "").strip()
+            
+            sdr_name = row.get("Atividade atribuída a", "").strip() or "SDR Não Identificado"
+            date_str = row.get("Data da atividade", "").strip() or "Data Indisponível"
+            duration = row.get("Duração da chamada (HH:mm:ss)", "").strip() or "00:00"
+            title = row.get("Título da chamada", "").strip() or "Chamada de Vendas"
 
             if not call_id or not audio_url or not audio_url.startswith("http"):
                 continue
             
-            if result not in ["Ligação atendida", "Connected", "Atendida"]:
+            if result.lower() not in ["ligação atendida", "connected", "atendida"]:
                 continue
 
             if call_id in db:
@@ -99,9 +118,32 @@ def process_all_calls():
                     audio_url, 
                     headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
                 )
-                with urllib.request.urlopen(req, timeout=60) as response:
-                    audio_bytes = response.read()
+                
+                with urllib.request.urlopen(req, timeout=45) as response:
+                    content_length = response.getheader('Content-Length')
+                    if content_length and int(content_length) > 24 * 1024 * 1024:
+                        print(f"⚠️ Ignorado: Chamada {call_id} descartada por tamanho excessivo ({int(content_length) / 1024 / 1024:.1f}MB).")
+                        continue
+                    
+                    buffer = io.BytesIO()
+                    bytes_read = 0
+                    max_bytes = 24 * 1024 * 1024
+                    while True:
+                        chunk = response.read(1024 * 1024)
+                        if not chunk:
+                            break
+                        bytes_read += len(chunk)
+                        if bytes_read > max_bytes:
+                            break
+                        buffer.write(chunk)
+                    
+                    if bytes_read > max_bytes:
+                        print(f"⚠️ Ignorado: Chamada {call_id} descartada durante download por ultrapassar 24MB.")
+                        continue
+                    
+                    audio_bytes = buffer.getvalue()
 
+                # Transcrição Whisper
                 transcription = client.audio.transcriptions.create(
                     file=("audio.mp3", io.BytesIO(audio_bytes)),
                     model="whisper-large-v3",
@@ -110,17 +152,16 @@ def process_all_calls():
                 texto_ligacao = transcription.text
 
                 if len(texto_ligacao.strip()) < 10:
-                    print(f"Aviso: Áudio {call_id} sem fala detectada ou mudo. Ignorando.")
+                    print(f"Aviso: Áudio do ID {call_id} sem conteúdo de fala identificável. Ignorando.")
                     continue
 
                 prompt_sistema = (
                     f"{prompt_content}\n\n"
                     "REGRA CRÍTICA DO SISTEMA: Responda APENAS com um objeto JSON válido. "
-                    "Use exatamente esta estrutura: "
+                    "Use exatamente esta estrutura de chaves minúsculas: "
                     "{\"nota_spin\": 8.5, \"avaliacao\": \"texto\", \"sugestoes\": \"texto\"}"
                 )
 
-                # MODELO ATUALIZADO PARA LLAMA 3.3 DA LINHA PRINCIPAL DO GROQ
                 chat_completion = client.chat.completions.create(
                     model="llama-3.3-70b-versatile",
                     messages=[
@@ -131,13 +172,11 @@ def process_all_calls():
                     response_format={"type": "json_object"}
                 )
 
-                clean_text = clean_json_response(chat_completion.choices[0].message.content)
+                raw_content = chat_completion.choices[0].message.content
+                clean_text = clean_json_response(raw_content)
                 analysis_data = json.loads(clean_text)
                 
-                try:
-                    nota = float(analysis_data.get("nota_spin", 0))
-                except (ValueError, TypeError):
-                    nota = 0.0
+                nota = extract_score(analysis_data, clean_text)
 
                 db[call_id] = {
                     "id": call_id,
@@ -147,32 +186,34 @@ def process_all_calls():
                     "duracao": duration,
                     "audio_url": audio_url,
                     "nota_spin": nota,
-                    "avaliacao": analysis_data.get("avaliacao", "Análise sem detalhes."),
-                    "sugestoes": analysis_data.get("sugestoes", "Sem sugestões."),
+                    "avaliacao": analysis_data.get("avaliacao", "Análise processada."),
+                    "sugestoes": analysis_data.get("sugestoes", "Sem sugestões adicionais."),
                     "transcricao": texto_ligacao
                 }
                 
                 linhas_processadas += 1
                 
-                with open(CONSOLIDATED_FILE, 'w', encoding='utf-8') as sf:
+                # Salvamento Atômico Seguro
+                tmp_file = CONSOLIDATED_FILE + ".tmp"
+                with open(tmp_file, 'w', encoding='utf-8') as sf:
                     json.dump(db, sf, ensure_ascii=False, indent=4)
+                os.replace(tmp_file, CONSOLIDATED_FILE)
 
                 print(f"✅ Sucesso: Chamada {call_id} salva no JSON (Nota: {nota})")
                 time.sleep(3)
 
-            except json.JSONDecodeError:
-                print(f"Erro: Falha ao decodificar JSON da IA para o ID {call_id}.")
-                time.sleep(3)
-                continue
-            except URLError as e:
-                print(f"Erro de Rede: Falha ao baixar áudio do HubSpot para ID {call_id}. {e}")
-                continue
             except Exception as e:
-                print(f"Erro inesperado no ID {call_id}: {e}")
-                time.sleep(3)
-                continue
+                # INTEGRAÇÃO DE PREVENÇÃO CONTRA RATE LIMIT EXCEEDED (ERRO 429)
+                if "429" in str(e) or "rate_limit_exceeded" in str(e):
+                    print("\n🛑 ALERTA DO SISTEMA: Limite de tokens diários atingido na API do Groq!")
+                    print("Salvando o progresso atual com segurança e encerrando a execução.")
+                    break
+                else:
+                    print(f"Erro no processamento do ID {call_id}: {e}")
+                    time.sleep(3)
+                    continue
 
-    print(f"\n✅ EXECUÇÃO FINALIZADA: {linhas_processadas} novas chamadas gravadas com sucesso!")
+    print(f"\n✅ EXECUÇÃO CONCLUÍDA: {linhas_processadas} novas chamadas integradas com sucesso à base de dados.")
 
 if __name__ == "__main__":
     try:
