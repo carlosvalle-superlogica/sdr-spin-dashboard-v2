@@ -269,7 +269,7 @@
     </div>
 
     <div id="modal-sdr" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-opacity">
-        <div id="printable-dossier" class="bg-gray-900 border border-gray-800 w-full max-w-7xl rounded-2xl h-[95vh] flex flex-col shadow-2xl relative">
+        <div id="printable-dossier" class="bg-gray-900 w-full max-w-7xl rounded-2xl h-[95vh] flex flex-col shadow-2xl relative border border-gray-800">
             <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-[#111827] rounded-t-2xl flex-shrink-0 shadow-sm z-10">
                 <div>
                     <h2 id="modal-title" class="text-2xl font-extrabold text-white tracking-tight">Auditoria</h2>
@@ -367,11 +367,9 @@
                 return true;
             });
 
-            // Lógica de UI para a Tabela Segmentada de SDRs (Aba Equipe)
             const containerTabelaEquipe = document.getElementById('container-tabela-equipe');
             const tituloSDR = document.getElementById('titulo-tabela-equipe');
             
-            // Só mostra a tabela se um SDR especifico foi clicado
             if(sdrSel !== 'todos' && document.getElementById('tab-equipe').classList.contains('hidden') === false) {
                 containerTabelaEquipe.classList.remove('hidden');
                 tituloSDR.innerHTML = `<i class="fa-solid fa-list-check text-indigo-400"></i> Histórico Analisado: ${sdrSel}`;
@@ -402,7 +400,6 @@
             const sumO = dados.reduce((a,c)=>a+(parseFloat(c.nota_op)||0),0)/t;
             const sumW = dados.reduce((a,c)=>a+(parseFloat(c.wps)||0),0)/t;
             
-            // Urgências Críticas
             const listaCriticos = dados.filter(c => c.urgencia === "SIM").sort((a,b) => new Date(b.data.split(' ')[0]) - new Date(a.data.split(' ')[0]));
             
             document.getElementById('media-spin').innerText = sumS.toFixed(1);
@@ -410,7 +407,6 @@
             document.getElementById('media-wps').innerText = sumW.toFixed(2);
             document.getElementById('casos-criticos').innerText = listaCriticos.length;
 
-            // Renderiza Cards da Equipe (Apenas na aba Equipe SDR)
             const dictSDR = {};
             dados.forEach(c => { dictSDR[c.sdr] = dictSDR[c.sdr] || []; dictSDR[c.sdr].push(c); });
             const gridCards = document.getElementById('grid-cards-sdr');
@@ -437,7 +433,6 @@
                     </div>`;
             });
 
-            // Tabela Críticos (Visão Geral)
             tbCriticos.innerHTML = '';
             if(listaCriticos.length === 0) {
                 tbCriticos.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-emerald-500/80 font-medium">Nenhum alerta crítico no período! Excelente!</td></tr>`;
@@ -546,12 +541,18 @@
             document.getElementById('modal-title').innerText = `Auditoria: ${c.sdr}`;
             document.getElementById('modal-subtitle').innerText = `ID: ${c.id} | Produto: ${c.produto} | Duração: ${c.duracao}`;
             
-            // Injeção do Botão Gerar PDF na navbar do modal
+            // LIMPADOR DE URL: Extrai o ID do negócio caso haja formatação corrompida na base de dados
+            let safeUrl = c.deal_url;
+            if (safeUrl && safeUrl.includes('](')) {
+                const match = safeUrl.match(/deal\/(\d+)/);
+                safeUrl = match ? `https://app.hubspot.com/contacts/20131994/deal/${match[1]}/` : '';
+            }
+
             document.getElementById('modal-links').innerHTML = `
                 <button id="btn-gerar-pdf" onclick="exportarDossiePDF()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-2 rounded-lg transition font-bold shadow flex items-center gap-2">
                     <i class="fa-solid fa-file-pdf"></i> Gerar PDF
                 </button>
-                ${c.deal_url ? `<a href="${c.deal_url}" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-2 rounded-lg transition font-bold shadow flex items-center gap-2"><i class="fa-solid fa-briefcase"></i> Negócio</a>` : ''}
+                ${safeUrl ? `<a href="${safeUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-2 rounded-lg transition font-bold shadow flex items-center gap-2"><i class="fa-solid fa-briefcase"></i> Negócio</a>` : ''}
                 <a href="${c.audio_url}" target="_blank" class="bg-[#ff7a59] hover:bg-[#ff8f73] text-white text-xs px-3 py-2 rounded-lg transition font-bold shadow flex items-center gap-2"><i class="fa-solid fa-headphones"></i> Gravação</a>
             `;
 
@@ -575,21 +576,21 @@
 
             document.getElementById('modal-tecnico').innerHTML = `
                 <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div class="bg-indigo-950/20 border border-indigo-900/30 p-4 rounded-xl text-center shadow-inner">
+                    <div class="bg-indigo-950/20 border border-indigo-900/30 p-4 rounded-xl text-center shadow-inner pdf-no-break">
                         <span class="text-[10px] font-black tracking-widest text-indigo-400 uppercase block mb-1">Aderência SPIN</span>
                         <span class="text-3xl font-black text-white">${parseFloat(c.nota_spin||0).toFixed(1)}</span>
                     </div>
-                    <div class="bg-purple-950/20 border border-purple-900/30 p-4 rounded-xl text-center shadow-inner">
+                    <div class="bg-purple-950/20 border border-purple-900/30 p-4 rounded-xl text-center shadow-inner pdf-no-break">
                         <span class="text-[10px] font-black tracking-widest text-purple-400 uppercase block mb-1">Conformidade</span>
                         <span class="text-3xl font-black text-white">${parseFloat(c.nota_op||0).toFixed(1)}</span>
                     </div>
-                    <div class="bg-emerald-950/20 border border-emerald-900/30 p-4 rounded-xl text-center shadow-inner">
+                    <div class="bg-emerald-950/20 border border-emerald-900/30 p-4 rounded-xl text-center shadow-inner pdf-no-break">
                         <span class="text-[10px] font-black tracking-widest text-emerald-400 uppercase block mb-1">Ritmo (WPS)</span>
                         <span class="text-3xl font-black text-white">${parseFloat(c.wps||0).toFixed(2)}</span>
                     </div>
                 </div>
                 
-                <div class="bg-gray-800/40 border border-gray-700/60 rounded-xl p-6 mb-6 relative overflow-hidden border-l-4 border-indigo-500">
+                <div class="bg-gray-800/40 border border-gray-700/60 rounded-xl p-6 mb-6 relative overflow-hidden border-l-4 border-indigo-500 pdf-no-break">
                     <h4 class="text-xs font-black text-white uppercase tracking-widest flex items-center gap-2 mb-4 border-b border-gray-700 pb-3">
                         <i class="fa-solid fa-gavel text-indigo-400 text-lg"></i> Relatório de Enablement Multiagente
                     </h4>
@@ -598,7 +599,7 @@
                     </div>
                 </div>
                 
-                <div class="bg-rose-950/20 border border-rose-900/40 rounded-xl p-6 mb-6 relative overflow-hidden border-l-4 border-rose-500">
+                <div class="bg-rose-950/20 border border-rose-900/40 rounded-xl p-6 mb-6 relative overflow-hidden border-l-4 border-rose-500 pdf-no-break">
                     <h4 class="text-xs font-black text-rose-300 uppercase tracking-widest flex items-center gap-2 mb-4 border-b border-rose-900/50 pb-3">
                         <i class="fa-solid fa-bullseye text-rose-500 text-lg"></i> Próximos Passos de Treinamento
                     </h4>
@@ -607,31 +608,37 @@
                     </div>
                 </div>
                 
-                <div class="space-y-3 mt-8 pt-4 border-t border-gray-800">
+                <div class="space-y-3 mt-8 pt-4 border-t border-gray-800 pdf-no-break">
                     <h4 class="text-[10px] font-black text-gray-600 uppercase tracking-widest flex items-center gap-2 mb-4">
                         <i class="fa-solid fa-file-lines"></i> Transcrição da Chamada
                     </h4>
-                    <div class="bg-gray-900/50 border border-gray-800 p-5 rounded-xl text-[11px] text-gray-500 h-56 overflow-y-auto custom-scrollbar leading-relaxed whitespace-pre-line">${c.transcricao}</div>
+                    <div id="box-transcricao" class="bg-gray-900/50 border border-gray-800 p-5 rounded-xl text-[11px] text-gray-500 h-56 overflow-y-auto custom-scrollbar leading-relaxed whitespace-pre-line">${c.transcricao}</div>
                 </div>
             `;
 
             document.getElementById('modal-sdr').classList.remove('hidden');
         }
 
-        // Função Genial para exportar o PDF sem cortar os textos do Modal
         function exportarDossiePDF() {
             const btn = document.getElementById('btn-gerar-pdf');
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Gerando...';
 
-            // 1. Clona o modal inteiro invisivelmente
             const element = document.getElementById('printable-dossier').cloneNode(true);
             
-            // 2. Remove restrições de barra de rolagem para que todo o texto seja impresso
+            // Ajustes cirúrgicos para o PDF não cortar as laterais
             element.style.height = 'auto';
             element.style.overflow = 'visible';
-            element.style.width = '1400px'; // Força largura ideal para folha A4 paisagem
+            element.style.width = '1200px'; 
+            
+            // Fim da Guilhotina Cega: Evita quebra de página no meio das caixas
+            const avoidBreaks = element.querySelectorAll('.bg-gray-900\\/50, .pdf-no-break');
+            avoidBreaks.forEach(el => {
+                el.style.pageBreakInside = 'avoid';
+                el.style.breakInside = 'avoid';
+            });
 
+            // Libera as caixas de scroll para mostrarem todo o conteúdo
             const bodyScroll = element.querySelector('#modal-body-scroll');
             if(bodyScroll) { bodyScroll.style.overflow = 'visible'; bodyScroll.style.height = 'auto'; }
             
@@ -641,20 +648,19 @@
             const tecnico = element.querySelector('#modal-tecnico');
             if(tecnico) { tecnico.style.overflow = 'visible'; tecnico.style.height = 'auto'; }
 
-            // Expandir a caixa de transcrição para mostrar todo o texto
-            const transcricaoBox = element.querySelector('.h-56');
+            const transcricaoBox = element.querySelector('#box-transcricao');
             if(transcricaoBox) {
                 transcricaoBox.classList.remove('h-56', 'overflow-y-auto');
                 transcricaoBox.style.height = 'auto';
+                transcricaoBox.style.overflow = 'visible';
             }
 
-            // 3. Esconde os botões que não devem ir para o PDF
+            // Remove botões de navegação
             const linksContainer = element.querySelector('#modal-links');
             if(linksContainer) linksContainer.style.display = 'none';
             const closeBtn = element.querySelector('#btn-close-modal');
             if(closeBtn) closeBtn.style.display = 'none';
 
-            // 4. Cria um conteiner invisível no HTML para hospedar o clone temporariamente
             const wrapper = document.createElement('div');
             wrapper.style.position = 'absolute';
             wrapper.style.top = '-9999px';
@@ -664,16 +670,15 @@
 
             const sdrName = document.getElementById('modal-title').innerText.replace('Auditoria: ', '');
 
-            // 5. Configurações de Qualidade e Formato Paisagem (Landscape) do PDF
+            // Força a janela do conversor a ter a mesma largura (1200px) do documento clone
             const opt = {
-                margin:       [10, 10, 10, 10],
+                margin:       [5, 5, 5, 5],
                 filename:     `Auditoria_SDR_${sdrName.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                html2canvas:  { scale: 2, useCORS: true, windowWidth: 1200 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
             };
 
-            // 6. Gera, baixa e limpa a sujeira!
             html2pdf().set(opt).from(element).save().then(() => {
                 document.body.removeChild(wrapper);
                 btn.innerHTML = originalText;
