@@ -1,12 +1,9 @@
 name: Executar Auditoria de SDRs
 
 on:
-  push:
-    paths:
-      - 'dados_chamadas.csv' # O robô acorda automaticamente ao ver um novo CSV
-  workflow_dispatch: # Permite que você force o robô a rodar manualmente pelo botão
+  workflow_dispatch:
 
-# PERMISSÃO OBRIGATÓRIA: Autoriza o robô a salvar arquivos novos no repositório
+# Permissão obrigatória para o robô poder salvar os arquivos de volta no repositório
 permissions:
   contents: write
 
@@ -15,33 +12,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 1. Baixar o código do repositório
-      uses: actions/checkout@v4
+      - name: Checkout codigo
+        uses: actions/checkout@v4
 
-    - name: 2. Configurar o Python na Máquina Virtual
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-    - name: 3. Instalar a biblioteca da Inteligência Artificial do Google
-      run: |
-        python -m pip install --upgrade pip
-        pip install google-generativeai
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: 4. Executar o Script de Análise das Chamadas
-      env:
-        # CORREÇÃO: Formato exato que o GitHub exige para ler o cofre
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }} 
-      run: python process_calls.py
+      - name: Executar script de analise
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: python process_calls.py
 
-    - name: 5. Guardar as novas análises e histórico de forma automática
-      run: |
-        git config --global user.name "Robo Auditor de SDR"
-        git config --global user.email "actions@github.com"
-        
-        # Adiciona a pasta e o arquivo consolidado (não trava se for o 1º uso)
-        git add analises_salvas/ || true
-        git add consolidated_data.json || true
-        
-        # Confere se há novidades; se houver, comita e salva no repositório [skip ci] evita loop infinito
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Automação: Novas análises salvas no histórico [skip ci]" && git push)
+      - name: Salvar e Atualizar Banco de Dados
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Robô"
+          
+          # Adiciona a pasta de análises e o arquivo consolidado
+          git add analises_salvas/ consolidated_data.json || true
+          
+          # Salva as alterações (se houver alguma novidade)
+          git commit -m "🤖 Atualização Automática: Novas análises de ligações" || echo "Nenhuma nova ligação para salvar"
+          
+          # Empurra os arquivos atualizados para o seu repositório
+          git push
