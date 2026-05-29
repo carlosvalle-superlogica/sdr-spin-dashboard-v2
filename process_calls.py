@@ -1,12 +1,11 @@
 import os
 import csv
 import json
+import time
 import urllib.request
 import io
-import time
 import traceback
-from urllib.error import URLError, HTTPError
-from datetime import datetime
+from urllib.error import URLError
 from groq import Groq
 
 # ==========================================
@@ -14,53 +13,24 @@ from groq import Groq
 # ==========================================
 GROQ_KEY = os.environ.get("GROQ_API_KEY")
 if not GROQ_KEY:
-    raise ValueError("ERRO CRÍTICO: GROQ_API_KEY não encontrada nos Secrets do GitHub! Verifique o nome cadastrado.")
+    raise ValueError("ERRO CRÍTICO: GROQ_API_KEY não encontrada nos Secrets do GitHub!")
 
-# Inicializa o cliente do Groq
 client = Groq(api_key=GROQ_KEY)
 
-# Lista de possíveis nomes para o arquivo para evitar erro de extensão dupla
-CSV_CANDIDATES = ["dados_chamadas.csv", "dados_chamadas.csv.csv"]
+CSV_FILE = "dados_chamadas.csv"
 PROMPT_FILE = "evaluation_prompt.txt"
-ANALYSES_DIR = "analises_salvas"
 CONSOLIDATED_FILE = "consolidated_data.json"
 
 # ==========================================
 # 2. FUNÇÕES AUXILIARES
 # ==========================================
 def load_prompt():
-    with open(PROMPT_FILE, 'r', encoding='utf-8') as f:
-        return f.read()
-
-def ensure_directories():
-    os.makedirs(ANALYSES_DIR, exist_ok=True)
-
-def parse_date_to_year_month(date_str):
-    if not date_str:
-        return None, None
     try:
-        clean_date = date_str.split()[0].replace('/', '-')
-        parts = clean_date.split('-')
-        
-        # Garante que a data tem dia, mês e ano antes de tentar converter
-        if len(parts) == 3:
-            if len(parts[0]) == 4: # Formato: YYYY-MM-DD
-                dt = datetime.strptime(clean_date, "%Y-%m-%d")
-            else: # Formato: DD-MM-YYYY
-                dt = datetime.strptime(clean_date, "%d-%m-%Y")
-        else:
-            return None, None
-        
-        year = str(dt.year)
-        month_names = [
-            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", 
-            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-        ]
-        month = month_names[dt.month - 1]
-        return year, month
+        with open(PROMPT_FILE, 'r', encoding='utf-8') as f:
+            return f.read()
     except Exception as e:
-        print(f"Aviso: Falha ao converter a data '{date_str}': {e}")
-        return None, None
+        print(f"Aviso: Arquivo de prompt não encontrado. Usando prompt padrão. Erro: {e}")
+        return "Atue como auditor de SPIN Selling e avalie esta transcrição."
 
 def clean_json_response(text):
     text = text.strip()
@@ -73,136 +43,142 @@ def clean_json_response(text):
     return text.strip()
 
 # ==========================================
-# 3. NÚCLEO DE PROCESSAMENTO
+# 3. NÚCLEO DE PROCESSAMENTO BLINDADO
 # ==========================================
 def process_all_calls():
-    ensure_directories()
-
-    # Encontra qual arquivo de dados está presente
-    target_csv = None
-    for candidate in CSV_CANDIDATES:
-        if os.path.exists(candidate):
-            target_csv = candidate
-            break
-
-    if not target_csv:
-        print(f"Aviso: Nenhum arquivo CSV válido encontrado ({CSV_CANDIDATES}). Encerrando.")
+    if not os.path.exists(CSV_FILE):
+        print(f"Erro: Arquivo {CSV_FILE} não encontrado!")
         return
 
-    print(f"✅ Arquivo de dados encontrado: {target_csv}")
+    print(f"✅ Arquivo de dados encontrado: {CSV_FILE}")
     prompt_content = load_prompt()
     
+    # Carrega base de dados com segurança
+    db = {}
     if os.path.exists(CONSOLIDATED_FILE):
-        with open(CONSOLIDATED_FILE, 'r', encoding='utf-8') as f:
-            db = json.load(f)
-    else:
-        db = {}
+        try:
+            with open(CONSOLIDATED_FILE, 'r', encoding='utf-8') as f:
+                db = json.load(f)
+        except json.JSONDecodeError:
+            print("Aviso: O arquivo JSON atual estava corrompido. Iniciando um novo.")
+            db = {}
 
-    with open(target_csv, mode='r', encoding='utf-8-sig') as f:
-        reader = csv.DictReader(f)
+    with open(CSV_FILE, mode='r', encoding='utf-8-sig') as f:
+        reader = csv.DictReader(f, delimiter=';')
         
+        linhas_processadas = 0
         for row in reader:
-            # Mapeamento de colunas (HubSpot PT/EN)
-            call_id = row.get("Object ID") or row.get("ID do objeto")
-            sdr_name = row.get("Activity assigned to") or row.get("Atividade atribuída a") or "SDR Não Identificado"
-            date_str = row.get("Activity date") or row.get("Data da atividade")
-            audio_url = row.get("Call recording URL") or row.get("URL de gravação")
-            result = row.get("Call outcome") or row.get("Resultado da chamada")
+            call_id = row.get("ID do objeto")
+            sdr_name = row.get("Atividade atribuída a") or "SDR Não Identificado"
+            date_str = row.get("Data da atividade") or "Data Indisponível"
+            audio_url = row.get("URL de gravação")
+            result = row.get("Resultado da chamada")
+            duration = row.get("Duração da chamada (HH:mm:ss)") or "00:00"
+            title = row.get("Título da chamada") or "Chamada de Vendas"
 
-            if not call_id or not audio_url:
+            # Filtros rígidos
+            if not call_id or not audio_url or not audio_url.startswith("http"):
                 continue
             
-            if result not in ["Connected", "Ligação atendida", "Atendida"]:
+            if result not in ["Ligação atendida", "Connected", "Atendida"]:
                 continue
 
-            year, month = parse_date_to_year_month(date_str)
-            if not year or not month:
+            # Bypass se já estiver analisado
+            if call_id in db:
                 continue
 
-            saved_analysis_path = os.path.join(ANALYSES_DIR, f"{call_id}.json")
-            analysis_data = None
+            print(f"-> [NOVA] Analisando ID {call_id} | SDR: {sdr_name}...")
+            
+            try:
+                # Tratamento de Timeout na extração do áudio (HubSpot)
+                req = urllib.request.Request(
+                    audio_url, 
+                    headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
+                )
+                with urllib.request.urlopen(req, timeout=60) as response:
+                    audio_bytes = response.read()
 
-            if os.path.exists(saved_analysis_path):
-                print(f"-> [CACHE] Ligação {call_id} já analisada.")
-                try:
-                    with open(saved_analysis_path, 'r', encoding='utf-8') as sf:
-                        analysis_data = json.load(sf)
-                except Exception:
+                # Etapa 1: Transcrição Whisper
+                transcription = client.audio.transcriptions.create(
+                    file=("audio.mp3", io.BytesIO(audio_bytes)),
+                    model="whisper-large-v3",
+                    response_format="json"
+                )
+                texto_ligacao = transcription.text
+
+                # Prevenção: Áudios vazios ou mudos
+                if len(texto_ligacao.strip()) < 10:
+                    print(f"Aviso: Áudio {call_id} muito curto ou sem fala. Ignorando.")
                     continue
-            else:
-                print(f"-> [NOVA] Analisando ID {call_id} | SDR: {sdr_name}...")
+
+                # Etapa 2: Auditoria SPIN (Modo JSON Forçado para evitar quebras)
+                prompt_sistema = (
+                    f"{prompt_content}\n\n"
+                    "REGRA CRÍTICA DO SISTEMA: Responda APENAS com um objeto JSON válido. "
+                    "Use exatamente esta estrutura: "
+                    "{\"nota_spin\": 8.5, \"avaliacao\": \"texto\", \"sugestoes\": \"texto\"}"
+                )
+
+                chat_completion = client.chat.completions.create(
+                    model="llama3-70b-8192",
+                    messages=[
+                        {"role": "system", "content": prompt_sistema},
+                        {"role": "user", "content": f"Transcrição:\n\n{texto_ligacao}"}
+                    ],
+                    temperature=0.2,
+                    response_format={"type": "json_object"} # Trava de segurança de API
+                )
+
+                clean_text = clean_json_response(chat_completion.choices[0].message.content)
+                analysis_data = json.loads(clean_text)
                 
+                # Conversão segura da nota
                 try:
-                    req = urllib.request.Request(
-                        audio_url, 
-                        headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'}
-                    )
-                    with urllib.request.urlopen(req, timeout=45) as response:
-                        audio_bytes = response.read()
+                    nota = float(analysis_data.get("nota_spin", 0))
+                except (ValueError, TypeError):
+                    nota = 0.0
 
-                    # ETAPA 1: Transcrição via Whisper usando um arquivo virtual na memória (io.BytesIO)
-                    transcription = client.audio.transcriptions.create(
-                        file=("audio.mp3", io.BytesIO(audio_bytes)),
-                        model="whisper-large-v3",
-                        response_format="json"
-                    )
-                    texto_ligacao = transcription.text
-
-                    # ETAPA 2: Análise Comercial via Llama 3
-                    chat_completion = client.chat.completions.create(
-                        model="llama3-70b-8192",
-                        messages=[
-                            {
-                                "role": "system", 
-                                "content": f"{prompt_content}\n\nIMPORTANTE: Retorne APENAS um objeto JSON válido. Não inclua textos explicativos antes ou depois."
-                            },
-                            {
-                                "role": "user", 
-                                "content": f"Analise a seguinte transcrição da ligação:\n\n{texto_ligacao}"
-                            }
-                        ],
-                        temperature=0.3
-                    )
-
-                    clean_text = clean_json_response(chat_completion.choices[0].message.content)
-                    analysis_data = json.loads(clean_text)
-                    
-                    with open(saved_analysis_path, 'w', encoding='utf-8') as sf:
-                        json.dump(analysis_data, sf, ensure_ascii=False, indent=2)
-                    
-                    # Pausa de segurança de 3 segundos para evitar bloqueio da API gratuita do Groq
-                    print("Análise salva. Pausando 3 segundos para respeitar limite da API...")
-                    time.sleep(3)
-
-                except Exception as e:
-                    print(f"Erro no processamento da chamada {call_id}: {e}")
-                    continue
-
-            if analysis_data:
-                if year not in db: db[year] = {}
-                if month not in db[year]: db[year][month] = {}
-                if sdr_name not in db[year][month]: db[year][month][sdr_name] = []
-
-                call_entry = {
-                    "id_registro": call_id,
-                    "data_atividade": date_str,
-                    "titulo": row.get("Call title") or row.get("Título da chamada", "Chamada de Vendas"),
-                    "duracao": row.get("Call duration") or row.get("Duração da chamada (HH:mm:ss)", "00:00"),
-                    "analise": analysis_data
+                # Gravação no Banco de Dados
+                db[call_id] = {
+                    "id": call_id,
+                    "sdr": sdr_name,
+                    "data": date_str,
+                    "titulo": title,
+                    "duracao": duration,
+                    "audio_url": audio_url,
+                    "nota_spin": nota,
+                    "avaliacao": analysis_data.get("avaliacao", "Análise não retornou detalhes."),
+                    "sugestoes": analysis_data.get("sugestoes", "Sem sugestões."),
+                    "transcricao": texto_ligacao
                 }
                 
-                if not any(item["id_registro"] == call_id for item in db[year][month][sdr_name]):
-                    db[year][month][sdr_name].append(call_entry)
+                linhas_processadas += 1
+                
+                # Save contínuo (se cair a meio, não perde nada)
+                with open(CONSOLIDATED_FILE, 'w', encoding='utf-8') as sf:
+                    json.dump(db, sf, ensure_ascii=False, indent=4)
 
-    with open(CONSOLIDATED_FILE, 'w', encoding='utf-8') as f:
-        json.dump(db, f, ensure_ascii=False, indent=2)
-    
-    print("\n✅ SUCESSO: Banco de dados consolidado atualizado!")
+                print(f"✅ Chamada {call_id} analisada (Nota: {nota})")
+                time.sleep(3)
+
+            except json.JSONDecodeError:
+                print(f"Erro: O Groq não devolveu um JSON válido para o ID {call_id}.")
+                time.sleep(3)
+                continue
+            except URLError as e:
+                print(f"Erro de Rede: Falha ao baixar o áudio {call_id} do HubSpot. {e}")
+                continue
+            except Exception as e:
+                print(f"Erro inesperado no processamento do ID {call_id}: {e}")
+                time.sleep(3)
+                continue
+
+    print(f"\n✅ FIM: {linhas_processadas} chamadas foram processadas e salvas com segurança!")
 
 if __name__ == "__main__":
     try:
         process_all_calls()
     except Exception as erro_critico:
-        print("\n❌ OCORREU UM ERRO CRÍTICO INDISPONÍVEL NO FLUXO PRINCIPAL:")
+        print("\n❌ ERRO CRÍTICO NO FLUXO PRINCIPAL:")
         traceback.print_exc()
         exit(1)
