@@ -5,125 +5,182 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SDR Auditor - Inteligência de Vendas</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { background-color: #0b0f19; color: #f3f4f6; font-family: 'Inter', sans-serif; }
         .sidebar-active { background: linear-gradient(90deg, rgba(99,102,241,0.15) 0%, rgba(99,102,241,0) 100%); border-left: 4px solid #6366f1; color: #ffffff; }
         .card-dark { background-color: #111827; border: 1px solid #1f2937; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: #111827; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #4b5563; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
 
-    <div class="w-64 card-dark h-full flex flex-col justify-between p-4 border-r border-gray-800">
+    <div class="w-64 card-dark h-full flex flex-col justify-between p-4 border-r border-gray-800 flex-shrink-0">
         <div>
             <div class="flex items-center gap-3 px-2 py-4 border-b border-gray-800 mb-6">
-                <div class="bg-indigo-600 p-2 rounded-lg text-white font-bold text-xl flex items-center justify-center w-10 h-10">S</div>
-                <span class="text-lg font-bold tracking-wide text-white">SDR Auditor</span>
+                <div class="bg-gradient-to-tr from-indigo-600 to-violet-500 p-2 rounded-xl text-white font-black text-xl flex items-center justify-center w-10 h-10 shadow-lg shadow-indigo-500/20">S</div>
+                <div>
+                    <span class="text-lg font-bold tracking-wide text-white block leading-none">SDR Auditor</span>
+                    <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mt-1 block">Métricas Hubspot</span>
+                </div>
             </div>
             <nav class="space-y-1">
-                <button onclick="switchTab('geral')" id="menu-geral" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition sidebar-active">
-                    <i class="fa-solid fa-chart-pie w-5"></i> Visão Geral
+                <button onclick="switchTab('geral')" id="menu-geral" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium text-sm sidebar-active">
+                    <i class="fa-solid fa-chart-pie w-5 text-base"></i> Visão Geral
                 </button>
-                <button onclick="switchTab('equipe')" id="menu-equipe" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition">
-                    <i class="fa-solid fa-users w-5"></i> Equipe SDR
+                <button onclick="switchTab('dash')" id="menu-dash" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium text-sm">
+                    <i class="fa-solid fa-chart-radar w-5 text-base"></i> Análise de Teia
                 </button>
-                <button onclick="switchTab('auditorias')" id="menu-auditorias" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition">
-                    <i class="fa-solid fa-phone-volume w-5"></i> Auditorias
+                <button onclick="switchTab('equipe')" id="menu-equipe" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium text-sm">
+                    <i class="fa-solid fa-users w-5 text-base"></i> Equipe SDR
                 </button>
-                <button onclick="switchTab('playbooks')" id="menu-playbooks" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition">
-                    <i class="fa-solid fa-book-open w-5"></i> Playbooks
+                <button onclick="switchTab('auditorias')" id="menu-auditorias" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium text-sm">
+                    <i class="fa-solid fa-phone-volume w-5 text-base"></i> Histórico Completo
+                </button>
+                <button onclick="switchTab('playbooks')" id="menu-playbooks" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium text-sm">
+                    <i class="fa-solid fa-book-open w-5 text-base"></i> Playbooks SPIN
                 </button>
             </nav>
         </div>
-        <div class="text-xs text-gray-500 border-t border-gray-800 pt-4 text-center">
-            SDR Audit System v1.2<br><span class="text-indigo-400">Google Workspace</span>
+        <div class="text-[10px] text-gray-600 border-t border-gray-800 pt-4 text-center font-bold uppercase tracking-wider">
+            SDR Audit System v2.1
         </div>
     </div>
 
     <div class="flex-1 flex flex-col overflow-y-auto p-8 custom-scrollbar">
         
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex justify-between items-center mb-6 flex-shrink-0">
             <div>
-                <h1 id="page-title" class="text-3xl font-bold text-white">Visão Geral</h1>
-                <p id="page-subtitle" class="text-sm text-gray-400 mt-1">Consolidação do processo de vendas corporativo.</p>
+                <h1 id="page-title" class="text-3xl font-extrabold text-white tracking-tight">Visão Geral</h1>
+                <p id="page-subtitle" class="text-sm text-gray-400 mt-1">Consolidação e auditoria automatizada do processo comercial.</p>
             </div>
-            <div class="bg-indigo-950 text-indigo-400 border border-indigo-800 px-4 py-1.5 rounded-full text-xs font-semibold flex items-center gap-2">
-                <span class="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></span> Painel Ativo
+            <div class="bg-indigo-950 text-indigo-400 border border-indigo-900/60 px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-2 shadow-inner">
+                <span class="w-2 h-2 bg-indigo-400 rounded-full animate-pulse"></span> Banco de Dados Sincronizado
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 card-dark p-4 rounded-xl mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 card-dark p-4 rounded-xl mb-8 flex-shrink-0 shadow-md">
             <div>
-                <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold block mb-1.5">Ano</label>
-                <select id="filter-ano" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-300 rounded-lg p-2 text-sm focus:border-indigo-500 focus:outline-none">
+                <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold block mb-1.5">Filtrar por Ano</label>
+                <select id="filter-ano" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-300 rounded-lg p-2.5 text-sm focus:border-indigo-500 focus:outline-none transition">
                     <option value="todos">Todos os anos</option>
                 </select>
             </div>
             <div>
-                <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold block mb-1.5">Mês</label>
-                <select id="filter-mes" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-300 rounded-lg p-2 text-sm focus:border-indigo-500 focus:outline-none">
+                <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold block mb-1.5">Filtrar por Mês</label>
+                <select id="filter-mes" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-300 rounded-lg p-2.5 text-sm focus:border-indigo-500 focus:outline-none transition">
                     <option value="todos">Todos os meses</option>
                 </select>
             </div>
             <div>
                 <label class="text-[10px] uppercase tracking-wider text-gray-500 font-bold block mb-1.5">SDR Analisado</label>
-                <select id="filter-sdr" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-300 rounded-lg p-2 text-sm focus:border-indigo-500 focus:outline-none">
-                    <option value="todos">Todos os SDRs</option>
+                <select id="filter-sdr" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-800 text-gray-300 rounded-lg p-2.5 text-sm focus:border-indigo-500 focus:outline-none transition">
+                    <option value="todos">Todos os SDRs da Equipe</option>
                 </select>
             </div>
         </div>
 
         <div id="tab-geral" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="card-dark p-6 rounded-xl shadow-lg">
-                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider">Nota Média Geral</span>
-                    <h2 id="media-geral" class="text-4xl font-extrabold text-white mt-2">0.0</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="card-dark p-6 rounded-xl shadow-lg relative overflow-hidden group">
+                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider block">Média Geral</span>
+                    <h2 id="media-geral" class="text-4xl font-black text-white mt-2">0.0</h2>
+                    <div class="absolute right-4 bottom-4 text-gray-800 text-3xl font-black group-hover:text-indigo-950 transition duration-300"><i class="fa-solid fa-star"></i></div>
                 </div>
-                <div class="card-dark p-6 rounded-xl shadow-lg">
-                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider">Total de Ligações</span>
-                    <h2 id="total-ligacoes" class="text-4xl font-extrabold text-indigo-400 mt-2">0</h2>
+                <div class="card-dark p-6 rounded-xl shadow-lg relative overflow-hidden group">
+                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider block">Ligações Auditadas</span>
+                    <h2 id="total-ligacoes" class="text-4xl font-black text-indigo-400 mt-2">0</h2>
+                    <div class="absolute right-4 bottom-4 text-gray-800 text-3xl font-black group-hover:text-indigo-950 transition duration-300"><i class="fa-solid fa-phone"></i></div>
                 </div>
-                <div class="card-dark p-6 rounded-xl shadow-lg">
-                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider">Atenção Crítica (&lt; 6)</span>
-                    <h2 id="casos-criticos" class="text-4xl font-extrabold text-rose-500 mt-2">0</h2>
+                <div class="card-dark p-6 rounded-xl shadow-lg relative overflow-hidden group">
+                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider block">Atenção Crítica (&lt; 6.0)</span>
+                    <h2 id="casos-criticos" class="text-4xl font-black text-rose-500 mt-2">0</h2>
+                    <div class="absolute right-4 bottom-4 text-gray-800 text-3xl font-black group-hover:text-rose-950 transition duration-300"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                </div>
+                <div class="card-dark p-6 rounded-xl shadow-lg relative overflow-hidden group">
+                    <span class="text-xs uppercase text-gray-400 font-semibold tracking-wider block">Aproveitamento SPIN</span>
+                    <h2 id="taxa-aproveitamento" class="text-4xl font-black text-emerald-400 mt-2">0%</h2>
+                    <div class="absolute right-4 bottom-4 text-gray-800 text-3xl font-black group-hover:text-emerald-950 transition duration-300"><i class="fa-solid fa-bullseye"></i></div>
                 </div>
             </div>
             
             <div class="card-dark p-6 rounded-xl">
-                <h3 class="text-lg font-bold text-white mb-4">Casos Críticos Recentes</h3>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2"><i class="fa-solid fa-fire text-rose-500"></i> Alertas de Desempenho (Ordem Crítica)</h3>
+                    <span class="text-xs text-gray-400 font-medium">Contatos que necessitam de feedback imediato</span>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="border-b border-gray-800 text-gray-400 text-sm">
+                            <tr class="border-b border-gray-800 text-gray-400 text-xs font-bold uppercase tracking-wider">
                                 <th class="pb-3">SDR</th>
                                 <th class="pb-3">Data da Atividade</th>
                                 <th class="pb-3">Duração</th>
-                                <th class="pb-3">Nota SPIN</th>
-                                <th class="pb-3 text-right">Ação</th>
+                                <th class="pb-3">Nota Global</th>
+                                <th class="pb-3 text-right">Análise</th>
                             </tr>
                         </thead>
                         <tbody id="tabela-criticos" class="text-sm divide-y divide-gray-800">
-                            <tr><td colspan="5" class="py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>
+                            <tr><td colspan="5" class="py-6 text-center text-gray-500">Nenhum registro encontrado.</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <div id="tab-equipe" class="hidden grid grid-cols-1 md:grid-cols-3 gap-6 items-start"></div>
+        <div id="tab-dash" class="hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 card-dark p-6 rounded-xl flex flex-col items-center justify-center min-h-[440px] shadow-lg">
+                    <h3 class="text-base font-bold text-white mb-6 self-start flex items-center gap-2"><i class="fa-solid fa-chart-radar text-indigo-400"></i> Mapeamento de Competências SPIN Selling</h3>
+                    <div class="w-full max-w-[340px] flex-1 flex items-center justify-center">
+                        <canvas id="spiderChart"></canvas>
+                    </div>
+                </div>
+                <div class="card-dark p-6 rounded-xl space-y-4 flex flex-col justify-center shadow-lg">
+                    <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-heart-pulse"></i> Raio-X Operacional</h4>
+                    <p class="text-xs text-gray-400 leading-relaxed">O gráfico de radar ao lado consolida as subnotas estruturais de cada pilar do método aplicadas nas ligações filtradas. Isso permite identificar em qual quadrante o time está falhando.</p>
+                    
+                    <div class="space-y-3 text-xs border-t border-gray-800 pt-4">
+                        <div class="p-2.5 rounded-lg bg-gray-900/50 border border-gray-800">
+                            <span class="font-bold text-white block">S - Situação (<span id="radar-val-s">0.0</span>)</span>
+                            <span class="text-gray-500 text-[11px] block mt-0.5">Capacidade de entender o cenário e contexto do lead.</span>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-gray-900/50 border border-gray-800">
+                            <span class="font-bold text-white block">P - Problema (<span id="radar-val-p">0.0</span>)</span>
+                            <span class="text-gray-500 text-[11px] block mt-0.5">Habilidade em investigar e expor as dores latentes.</span>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-gray-900/50 border border-gray-800">
+                            <span class="font-bold text-white block">I - Implicação (<span id="radar-val-i">0.0</span>)</span>
+                            <span class="text-gray-500 text-[11px] block mt-0.5">Mostrar as consequências de não resolver o problema.</span>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-gray-900/50 border border-gray-800">
+                            <span class="font-bold text-white block">N - Necessidade de Solução (<span id="radar-val-n">0.0</span>)</span>
+                            <span class="text-gray-500 text-[11px] block mt-0.5">Fazer o lead declarar o valor e fechar o agendamento.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div id="tab-auditorias" class="hidden card-dark p-6 rounded-xl">
-            <h3 class="text-lg font-bold text-white mb-4">Histórico Completo de Ligações Auditadas</h3>
+        <div id="tab-equipe" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start"></div>
+
+        <div id="tab-auditorias" class="hidden card-dark p-6 rounded-xl shadow-lg">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-list-check text-gray-400"></i> Todas as Chamadas Processadas pela IA</h3>
+                <span class="text-xs text-gray-500 font-semibold" id="contador-historico">0 registros carregados</span>
+            </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="border-b border-gray-800 text-gray-400 text-sm">
+                        <tr class="border-b border-gray-800 text-gray-400 text-xs font-bold uppercase tracking-wider">
                             <th class="pb-3">SDR</th>
                             <th class="pb-3">Data</th>
-                            <th class="pb-3">Título do Contato</th>
+                            <th class="pb-3">Título da Chamada</th>
                             <th class="pb-3">Duração</th>
                             <th class="pb-3">Nota</th>
                             <th class="pb-3 text-right">Ação</th>
@@ -135,50 +192,71 @@
         </div>
 
         <div id="tab-playbooks" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="card-dark p-6 rounded-xl">
-                <h3 class="text-xl font-bold text-indigo-400 mb-2">Estrutura SPIN Selling</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Mapeamento operacional das perguntas executadas nas ligações auditadas pela Inteligência Artificial.</p>
-                <div class="mt-4 space-y-3 text-sm">
-                    <div class="p-3 bg-gray-900/50 border border-gray-800 rounded-lg"><strong class="text-white">S - Situação:</strong> Entendimento do cenário atual do lead.</div>
-                    <div class="p-3 bg-gray-900/50 border border-gray-800 rounded-lg"><strong class="text-white">P - Problema:</strong> Investigação de dores e insatisfações.</div>
-                    <div class="p-3 bg-gray-900/50 border border-gray-800 rounded-lg"><strong class="text-white">I - Implicação:</strong> Impacto negativo de não resolver a dor.</div>
-                    <div class="p-3 bg-gray-900/50 border border-gray-800 rounded-lg"><strong class="text-white">N - Necessidade:</strong> O valor e benefício da solução proposta.</div>
+            <div class="card-dark p-6 rounded-xl shadow-md">
+                <h3 class="text-lg font-black text-indigo-400 border-b border-gray-800 pb-2 mb-4 flex items-center gap-2"><i class="fa-solid fa-compass"></i> S - Perguntas de Situação</h3>
+                <p class="text-gray-400 text-xs leading-relaxed mb-4">Utilizadas para coletar dados, fatos e entender o pano de fundo do lead. Não devem ser usadas em excesso para não tornar o contato cansativo.</p>
+                <div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-xs space-y-2 text-gray-300 font-mono">
+                    <div>👉 "Qual ferramenta você utiliza hoje para gerenciar X?"</div>
+                    <div>👉 "Quantas pessoas compõem a sua equipe operacional atualmente?"</div>
+                    <div>👉 "Como está desenhado o seu processo atual de captação?"</div>
                 </div>
             </div>
-            <div class="card-dark p-6 rounded-xl flex flex-col justify-center items-center text-center text-gray-500">
-                <i class="fa-solid fa-layer-group text-4xl mb-3 text-gray-700"></i>
-                <p class="text-sm">Parâmetros de conformidade comercial aplicados por ID de chamada.</p>
+            <div class="card-dark p-6 rounded-xl shadow-md">
+                <h3 class="text-lg font-black text-amber-400 border-b border-gray-800 pb-2 mb-4 flex items-center gap-2"><i class="fa-solid fa-circle-question"></i> P - Perguntas de Problema</h3>
+                <p class="text-gray-400 text-xs leading-relaxed mb-4">Investigam dores, dificuldades ou insatisfações ocultas. É aqui que o lead começa a perceber que precisa de ajuda externa.</p>
+                <div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-xs space-y-2 text-gray-300 font-mono">
+                    <div>👉 "Esse sistema atual costuma apresentar lentidão ou gargalos?"</div>
+                    <div>👉 "Qual é a sua maior queixa hoje em relação ao fornecedor atual?"</div>
+                    <div>👉 "Você sente que a equipe perde muito tempo executando Y?"</div>
+                </div>
+            </div>
+            <div class="card-dark p-6 rounded-xl shadow-md">
+                <h3 class="text-lg font-black text-rose-400 border-b border-gray-800 pb-2 mb-4 flex items-center gap-2"><i class="fa-solid fa-shuffle"></i> I - Perguntas de Implicação</h3>
+                <p class="text-gray-400 text-xs leading-relaxed mb-4">Exploram os efeitos e desdobramentos gerados pelos problemas. Transformam pequenas dores em problemas urgentes e caros.</p>
+                <div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-xs space-y-2 text-gray-300 font-mono">
+                    <div>👉 "O atraso nessa entrega chega a impactar o seu faturamento no fim do mês?"</div>
+                    <div>👉 "Se esse erro continuar acontecendo, qual o prejuízo estimado para o trimestre?"</div>
+                    <div>👉 "Como essa dor reflete na motivação ou turnover da sua equipe?"</div>
+                </div>
+            </div>
+            <div class="card-dark p-6 rounded-xl shadow-md">
+                <h3 class="text-lg font-black text-emerald-400 border-b border-gray-800 pb-2 mb-4 flex items-center gap-2"><i class="fa-solid fa-circle-check"></i> N - Necessidade de Solução</h3>
+                <p class="text-gray-400 text-xs leading-relaxed mb-4">Focam no valor, utilidade e nos benefícios práticos da resolução do problema. Fazem o próprio lead declarar a importância do seu produto.</p>
+                <div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-xs space-y-2 text-gray-300 font-mono">
+                    <div>👉 "Se conseguíssemos reduzir esse tempo pela metade, o que mudaria na sua rotina?"</div>
+                    <div>👉 "Por que automatizar esse fluxo seria importante para a empresa hoje?"</div>
+                    <div>👉 "Qual seria o impacto de ter relatórios em tempo real para a diretoria?"</div>
+                </div>
             </div>
         </div>
 
     </div>
 
-    <div id="modal-sdr" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50">
+    <div id="modal-sdr" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 z-50 transition duration-300">
         <div class="bg-gray-900 border border-gray-800 w-full max-w-6xl rounded-2xl h-[85vh] flex flex-col shadow-2xl relative">
-            <div id="modal-loader" class="hidden absolute inset-0 bg-gray-900/90 z-10 flex items-center justify-center rounded-2xl">
+            
+            <div id="modal-loader" class="hidden absolute inset-0 bg-gray-900/95 z-10 flex items-center justify-center rounded-2xl">
                 <div class="text-indigo-400 flex flex-col items-center">
                     <i class="fa-solid fa-circle-notch fa-spin text-4xl mb-3"></i>
-                    <span class="text-sm font-semibold tracking-widest uppercase">Carregando Dados...</span>
+                    <span class="text-xs font-bold tracking-widest uppercase text-gray-400">Processando Parecer da IA...</span>
                 </div>
             </div>
 
-            <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900 rounded-t-2xl">
+            <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900 rounded-t-2xl flex-shrink-0">
                 <div>
-                    <h2 id="modal-sdr-name" class="text-2xl font-bold text-white tracking-tight">Nome do SDR</h2>
-                    <p class="text-xs text-indigo-400 uppercase tracking-wider font-bold mt-1">Dossiê de Auditoria Comercial</p>
+                    <h2 id="modal-sdr-name" class="text-2xl font-extrabold text-white tracking-tight">Nome do SDR</h2>
+                    <p class="text-[10px] text-indigo-400 uppercase tracking-widest font-black mt-1">Dossiê de Auditoria Metodológica e Feedback</p>
                 </div>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-white hover:bg-gray-800 p-2 rounded-xl transition duration-200">
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white hover:bg-gray-800 p-2 rounded-xl transition">
                     <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
             
             <div class="flex-1 flex overflow-hidden">
-                <div class="w-1/3 border-r border-gray-800 overflow-y-auto p-4 space-y-2 custom-scrollbar bg-gray-900" id="modal-lista-chamadas"></div>
+                <div class="w-1/3 border-r border-gray-800 overflow-y-auto p-4 space-y-2 custom-scrollbar bg-gray-900/60" id="modal-lista-chamadas"></div>
+                
                 <div class="w-2/3 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-[#0b0f19]" id="modal-conteudo-chamada">
-                    <div class="text-center py-12 text-gray-500">
-                        <i class="fa-solid fa-file-waveform text-5xl mb-4 block text-gray-700"></i>
-                        Selecione uma ligação comercial ao lado para abrir o raio-x da venda.
-                    </div>
+                    <div class="text-center text-gray-500 py-20"><i class="fa-solid fa-arrow-left text-2xl block mb-2"></i> Selecione uma chamada ao lado para abrir a auditoria detalhada.</div>
                 </div>
             </div>
         </div>
@@ -186,69 +264,64 @@
 
     <script>
         let database = {};
+        let spiderChartInstance = null;
         const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
+        // Troca de abas da interface
         function switchTab(tab) {
-            ['geral', 'equipe', 'auditorias', 'playbooks'].forEach(t => {
+            ['geral', 'dash', 'equipe', 'auditorias', 'playbooks'].forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
                 document.getElementById(`menu-${t}`).classList.remove('sidebar-active');
             });
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
             document.getElementById(`menu-${tab}`).classList.add('sidebar-active');
             
-            const titles = { geral: "Visão Geral", equipe: "Equipe SDR", auditorias: "Histórico de Auditorias", playbooks: "Playbooks Metodológicos" };
+            const titles = { geral: "Visão Geral", dash: "Análise de Teia", equipe: "Equipe SDR", auditorias: "Histórico Completo", playbooks: "Playbooks SPIN" };
             document.getElementById('page-title').innerText = titles[tab];
         }
 
+        // Inicialização com cache-busting obrigatório
         async function init() {
             try {
                 const response = await fetch('consolidated_data.json?v=' + Date.now());
-                if (!response.ok) throw new Error("Arquivo JSON não encontrado.");
+                if (!response.ok) throw new Error("Erro de arquivo.");
                 database = await response.json();
                 
                 buildFilterDropdowns();
                 applyFilters();
             } catch (e) {
-                console.error("Erro ao carregar os dados:", e);
-                document.getElementById('tabela-criticos').innerHTML = `<tr><td colspan="5" class="py-4 text-center text-rose-400">Dados não carregados. Verifique se o arquivo consolidated_data.json contém registros válidos no seu repositório.</td></tr>`;
+                console.error(e);
+                document.getElementById('tabela-criticos').innerHTML = `<tr><td colspan="5" class="py-6 text-center text-amber-500 font-semibold bg-amber-950/10 border border-amber-900/30 rounded-lg">Aguardando a gravação da primeira linha válida no arquivo consolidated_data.json...</td></tr>`;
             }
         }
 
-        // Extração de Data Universal e Segura
+        // Suporte avançado multi-formato para ler datas americanas e brasileiras
         function extractDateInfo(dateStr) {
             if (!dateStr) return { year: null, monthName: null };
             try {
-                // Remove barras e formata para padronizar (Ex: "2026/05/28" -> "2026-05-28")
-                let standardized = dateStr.split(' ')[0].replace(/\//g, '-');
-                let parts = standardized.split('-');
-
+                let pureDate = dateStr.split(' ')[0].replace(/\//g, '-'); // limpa espaços de horas
+                let parts = pureDate.split('-');
                 if (parts.length === 3) {
-                    let year, monthIdx;
-                    if (parts[0].length === 4) { // YYYY-MM-DD
-                        year = parts[0];
-                        monthIdx = parseInt(parts[1]) - 1;
-                    } else { // DD-MM-YYYY
-                        year = parts[2];
-                        monthIdx = parseInt(parts[1]) - 1;
-                    }
-                    if (year && monthIdx >= 0 && monthIdx < 12) {
-                        return { year: year, monthName: monthNames[monthIdx] };
+                    // Se o primeiro bloco tem 4 dígitos, é americano (YYYY-MM-DD), senão é brasileiro (DD-MM-YYYY)
+                    if (parts[0].length === 4) {
+                        let monthIdx = parseInt(parts[1]) - 1;
+                        return { year: parts[0], monthName: monthNames[monthIdx] };
+                    } else {
+                        let monthIdx = parseInt(parts[1]) - 1;
+                        return { year: parts[2], monthName: monthNames[monthIdx] };
                     }
                 }
-            } catch (e) {
-                console.error("Erro ao fazer parse da data:", dateStr, e);
-            }
+            } catch (e) {}
             return { year: null, monthName: null };
         }
 
+        // População dos seletores de filtragem
         function buildFilterDropdowns() {
             const chamadas = Object.values(database);
-            const anos = new Set();
-            const meses = new Set();
-            const sdrs = new Set();
-
+            const anos = new Set(); const meses = new Set(); const sdrs = new Set();
+            
             chamadas.forEach(c => {
-                if (c.sdr) sdrs.add(c.sdr);
+                if (c.sdr) sdrs.add(c.sdr.strip ? c.sdr.strip() : c.sdr);
                 const info = extractDateInfo(c.data);
                 if (info.year) anos.add(info.year);
                 if (info.monthName) meses.add(info.monthName);
@@ -256,263 +329,246 @@
 
             const populateSelect = (id, items) => {
                 const select = document.getElementById(id);
-                select.innerHTML = select.options[0].outerHTML; // Mantém a opção padrão "Todos"
+                select.innerHTML = select.options[0].outerHTML;
                 Array.from(items).sort().forEach(item => {
-                    const opt = document.createElement('option');
-                    opt.value = item;
-                    opt.innerText = item;
-                    select.appendChild(opt);
+                    const opt = document.createElement('option'); opt.value = item; opt.innerText = item; select.appendChild(opt);
                 });
             };
-
-            populateSelect('filter-ano', anos);
-            populateSelect('filter-mes', meses);
-            populateSelect('filter-sdr', sdrs);
+            populateSelect('filter-ano', anos); populateSelect('filter-mes', meses); populateSelect('filter-sdr', sdrs);
         }
 
+        // Aplicação em cascata dos filtros nos componentes
         function applyFilters() {
             const anoSel = document.getElementById('filter-ano').value;
             const mesSel = document.getElementById('filter-mes').value;
             const sdrSel = document.getElementById('filter-sdr').value;
             
-            let filtrados = Object.values(database);
-
-            filtrados = filtrados.filter(c => {
-                let matchAno = true;
-                let matchMes = true;
-                let matchSdr = true;
-
+            let filtrados = Object.values(database).filter(c => {
+                let matchAno = true; let matchMes = true; let matchSdr = true;
                 if (sdrSel !== 'todos' && c.sdr !== sdrSel) matchSdr = false;
-
                 const info = extractDateInfo(c.data);
                 if (anoSel !== 'todos' && info.year !== anoSel) matchAno = false;
                 if (mesSel !== 'todos' && info.monthName !== mesSel) matchMes = false;
-
                 return matchAno && matchMes && matchSdr;
             });
 
-            renderDashboard(filtrados);
+            renderDashboardMetrics(filtrados);
+            renderSpiderChart(filtrados);
         }
 
-        function renderDashboard(chamadas) {
+        // Renderização e cálculo matemático do Gráfico de Teia (Radar)
+        function renderSpiderChart(chamadas) {
+            let avgS = 0, avgP = 0, avgI = 0, avgN = 0;
+            
+            if (chamadas.length > 0) {
+                // Se o JSON antigo não tiver as quebras de notas de pilar específicas, cai no fallback da nota global
+                avgS = chamadas.reduce((acc, c) => acc + (parseFloat(c.nota_s) !== undefined ? parseFloat(c.nota_s) : parseFloat(c.nota_spin) || 0), 0) / chamadas.length;
+                avgP = chamadas.reduce((acc, c) => acc + (parseFloat(c.nota_p) !== undefined ? parseFloat(c.nota_p) : parseFloat(c.nota_spin) || 0), 0) / chamadas.length;
+                avgI = chamadas.reduce((acc, c) => acc + (parseFloat(c.nota_i) !== undefined ? parseFloat(c.nota_i) : parseFloat(c.nota_spin) || 0), 0) / chamadas.length;
+                avgN = chamadas.reduce((acc, c) => acc + (parseFloat(c.nota_n) !== undefined ? parseFloat(c.nota_n) : parseFloat(c.nota_spin) || 0), 0) / chamadas.length;
+            }
+
+            // Atualiza os numerais de apoio abaixo do radar
+            document.getElementById('radar-val-s').innerText = avgS.toFixed(1);
+            document.getElementById('radar-val-p').innerText = avgP.toFixed(1);
+            document.getElementById('radar-val-i').innerText = avgI.toFixed(1);
+            document.getElementById('radar-val-n').innerText = avgN.toFixed(1);
+
+            const ctx = document.getElementById('spiderChart').getContext('2d');
+            if (spiderChartInstance) spiderChartInstance.destroy();
+
+            spiderChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Situação (S)', 'Problema (P)', 'Implicação (I)', 'Necessidade (N)'],
+                    datasets: [{
+                        label: 'Aderência Média',
+                        data: [avgS.toFixed(1), avgP.toFixed(1), avgI.toFixed(1), avgN.toFixed(1)],
+                        backgroundColor: 'rgba(99, 102, 241, 0.15)',
+                        borderColor: '#6366f1',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#818cf8',
+                        pointBorderColor: '#111827',
+                        pointHoverBackgroundColor: '#ffffff',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: { color: '#1f2937' },
+                            grid: { color: '#1f2937' },
+                            pointLabels: { color: '#9ca3af', font: { size: 10, weight: '700' } },
+                            ticks: { display: false },
+                            suggestedMin: 0, suggestedMax: 10
+                        }
+                    },
+                    plugins: { legend: { display: false } },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // Renderização dos contadores e tabelas de dados
+        function renderDashboardMetrics(chamadas) {
             if (chamadas.length === 0) {
                 document.getElementById('total-ligacoes').innerText = "0";
                 document.getElementById('media-geral').innerText = "0.0";
                 document.getElementById('casos-criticos').innerText = "0";
-                document.getElementById('tabela-criticos').innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-500">Nenhuma ligação encontrada para o filtro selecionado.</td></tr>`;
+                document.getElementById('taxa-aproveitamento').innerText = "0%";
+                document.getElementById('tabela-criticos').innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>`;
                 document.getElementById('tabela-todas-auditorias').innerHTML = `<tr><td colspan="6" class="py-4 text-center text-gray-500">Nenhum registro encontrado.</td></tr>`;
                 document.getElementById('tab-equipe').innerHTML = '';
+                document.getElementById('contador-historico').innerText = "0 registros carregados";
                 return;
             }
 
             const total = chamadas.length;
-            const somaNotas = chamadas.reduce((acc, c) => acc + (parseFloat(c.nota_spin) || 0), 0);
-            const mediaGlobal = (somaNotas / total).toFixed(1);
-            const criticos = chamadas.filter(c => (parseFloat(c.nota_spin) || 0) < 6).length;
+            const mediaGlobal = (chamadas.reduce((acc, c) => acc + (parseFloat(c.nota_spin) || 0), 0) / total).toFixed(1);
+            const criticos = chamadas.filter(c => (parseFloat(c.nota_spin) || 0) < 6.0).length;
+            const aproveitamento = Math.round((mediaGlobal / 10) * 100);
 
             document.getElementById('total-ligacoes').innerText = total;
             document.getElementById('media-geral').innerText = mediaGlobal;
             document.getElementById('casos-criticos').innerText = criticos;
+            document.getElementById('taxa-aproveitamento').innerText = `${aproveitamento}%`;
+            document.getElementById('contador-historico').innerText = `${total} registros carregados`;
 
+            // Construção das equipes e cards
             const sdrs = {};
-            chamadas.forEach(c => {
-                const sdrNome = c.sdr || "Desconhecido";
-                if (!sdrs[sdrNome]) sdrs[sdrNome] = [];
-                sdrs[sdrNome].push(c);
-            });
-
-            const gridEquipe = document.getElementById('tab-equipe');
-            gridEquipe.innerHTML = '';
+            chamadas.forEach(c => { if (c.sdr) sdrs[c.sdr] = sdrs[c.sdr] || []; sdrs[c.sdr].push(c); });
+            const gridEquipe = document.getElementById('tab-equipe'); gridEquipe.innerHTML = '';
             
             Object.keys(sdrs).sort().forEach(nome => {
                 const lista = sdrs[nome];
                 const mediaSDR = (lista.reduce((acc, c) => acc + (parseFloat(c.nota_spin) || 0), 0) / lista.length).toFixed(1);
+                let iniciais = nome.substring(0, 2).toUpperCase();
                 
-                let iniciais = "SD";
-                if (nome && nome !== "Desconhecido") {
-                    const partes = nome.split(' ').filter(n => n.length > 0);
-                    if(partes.length >= 2) iniciais = (partes[0][0] + partes[1][0]).toUpperCase();
-                    else if(partes.length === 1) iniciais = partes[0].substring(0, 2).toUpperCase();
-                }
-
                 const card = document.createElement('div');
-                card.className = "card-dark p-6 rounded-xl shadow-lg cursor-pointer hover:border-indigo-500 hover:-translate-y-1 transform transition duration-200";
-                card.onclick = () => { openSDRModal(nome); switchTab('equipe'); };
+                card.className = "card-dark p-6 rounded-xl shadow-lg cursor-pointer hover:border-indigo-500/60 transition group";
+                card.onclick = () => openSDRModal(nome);
                 card.innerHTML = `
                     <div class="flex items-center gap-4 mb-5">
-                        <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-700 rounded-xl flex items-center justify-center font-bold text-white text-xl shadow-inner">${iniciais}</div>
+                        <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center font-extrabold text-white text-xl shadow-md group-hover:scale-105 transition duration-200">${iniciais}</div>
                         <div>
-                            <h4 class="font-bold text-white text-lg">${nome}</h4>
-                            <span class="text-xs text-indigo-400 font-semibold tracking-wide">Representante Vendas</span>
+                            <h4 class="font-bold text-white text-base group-hover:text-indigo-400 transition">${nome}</h4>
+                            <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">Inside Sales SDR</span>
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-4 border-t border-gray-800 pt-5">
-                        <div class="bg-gray-900/50 p-3 rounded-lg border border-gray-800">
-                            <span class="text-[10px] uppercase text-gray-500 font-bold tracking-wider block mb-1">Auditorias</span>
-                            <p class="text-2xl font-black text-white">${lista.length}</p>
-                        </div>
-                        <div class="bg-gray-900/50 p-3 rounded-lg border border-gray-800">
-                            <span class="text-[10px] uppercase text-gray-500 font-bold tracking-wider block mb-1">Média SPIN</span>
-                            <p class="text-2xl font-black ${mediaSDR < 6 ? 'text-rose-400' : 'text-emerald-400'}">${mediaSDR}</p>
-                        </div>
-                    </div>
-                `;
+                    <div class="grid grid-cols-2 gap-4 border-t border-gray-800 pt-4">
+                        <div class="bg-gray-900/40 p-3 rounded-lg border border-gray-800/50"><span class="text-[9px] uppercase tracking-wider text-gray-500 font-bold block">Chamadas</span><p class="text-2xl font-black text-white mt-0.5">${lista.length}</p></div>
+                        <div class="bg-gray-900/40 p-3 rounded-lg border border-gray-800/50"><span class="text-[9px] uppercase tracking-wider text-gray-500 font-bold block">Média Geral</span><p class="text-2xl font-black mt-0.5 ${mediaSDR < 6 ? 'text-rose-400' : 'text-emerald-400'}">${mediaSDR}</p></div>
+                    </div>`;
                 gridEquipe.appendChild(card);
             });
 
-            const chamadasOrdenadas = chamadas.sort((a,b) => parseInt(b.id || 0) - parseInt(a.id || 0));
-
-            const tabelaCriticos = document.getElementById('tabela-criticos');
-            tabelaCriticos.innerHTML = '';
-            const listaCriticos = chamadasOrdenadas.filter(c => (parseFloat(c.nota_spin) || 0) < 6);
+            // Geração de Casos Críticos por Ordem de Pior Nota Absoluta
+            const tabelaCriticos = document.getElementById('tabela-criticos'); tabelaCriticos.innerHTML = '';
+            const listaCriticos = chamadas.filter(c => (parseFloat(c.nota_spin) || 0) < 6.0).sort((a,b) => parseFloat(a.nota_spin) - parseFloat(b.nota_spin));
             
-            if(listaCriticos.length === 0) {
-                tabelaCriticos.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-500">Nenhum caso crítico detectado sob estes filtros.</td></tr>`;
+            if (listaCriticos.length === 0) {
+                tabelaCriticos.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-500 text-xs">Nenhum sdr em estado crítico sob estes filtros. Excelente!</td></tr>`;
             } else {
                 listaCriticos.forEach(c => {
-                    const nota = parseFloat(c.nota_spin) || 0;
-                    const tr = document.createElement('tr');
-                    tr.className = "border-b border-gray-800/60 hover:bg-gray-800/30 transition";
+                    const tr = document.createElement('tr'); tr.className = "border-b border-gray-800/60 hover:bg-gray-800/20 transition text-xs";
                     tr.innerHTML = `
-                        <td class="py-3.5 font-semibold text-white flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-rose-500"></div> ${c.sdr || "N/A"}</td>
-                        <td class="py-3.5 text-gray-400">${c.data || "--"}</td>
-                        <td class="py-3.5 text-gray-400"><i class="fa-regular fa-clock text-gray-600 mr-1"></i> ${c.duracao || "--"}</td>
-                        <td class="py-3.5"><span class="px-2.5 py-1 rounded-md text-xs font-bold bg-rose-950/80 text-rose-400 border border-rose-900">${nota.toFixed(1)}</span></td>
-                        <td class="py-3.5 text-right"><button onclick="openSDRModal('${c.sdr}', '${c.id}')" class="text-indigo-400 hover:underline font-semibold">Ver Análise</button></td>
-                    `;
+                        <td class="py-3.5 font-bold text-white flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-rose-500"></span> ${c.sdr}</td>
+                        <td class="py-3.5 text-gray-400">${c.data}</td>
+                        <td class="py-3.5 text-gray-400 font-mono">${c.duracao}</td>
+                        <td class="py-3.5"><span class="px-2 py-0.5 rounded font-extrabold bg-rose-950/50 text-rose-400 border border-rose-900/40">${parseFloat(c.nota_spin).toFixed(1)}</span></td>
+                        <td class="py-3.5 text-right"><button onclick="openSDRModal('${c.sdr}', '${c.id}')" class="text-indigo-400 hover:text-white font-bold transition">Abrir Dossiê</button></td>`;
                     tabelaCriticos.appendChild(tr);
                 });
             }
 
-            const tabelaHistorico = document.getElementById('tabela-todas-auditorias');
-            tabelaHistorico.innerHTML = '';
-            chamadasOrdenadas.forEach(c => {
+            // Histórico Completo de Ligações
+            const tabelaHistorico = document.getElementById('tabela-todas-auditorias'); tabelaHistorico.innerHTML = '';
+            chamadas.sort((a,b) => b.id - a.id).forEach(c => {
                 const nota = parseFloat(c.nota_spin) || 0;
-                const corBadge = nota < 6 ? 'bg-rose-950/80 text-rose-400 border border-rose-900' : 'bg-emerald-950/80 text-emerald-400 border border-emerald-900';
-                const tr = document.createElement('tr');
-                tr.className = "border-b border-gray-800/60 hover:bg-gray-800/30 transition";
+                const tr = document.createElement('tr'); tr.className = "border-b border-gray-800/60 hover:bg-gray-800/20 transition text-xs";
                 tr.innerHTML = `
                     <td class="py-3.5 font-semibold text-white">${c.sdr}</td>
                     <td class="py-3.5 text-gray-400">${c.data}</td>
-                    <td class="py-3.5 text-gray-400 max-w-xs truncate">${c.titulo || 'Chamada'}</td>
-                    <td class="py-3.5 text-gray-400">${c.duracao}</td>
-                    <td class="py-3.5"><span class="px-2.5 py-1 rounded-md text-xs font-bold ${corBadge}">${nota.toFixed(1)}</span></td>
-                    <td class="py-3.5 text-right"><button onclick="openSDRModal('${c.sdr}', '${c.id}')" class="text-indigo-400 hover:underline font-semibold">Ver Detalhes</button></td>
-                `;
+                    <td class="py-3.5 text-gray-300 max-w-xs truncate font-medium">${c.titulo}</td>
+                    <td class="py-3.5 text-gray-400 font-mono">${c.duracao}</td>
+                    <td class="py-3.5"><span class="px-2 py-0.5 rounded font-extrabold ${nota < 6.0 ? 'bg-rose-950/50 text-rose-400 border border-rose-900/40' : 'bg-emerald-950/50 text-emerald-400 border border-emerald-900/40'}">${nota.toFixed(1)}</span></td>
+                    <td class="py-3.5 text-right"><button onclick="openSDRModal('${c.sdr}', '${c.id}')" class="text-indigo-400 hover:text-white font-bold transition">Análise completa</button></td>`;
                 tabelaHistorico.appendChild(tr);
             });
         }
 
+        // Abertura do Dossiê do SDR com controle de carregamento lateral
         function openSDRModal(nome, callIdToSelect = null) {
             const modal = document.getElementById('modal-sdr');
             document.getElementById('modal-sdr-name').innerText = nome;
-            const listaContainer = document.getElementById('modal-lista-chamadas');
-            listaContainer.innerHTML = '';
+            const listaContainer = document.getElementById('modal-lista-chamadas'); listaContainer.innerHTML = '';
 
-            const listaFiltrada = Object.values(database).filter(c => c.sdr === nome).sort((a,b) => parseInt(b.id || 0) - parseInt(a.id || 0));
-
+            const listaFiltrada = Object.values(database).filter(c => c.sdr === nome).sort((a,b) => b.id - a.id);
             listaFiltrada.forEach(c => {
-                const nota = parseFloat(c.nota_spin) || 0;
-                const btn = document.createElement('button');
-                btn.id = `btn-call-${c.id}`;
-                btn.className = "call-list-btn w-full text-left p-3.5 rounded-xl bg-gray-800/30 hover:bg-gray-800 border border-gray-800 hover:border-gray-600 transition flex justify-between items-center group mb-2";
+                const btn = document.createElement('button'); btn.id = `btn-call-${c.id}`;
+                btn.className = "call-list-btn w-full text-left p-3 rounded-xl bg-gray-800/20 border border-gray-800/60 transition flex justify-between items-center mb-2 hover:border-gray-700 focus:outline-none";
                 btn.onclick = () => {
-                    document.querySelectorAll('.call-list-btn').forEach(b => {
-                        b.classList.remove('bg-indigo-900/20', 'border-indigo-700/50');
-                        b.classList.add('bg-gray-800/30', 'border-gray-800');
-                    });
-                    btn.classList.add('bg-indigo-900/20', 'border-indigo-700/50');
-                    btn.classList.remove('bg-gray-800/30', 'border-gray-800');
-                    selectCall(c);
+                    document.querySelectorAll('.call-list-btn').forEach(b => b.classList.remove('bg-indigo-950/40', 'border-indigo-800/60'));
+                    btn.classList.add('bg-indigo-950/40', 'border-indigo-800/60');
+                    selectCallInModal(c);
                 };
-                
-                btn.innerHTML = `
-                    <div>
-                        <p class="font-bold text-white group-hover:text-indigo-400 transition text-sm">ID: ${c.id}</p>
-                        <p class="text-[11px] text-gray-500 mt-0.5 font-medium">${c.data}</p>
-                    </div>
-                    <span class="font-black ${nota < 6 ? 'text-rose-400' : 'text-emerald-400'} text-base">${nota.toFixed(1)}</span>
-                `;
+                btn.innerHTML = `<div><p class="font-bold text-white text-xs">ID: ${c.id}</p><p class="text-[10px] text-gray-500 mt-0.5 font-medium">${c.data}</p></div><span class="font-black text-sm ${c.nota_spin < 6.0 ? 'text-rose-400' : 'text-emerald-400'}">${parseFloat(c.nota_spin).toFixed(1)}</span>`;
                 listaContainer.appendChild(btn);
             });
 
             modal.classList.remove('hidden');
-            
             if (callIdToSelect) {
-                const chamadaEspecifica = listaFiltrada.find(c => c.id === callIdToSelect);
-                if (chamadaEspecifica) {
-                    setTimeout(() => {
-                        const targetBtn = document.getElementById(`btn-call-${callIdToSelect}`);
-                        if(targetBtn) targetBtn.click();
-                    }, 50);
-                }
+                setTimeout(() => { const b = document.getElementById(`btn-call-${callIdToSelect}`); if(b) b.click(); }, 80);
             } else if (listaFiltrada.length > 0) {
-                setTimeout(() => {
-                    const firstBtn = document.getElementById(`btn-call-${listaFiltrada[0].id}`);
-                    if(firstBtn) firstBtn.click();
-                }, 50);
+                setTimeout(() => { const b = document.getElementById(`btn-call-${listaFiltrada[0].id}`); if(b) b.click(); }, 80);
             }
         }
 
-        function selectCall(c) {
-            const loader = document.getElementById('modal-loader');
-            loader.classList.remove('hidden');
-
-            const nota = parseFloat(c.nota_spin) || 0;
-            const titulo = c.titulo || "Chamada de Vendas";
-            
+        // Renderização dos campos internos de Parecer, Erro e Transcrição dentro do Modal
+        function selectCallInModal(c) {
+            const loader = document.getElementById('modal-loader'); loader.classList.remove('hidden');
             setTimeout(() => {
                 const conteudo = document.getElementById('modal-conteudo-chamada');
+                const notaNum = parseFloat(c.nota_spin) || 0;
+                
                 conteudo.innerHTML = `
-                    <div class="flex justify-between items-start border-b border-gray-800 pb-5">
-                        <div class="pr-4">
-                            <div class="flex items-center gap-3">
-                                <span class="bg-gray-800 text-gray-300 text-[10px] font-bold px-2 py-0.5 rounded border border-gray-700">HubSpot ID: ${c.id}</span>
-                                <span class="text-xs text-gray-500 font-medium"><i class="fa-regular fa-calendar mr-1"></i> ${c.data || 'N/A'}</span>
-                            </div>
-                            <h3 class="text-2xl font-black text-white mt-2 leading-tight">${titulo}</h3>
-                            <p class="text-sm text-gray-400 mt-2 font-medium"><i class="fa-solid fa-stopwatch text-gray-500 mr-1.5"></i> Duração: ${c.duracao}</p>
-                        </div>
-                        <a href="${c.audio_url}" target="_blank" class="shrink-0 bg-indigo-600 hover:bg-indigo-500 text-white text-sm px-5 py-2.5 rounded-xl font-bold transition flex items-center gap-2 shadow-lg shadow-indigo-900/20">
-                            <i class="fa-solid fa-circle-play text-lg"></i> Ouvir no HubSpot
-                        </a>
-                    </div>
-
-                    <div class="bg-gray-800/30 p-5 rounded-2xl border border-gray-800 flex items-center justify-between">
+                    <div class="flex justify-between items-start border-b border-gray-800 pb-4">
                         <div>
-                            <span class="text-xs text-gray-400 uppercase font-black tracking-widest block mb-1">Score Final SPIN</span>
-                            <p class="text-sm text-gray-500 font-medium">Classificação gerada pelo modelo Llama-3.</p>
+                            <span class="bg-gray-800 text-gray-400 text-[10px] font-bold px-2 py-0.5 rounded border border-gray-700 font-mono">LINK DE GRAVAÇÃO</span>
+                            <h3 class="text-lg font-extrabold text-white mt-1.5 tracking-tight">${c.titulo}</h3>
                         </div>
-                        <span class="text-5xl font-black ${nota < 6 ? 'text-rose-500' : 'text-emerald-500'} bg-gray-900 px-6 py-2 rounded-xl border border-gray-800 shadow-inner">${nota.toFixed(1)}</span>
+                        <a href="${c.audio_url}" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs px-4 py-2 rounded-xl font-bold transition flex items-center gap-2 shadow-md shadow-indigo-500/10"><i class="fa-solid fa-circle-play"></i> Ouvir no HubSpot</a>
+                    </div>
+                    
+                    <div class="grid grid-cols-4 gap-2.5 mt-2">
+                        <div class="bg-gray-900 border border-gray-800 p-2 rounded-lg text-center"><span class="text-[9px] uppercase tracking-wider text-gray-500 font-bold block">Situação (S)</span><span class="text-sm font-black text-white mt-0.5 block">${parseFloat(c.nota_s || c.nota_spin).toFixed(1)}</span></div>
+                        <div class="bg-gray-900 border border-gray-800 p-2 rounded-lg text-center"><span class="text-[9px] uppercase tracking-wider text-gray-500 font-bold block">Problema (P)</span><span class="text-sm font-black text-white mt-0.5 block">${parseFloat(c.nota_p || c.nota_spin).toFixed(1)}</span></div>
+                        <div class="bg-gray-900 border border-gray-800 p-2 rounded-lg text-center"><span class="text-[9px] uppercase tracking-wider text-gray-500 font-bold block">Implicação (I)</span><span class="text-sm font-black text-white mt-0.5 block">${parseFloat(c.nota_i || c.nota_spin).toFixed(1)}</span></div>
+                        <div class="bg-gray-900 border border-gray-800 p-2 rounded-lg text-center"><span class="text-[9px] uppercase tracking-wider text-gray-500 font-bold block">Necessidade (N)</span><span class="text-sm font-black text-white mt-0.5 block">${parseFloat(c.nota_n || c.nota_spin).toFixed(1)}</span></div>
                     </div>
 
-                    <div class="space-y-3">
-                        <h4 class="text-xs font-black text-white uppercase tracking-widest text-indigo-400 flex items-center"><i class="fa-solid fa-microchip mr-2 text-lg"></i> Parecer do Auditor</h4>
-                        <div class="bg-gray-800/40 border border-gray-700/50 p-5 rounded-2xl text-sm leading-relaxed text-gray-300 whitespace-pre-line shadow-inner">${c.avaliacao || 'Parecer não gerado.'}</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-wider flex items-center gap-1"><i class="fa-solid fa-gavel"></i> Parecer do Auditor Técnico</h4>
+                            <div class="bg-gray-900 border border-gray-800/80 p-4 rounded-xl text-xs leading-relaxed text-gray-300 whitespace-pre-line font-medium shadow-inner h-[180px] overflow-y-auto custom-scrollbar">${c.avaliacao}</div>
+                        </div>
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold uppercase tracking-wider flex items-center gap-1 ${notaNum < 6.0 ? 'text-rose-400' : 'text-emerald-400'}">
+                                <i class="fa-solid fa-lightbulb"></i> Diagnóstico de Erros & Melhorias
+                            </h4>
+                            <div class="p-4 rounded-xl text-xs leading-relaxed shadow-inner h-[180px] overflow-y-auto custom-scrollbar border ${notaNum < 6.0 ? 'bg-rose-950/10 border-rose-900/30 text-rose-100/90' : 'bg-emerald-950/10 border-emerald-900/30 text-emerald-100/90'}">${c.sugestoes}</div>
+                        </div>
                     </div>
-
-                    <div class="space-y-3">
-                        <h4 class="text-xs font-black text-white uppercase tracking-widest text-emerald-400 flex items-center"><i class="fa-solid fa-bullseye mr-2 text-lg"></i> Plano de Ação & Sugestões</h4>
-                        <div class="bg-emerald-950/20 border border-emerald-900/30 p-5 rounded-2xl text-sm leading-relaxed text-emerald-100/80 shadow-inner">${c.sugestoes || 'Sem sugestões específicas registradas.'}</div>
-                    </div>
-
-                    <div class="space-y-3 pt-4 border-t border-gray-800">
-                        <h4 class="text-xs font-black text-white uppercase tracking-widest text-gray-500 flex items-center"><i class="fa-solid fa-closed-captioning mr-2 text-lg"></i> Transcrição (Whisper AI)</h4>
-                        <div class="bg-gray-900 border border-gray-800 p-5 rounded-2xl text-[13px] text-gray-400 max-h-80 overflow-y-auto custom-scrollbar leading-relaxed whitespace-pre-line">${c.transcricao || 'Áudio sem transcrição válida.'}</div>
-                    </div>
-                `;
+                    <div class="space-y-2 mt-4 pt-4 border-t border-gray-800">
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider flex items-center gap-1"><i class="fa-solid fa-file-lines"></i> Transcrição Integral da Chamada (Captura Whisper)</h4>
+                        <div class="bg-gray-900 border border-gray-800 p-4 rounded-xl text-[11px] text-gray-400 h-32 overflow-y-auto custom-scrollbar leading-relaxed whitespace-pre-line font-medium">${c.transcricao}</div>
+                    </div>`;
                 loader.classList.add('hidden');
-            }, 300);
+            }, 200);
         }
 
-        function closeModal() {
-            document.getElementById('modal-sdr').classList.add('hidden');
-        }
-
-        document.getElementById('modal-sdr').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
-
+        function closeModal() { document.getElementById('modal-sdr').classList.add('hidden'); }
         window.onload = init;
     </script>
 </body>
