@@ -41,6 +41,9 @@
             <button onclick="switchTab('geral')" id="menu-geral" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition sidebar-active font-medium">
                 <i class="fa-solid fa-chart-pie w-5"></i> Visão Geral
             </button>
+            <button onclick="switchTab('equipe')" id="menu-equipe" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium">
+                <i class="fa-solid fa-users w-5"></i> Visão SDR
+            </button>
             <button onclick="switchTab('dash')" id="menu-dash" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium">
                 <i class="fa-solid fa-chart-line w-5"></i> Dashboard Analytics
             </button>
@@ -112,10 +115,7 @@
                 </div>
             </div>
 
-            <!-- Equipe -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6" id="grid-equipe"></div>
-
-            <!-- Alertas Críticos (Restaurado da V1) -->
+            <!-- Alertas Críticos -->
             <div class="card-dark p-6 rounded-xl mt-6 shadow-lg border border-gray-800">
                 <div class="flex justify-between items-center mb-5 border-b border-gray-800 pb-3">
                     <h3 class="text-lg font-bold text-white flex items-center gap-2">
@@ -142,40 +142,46 @@
             </div>
         </div>
 
-        <!-- ABA: DASHBOARD -->
+        <!-- ABA: VISÃO SDR -->
+        <div id="tab-equipe" class="hidden space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="grid-equipe"></div>
+        </div>
+
+        <!-- ABA: DASHBOARD ANALYTICS (GRÁFICOS VERTICAIS) -->
         <div id="tab-dash" class="hidden space-y-6">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Radar Chart e Raio-X Restaurado -->
-                <div class="col-span-1 card-dark p-6 rounded-xl shadow-lg flex flex-col min-h-[400px]">
-                    <h3 class="text-sm font-bold text-white mb-4 self-start flex items-center">
+            <div class="flex flex-col gap-6">
+                <!-- Radar Chart Maior e Centralizado -->
+                <div class="card-dark p-8 rounded-xl shadow-lg flex flex-col items-center">
+                    <h3 class="text-base font-bold text-white mb-6 self-start flex items-center">
                         <i class="fa-solid fa-chart-radar text-indigo-400 mr-2"></i>Aderência Metodológica (SPIN)
                     </h3>
-                    <div class="w-full flex-1 flex items-center justify-center max-w-[280px] mx-auto">
+                    <div class="w-full max-w-[600px] h-[350px] relative">
                         <canvas id="spiderChart"></canvas>
                     </div>
-                    <!-- Raio-X Operacional (Restaurado) -->
-                    <div class="w-full mt-6 space-y-2 border-t border-gray-800 pt-5">
-                        <div class="flex justify-between items-center text-xs p-2.5 bg-gray-900/50 rounded-lg border border-gray-800">
-                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px]">Situação (S)</span>
-                            <span id="rx-s" class="text-white font-black text-sm">0.0</span>
+                    <!-- Raio-X Operacional Horizontal -->
+                    <div class="w-full max-w-[800px] mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-gray-800 pt-6">
+                        <div class="flex flex-col items-center p-3 bg-gray-900/50 rounded-lg border border-gray-800">
+                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px] mb-1">Situação (S)</span>
+                            <span id="rx-s" class="text-indigo-400 font-black text-xl">0.0</span>
                         </div>
-                        <div class="flex justify-between items-center text-xs p-2.5 bg-gray-900/50 rounded-lg border border-gray-800">
-                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px]">Problema (P)</span>
-                            <span id="rx-p" class="text-white font-black text-sm">0.0</span>
+                        <div class="flex flex-col items-center p-3 bg-gray-900/50 rounded-lg border border-gray-800">
+                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px] mb-1">Problema (P)</span>
+                            <span id="rx-p" class="text-indigo-400 font-black text-xl">0.0</span>
                         </div>
-                        <div class="flex justify-between items-center text-xs p-2.5 bg-gray-900/50 rounded-lg border border-gray-800">
-                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px]">Implicação (I)</span>
-                            <span id="rx-i" class="text-white font-black text-sm">0.0</span>
+                        <div class="flex flex-col items-center p-3 bg-gray-900/50 rounded-lg border border-gray-800">
+                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px] mb-1">Implicação (I)</span>
+                            <span id="rx-i" class="text-indigo-400 font-black text-xl">0.0</span>
                         </div>
-                        <div class="flex justify-between items-center text-xs p-2.5 bg-gray-900/50 rounded-lg border border-gray-800">
-                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px]">Necessidade (N)</span>
-                            <span id="rx-n" class="text-white font-black text-sm">0.0</span>
+                        <div class="flex flex-col items-center p-3 bg-gray-900/50 rounded-lg border border-gray-800">
+                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px] mb-1">Necessidade (N)</span>
+                            <span id="rx-n" class="text-indigo-400 font-black text-xl">0.0</span>
                         </div>
                     </div>
                 </div>
-                <!-- Line Chart -->
-                <div class="col-span-2 card-dark p-6 rounded-xl shadow-lg min-h-[400px] flex flex-col">
-                    <h3 class="text-sm font-bold text-white mb-6 flex items-center">
+
+                <!-- Line Chart Maior e Largo -->
+                <div class="card-dark p-8 rounded-xl shadow-lg flex flex-col h-[500px]">
+                    <h3 class="text-base font-bold text-white mb-6 flex items-center">
                         <i class="fa-solid fa-arrow-trend-up text-purple-400 mr-2"></i>Evolução Temporal: Técnica vs Processo
                     </h3>
                     <div class="w-full flex-1 relative">
@@ -285,7 +291,7 @@
         }
 
         function switchTab(tab) {
-            const tabs = ['geral', 'dash', 'auditorias', 'playbooks'];
+            const tabs = ['geral', 'equipe', 'dash', 'auditorias', 'playbooks'];
             tabs.forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
                 document.getElementById(`menu-${t}`).classList.remove('sidebar-active');
@@ -293,7 +299,13 @@
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
             document.getElementById(`menu-${tab}`).classList.add('sidebar-active');
             
-            const titles = { geral: "Visão Geral", dash: "Dashboard Analytics", auditorias: "Histórico & Dossiês", playbooks: "Playbooks SPIN" };
+            const titles = { 
+                geral: "Visão Geral", 
+                equipe: "Visão SDR", 
+                dash: "Dashboard Analytics", 
+                auditorias: "Histórico & Dossiês", 
+                playbooks: "Playbooks SPIN" 
+            };
             document.getElementById('page-title').innerText = titles[tab];
         }
 
@@ -375,7 +387,7 @@
             document.getElementById('media-wps').innerText = sumW.toFixed(2);
             document.getElementById('casos-criticos').innerText = listaCriticos.length;
 
-            // Renderiza Cards da Equipe
+            // Renderiza Cards da Equipe (Agora na aba "Visão SDR")
             const dictSDR = {};
             dados.forEach(c => { dictSDR[c.sdr] = dictSDR[c.sdr] || []; dictSDR[c.sdr].push(c); });
             const grid = document.getElementById('grid-equipe');
@@ -387,14 +399,17 @@
                 const mOp = chamadas.reduce((a,c)=>a+(parseFloat(c.nota_op)||0),0)/chamadas.length;
                 
                 grid.innerHTML += `
-                    <div class="card-dark p-5 rounded-xl shadow hover:border-indigo-500/50 transition cursor-pointer" onclick="document.getElementById('filter-sdr').value='${nome}'; applyFilters();">
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-white shadow">${nome.substring(0,2).toUpperCase()}</div>
-                            <h4 class="font-bold text-white text-sm">${nome}</h4>
+                    <div class="card-dark p-6 rounded-xl shadow-lg hover:border-indigo-500/50 transition cursor-pointer" onclick="document.getElementById('filter-sdr').value='${nome}'; applyFilters(); switchTab('dash');">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-white shadow text-lg">${nome.substring(0,2).toUpperCase()}</div>
+                            <div>
+                                <h4 class="font-bold text-white text-base">${nome}</h4>
+                                <span class="text-[10px] text-gray-500 uppercase tracking-widest block">${chamadas.length} chamadas analisadas</span>
+                            </div>
                         </div>
-                        <div class="grid grid-cols-2 gap-2 text-center">
-                            <div class="bg-gray-900/50 rounded p-2"><span class="text-[9px] text-gray-500 uppercase block font-bold">SPIN</span><span class="text-lg font-black text-indigo-400">${mSpin.toFixed(1)}</span></div>
-                            <div class="bg-gray-900/50 rounded p-2"><span class="text-[9px] text-gray-500 uppercase block font-bold">Conformidade</span><span class="text-lg font-black text-purple-400">${mOp.toFixed(1)}</span></div>
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div class="bg-gray-900/50 rounded-lg p-3 border border-gray-800"><span class="text-[10px] text-gray-500 uppercase block font-bold mb-1">SPIN</span><span class="text-xl font-black text-indigo-400">${mSpin.toFixed(1)}</span></div>
+                            <div class="bg-gray-900/50 rounded-lg p-3 border border-gray-800"><span class="text-[10px] text-gray-500 uppercase block font-bold mb-1">Conformidade</span><span class="text-xl font-black text-purple-400">${mOp.toFixed(1)}</span></div>
                         </div>
                     </div>`;
             });
@@ -435,11 +450,27 @@
             spiderChart = new Chart(document.getElementById('spiderChart'), {
                 type: 'radar',
                 data: { 
-                    labels: ['S', 'P', 'I', 'N'], 
-                    datasets: [{ data: [S, P, I, N], backgroundColor: 'rgba(99,102,241,0.2)', borderColor: '#6366f1', pointBackgroundColor: '#818cf8', borderWidth: 2 }] 
+                    labels: ['S (Situação)', 'P (Problema)', 'I (Implicação)', 'N (Necessidade)'], 
+                    datasets: [{ 
+                        data: [S, P, I, N], 
+                        backgroundColor: 'rgba(99,102,241,0.2)', 
+                        borderColor: '#6366f1', 
+                        pointBackgroundColor: '#818cf8', 
+                        borderWidth: 2 
+                    }] 
                 },
                 options: { 
-                    scales: { r: { min: 0, max: 10, angleLines: {color: '#1f2937'}, grid: {color: '#1f2937'}, pointLabels: {color: '#9ca3af', font: {size: 11, weight: 'bold'}} } }, 
+                    maintainAspectRatio: false,
+                    scales: { 
+                        r: { 
+                            min: 0, 
+                            max: 10, 
+                            angleLines: {color: '#1f2937'}, 
+                            grid: {color: '#1f2937'}, 
+                            pointLabels: {color: '#9ca3af', font: {size: 12, weight: 'bold'}, padding: 15},
+                            ticks: { display: false, stepSize: 2 } // Esconde os números do gráfico de radar
+                        } 
+                    }, 
                     plugins: { legend: {display: false} } 
                 }
             });
@@ -462,7 +493,14 @@
                     { label: 'SPIN', data: n_spin, borderColor: '#6366f1', backgroundColor: '#6366f1', tension: 0.3, borderWidth: 2, pointRadius: 3 },
                     { label: 'Conformidade', data: n_op, borderColor: '#a855f7', backgroundColor: '#a855f7', tension: 0.3, borderWidth: 2, pointRadius: 3 }
                 ]},
-                options: { maintainAspectRatio: false, scales: { y: { min: 0, max: 10, grid: {color: '#1f2937'} }, x: { grid: {color: '#1f2937'}, ticks: {display: false} } }, plugins: { legend: { position: 'bottom', labels: {color: '#9ca3af', boxWidth: 12} } } }
+                options: { 
+                    maintainAspectRatio: false, 
+                    scales: { 
+                        y: { min: 0, max: 10, grid: {color: '#1f2937'} }, 
+                        x: { grid: {color: '#1f2937'}, ticks: {display: false} } 
+                    }, 
+                    plugins: { legend: { position: 'bottom', labels: {color: '#9ca3af', boxWidth: 12} } } 
+                }
             });
         }
 
@@ -517,7 +555,7 @@
                 <div class="mb-8"><h3 class="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-comments"></i> Comunicação</h3>
                 ${itemHTML('Linguagem/Vícios', f.linguagem)}${itemHTML('Receptividade', f.receptividade)}${itemHTML('Rapport', f.rapport)}${itemHTML('Discurso e Tom', f.discurso)}${itemHTML('Clareza', f.clareza)}</div>
                 
-                <div><h3 class="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-check-double"></i> Regras de Ouro (${c.produto})</h3>
+                <div><h3 class="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-check-double"></i> Conformidade de Regras (${c.produto})</h3>
                 ${itemHTML('Coleta de SLA', f.sla)}${itemHTML('SPIN (3 etapas)', f.spin)}${itemHTML('Uso da Dor', f.dor)}${itemHTML('Gestão/Preço', f.gestao)}${itemHTML('Passos RO (Computador)', f.passos_ro)}${itemHTML('Venda do Produto', f.produto)}${itemHTML('Gatilhos Mentais', f.gatilhos)}</div>
             `;
 
