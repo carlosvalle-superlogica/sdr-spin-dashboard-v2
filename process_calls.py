@@ -120,9 +120,9 @@ def process_all_calls():
                     "{\"nota_spin\": 8.5, \"avaliacao\": \"texto\", \"sugestoes\": \"texto\"}"
                 )
 
-                # ATUALIZADO PARA O MODELO ATIVO DA API DO GROQ
+                # MODELO ATUALIZADO PARA LLAMA 3.3 DA LINHA PRINCIPAL DO GROQ
                 chat_completion = client.chat.completions.create(
-                    model="llama-3.1-70b-versatile",
+                    model="llama-3.3-70b-versatile",
                     messages=[
                         {"role": "system", "content": prompt_sistema},
                         {"role": "user", "content": f"Transcrição:\n\n{texto_ligacao}"}
