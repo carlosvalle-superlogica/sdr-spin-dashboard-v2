@@ -42,7 +42,7 @@
                 <i class="fa-solid fa-chart-pie w-5"></i> Visão Geral
             </button>
             <button onclick="switchTab('equipe')" id="menu-equipe" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium">
-                <i class="fa-solid fa-users w-5"></i> Visão SDR
+                <i class="fa-solid fa-users w-5"></i> Equipe SDR
             </button>
             <button onclick="switchTab('dash')" id="menu-dash" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium">
                 <i class="fa-solid fa-chart-line w-5"></i> Dashboard Analytics
@@ -142,7 +142,7 @@
             </div>
         </div>
 
-        <!-- ABA: VISÃO SDR -->
+        <!-- ABA: EQUIPE SDR -->
         <div id="tab-equipe" class="hidden space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="grid-equipe"></div>
         </div>
@@ -301,7 +301,7 @@
             
             const titles = { 
                 geral: "Visão Geral", 
-                equipe: "Visão SDR", 
+                equipe: "Equipe SDR", 
                 dash: "Dashboard Analytics", 
                 auditorias: "Histórico & Dossiês", 
                 playbooks: "Playbooks SPIN" 
@@ -387,7 +387,7 @@
             document.getElementById('media-wps').innerText = sumW.toFixed(2);
             document.getElementById('casos-criticos').innerText = listaCriticos.length;
 
-            // Renderiza Cards da Equipe (Agora na aba "Visão SDR")
+            // Renderiza Cards da Equipe (Na aba "Equipe SDR")
             const dictSDR = {};
             dados.forEach(c => { dictSDR[c.sdr] = dictSDR[c.sdr] || []; dictSDR[c.sdr].push(c); });
             const grid = document.getElementById('grid-equipe');
@@ -468,7 +468,7 @@
                             angleLines: {color: '#1f2937'}, 
                             grid: {color: '#1f2937'}, 
                             pointLabels: {color: '#9ca3af', font: {size: 12, weight: 'bold'}, padding: 15},
-                            ticks: { display: false, stepSize: 2 } // Esconde os números do gráfico de radar
+                            ticks: { display: false, stepSize: 2 } 
                         } 
                     }, 
                     plugins: { legend: {display: false} } 
