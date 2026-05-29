@@ -2,6 +2,9 @@ import os
 import csv
 import json
 import urllib.request
+import io
+import time
+import traceback
 from urllib.error import URLError, HTTPError
 from datetime import datetime
 from groq import Groq
@@ -11,7 +14,7 @@ from groq import Groq
 # ==========================================
 GROQ_KEY = os.environ.get("GROQ_API_KEY")
 if not GROQ_KEY:
-    raise ValueError("ERRO CRÍTICO: GROQ_API_KEY não encontrada nos Secrets do GitHub!")
+    raise ValueError("ERRO CRÍTICO: GROQ_API_KEY não encontrada nos Secrets do GitHub! Verifique o nome cadastrado.")
 
 # Inicializa o cliente do Groq
 client = Groq(api_key=GROQ_KEY)
@@ -36,14 +39,17 @@ def parse_date_to_year_month(date_str):
     if not date_str:
         return None, None
     try:
-        # Suporta formatos "2026-05-28 09:13" ou com "/ "
         clean_date = date_str.split()[0].replace('/', '-')
-        if '-' in clean_date:
-            parts = clean_date.split('-')
-            if len(parts[0]) == 4: # YYYY-MM-DD
+        parts = clean_date.split('-')
+        
+        # Garante que a data tem dia, mês e ano antes de tentar converter
+        if len(parts) == 3:
+            if len(parts[0]) == 4: # Formato: YYYY-MM-DD
                 dt = datetime.strptime(clean_date, "%Y-%m-%d")
-            else: # DD-MM-YYYY
+            else: # Formato: DD-MM-YYYY
                 dt = datetime.strptime(clean_date, "%d-%m-%Y")
+        else:
+            return None, None
         
         year = str(dt.year)
         month_names = [
@@ -53,7 +59,7 @@ def parse_date_to_year_month(date_str):
         month = month_names[dt.month - 1]
         return year, month
     except Exception as e:
-        print(f"Erro ao converter data '{date_str}': {e}")
+        print(f"Aviso: Falha ao converter a data '{date_str}': {e}")
         return None, None
 
 def clean_json_response(text):
@@ -96,14 +102,13 @@ def process_all_calls():
         reader = csv.DictReader(f)
         
         for row in reader:
-            # Mapeamento Inteligente (Aceita colunas em Português ou Inglês do HubSpot)
+            # Mapeamento de colunas (HubSpot PT/EN)
             call_id = row.get("Object ID") or row.get("ID do objeto")
             sdr_name = row.get("Activity assigned to") or row.get("Atividade atribuída a") or "SDR Não Identificado"
             date_str = row.get("Activity date") or row.get("Data da atividade")
             audio_url = row.get("Call recording URL") or row.get("URL de gravação")
             result = row.get("Call outcome") or row.get("Resultado da chamada")
 
-            # Filtro: Só analisa chamadas com áudio e válidas
             if not call_id or not audio_url:
                 continue
             
@@ -135,9 +140,9 @@ def process_all_calls():
                     with urllib.request.urlopen(req, timeout=45) as response:
                         audio_bytes = response.read()
 
-                    # ETAPA 1: Transcrição via Whisper
+                    # ETAPA 1: Transcrição via Whisper usando um arquivo virtual na memória (io.BytesIO)
                     transcription = client.audio.transcriptions.create(
-                        file=("audio.wav", audio_bytes),
+                        file=("audio.mp3", io.BytesIO(audio_bytes)),
                         model="whisper-large-v3",
                         response_format="json"
                     )
@@ -149,7 +154,7 @@ def process_all_calls():
                         messages=[
                             {
                                 "role": "system", 
-                                "content": f"{prompt_content}\n\nIMPORTANTE: Retorne APENAS um objeto JSON válido. Não inclua textos antes ou depois."
+                                "content": f"{prompt_content}\n\nIMPORTANTE: Retorne APENAS um objeto JSON válido. Não inclua textos explicativos antes ou depois."
                             },
                             {
                                 "role": "user", 
@@ -164,9 +169,13 @@ def process_all_calls():
                     
                     with open(saved_analysis_path, 'w', encoding='utf-8') as sf:
                         json.dump(analysis_data, sf, ensure_ascii=False, indent=2)
+                    
+                    # Pausa de segurança de 3 segundos para evitar bloqueio da API gratuita do Groq
+                    print("Análise salva. Pausando 3 segundos para respeitar limite da API...")
+                    time.sleep(3)
 
                 except Exception as e:
-                    print(f"Erro na chamada {call_id}: {e}")
+                    print(f"Erro no processamento da chamada {call_id}: {e}")
                     continue
 
             if analysis_data:
@@ -191,4 +200,9 @@ def process_all_calls():
     print("\n✅ SUCESSO: Banco de dados consolidado atualizado!")
 
 if __name__ == "__main__":
-    process_all_calls()
+    try:
+        process_all_calls()
+    except Exception as erro_critico:
+        print("\n❌ OCORREU UM ERRO CRÍTICO INDISPONÍVEL NO FLUXO PRINCIPAL:")
+        traceback.print_exc()
+        exit(1)
