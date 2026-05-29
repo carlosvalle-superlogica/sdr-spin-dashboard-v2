@@ -40,10 +40,10 @@ def parse_date_to_year_month(date_str):
         clean_date = date_str.split()[0].replace('/', '-')
         if '-' in clean_date:
             parts = clean_date.split('-')
-            if len(parts)[0] == 4: # YYYY-MM-DD
+            if len(parts[0]) == 4: # YYYY-MM-DD
                 dt = datetime.strptime(clean_date, "%Y-%m-%d")
             else: # DD-MM-YYYY
-                dt = datetime.strptime(clean_date, "%d-%m-%m")
+                dt = datetime.strptime(clean_date, "%d-%m-%Y")
         
         year = str(dt.year)
         month_names = [
@@ -135,7 +135,7 @@ def process_all_calls():
                     with urllib.request.urlopen(req, timeout=45) as response:
                         audio_bytes = response.read()
 
-                    # ETAPA 1: O Groq transcreve o áudio usando o Whisper
+                    # ETAPA 1: Transcrição via Whisper
                     transcription = client.audio.transcriptions.create(
                         file=("audio.wav", audio_bytes),
                         model="whisper-large-v3",
@@ -143,7 +143,7 @@ def process_all_calls():
                     )
                     texto_ligacao = transcription.text
 
-                    # ETAPA 2: O Groq analisa a transcrição com o Llama 3
+                    # ETAPA 2: Análise Comercial via Llama 3
                     chat_completion = client.chat.completions.create(
                         model="llama3-70b-8192",
                         messages=[
