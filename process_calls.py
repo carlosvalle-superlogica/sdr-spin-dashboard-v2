@@ -20,9 +20,9 @@ CSV_FILE = "dados_chamadas.csv"
 CONSOLIDATED_FILE = "consolidated_data.json"
 PORTAL_ID = "20131994"
 
-# Modelos ativos oficiais estáveis da API Groq
-MODELO_RAPIDO = "llama3-8b-8192"
-MODELO_PARERES = "llama3-70b-8192"
+# Modelos ativos oficiais estáveis da API Groq em 2026
+MODELO_RAPIDO = "llama-3.1-8b-instant"
+MODELO_PARERES = "llama-3.3-70b-versatile"
 
 # ==========================================
 # 2. SISTEMAS DE SEGURANÇA E MATEMÁTICA
@@ -259,7 +259,7 @@ def process_all_calls():
                 time.sleep(4)
 
                 # --------------------------------------------------
-                # AGENTE 3: O Diretor de Enablement (Consolidador Técnico)
+                # AGENTE 3: O Diretor de Enablement (Consolidador Técnico Llama 3.3 70B)
                 # --------------------------------------------------
                 print(" -> Executando Agente 3: Diagnóstico de Impacto e Feedbacks Imediatos...")
                 contexto_sintese = f"""
