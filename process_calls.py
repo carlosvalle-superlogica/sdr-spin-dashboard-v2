@@ -25,7 +25,7 @@ MODELO_RAPIDO = "llama-3.1-8b-instant"
 MODELO_PARERES = "llama-3.3-70b-versatile"
 
 # ==========================================
-# 2. SISTEMAS DE SEGURANÇA E MATEMÁTICA
+# 2. SISTEMAS DE SEGURANÇA E MATEMÁTICA RECALIBRADA
 # ==========================================
 def clean_json(text):
     """Garante a limpeza e extração apenas do objeto JSON retornado pelas APIs de LLM."""
@@ -64,28 +64,38 @@ def calcular_segundos(duracao_str):
     return 1
 
 def calcular_nota_operacional(op_data, erro_fatal):
-    """Executa a matemática rigorosa de pontuação com o peso do 'Não se Aplica' (+2 pontos)."""
+    """
+    MATEMÁTICA DE AUDITORIA DE TOLERÂNCIA ZERO:
+    - O SDR inicia com a nota máxima de 10.0 (Exigência de perfeição).
+    - O 'Sim' mantém a nota estável.
+    - O 'Não' indica quebra ativa de processo e penaliza agressivamente (-1.5 pontos).
+    - O 'N/A' indica omissão e penaliza (-0.5 pontos), EXCETO para 'objecoes' 
+      (pois se o cliente não fez objeção, o SDR não pode ser punido por isso).
+    """
     if erro_fatal: 
         return 0.0
 
-    # Bloco 1: Escuta e Adaptação (4 itens - 25% cada)
-    b1_chaves = ['escuta', 'validacao', 'compreensao', 'objecoes']
-    b1_sim = sum(1 for k in b1_chaves if op_data.get(k, {}).get('r') == 'Sim')
-    nota_b1 = (b1_sim / 4.0) * 100.0
+    # Consolidação estrita de todas as 17 chaves de checagem
+    todas_chaves = [
+        'escuta', 'validacao', 'compreensao', 'objecoes',
+        'linguagem', 'receptividade', 'rapport', 'discurso', 'compreensao_cliente', 'clareza',
+        'sla', 'spin', 'dor', 'gestao', 'passos_ro', 'produto', 'gatilhos'
+    ]
 
-    # Bloco 2: Comunicação Clara (6 itens - 16.6% cada)
-    b2_chaves = ['linguagem', 'receptividade', 'rapport', 'discurso', 'compreensao_cliente', 'clareza']
-    b2_sim = sum(1 for k in b2_chaves if op_data.get(k, {}).get('r') == 'Sim')
-    nota_b2 = (b2_sim / 6.0) * 100.0
+    # Contagem exata das falhas cometidas pelo SDR ao longo da ligação
+    total_nao = sum(1 for k in todas_chaves if op_data.get(k, {}).get('r') == 'Não')
+    
+    # Conta N/A para todas as chaves, exceto 'objecoes' para não punir chamadas perfeitamente lisas
+    total_na = sum(1 for k in todas_chaves if k != 'objecoes' and op_data.get(k, {}).get('r') == 'N/A')
 
-    # Bloco 3: Processo de Qualificação (7 itens - 14.3% por Sim, +2.0% por N/A)
-    b3_chaves = ['sla', 'spin', 'dor', 'gestao', 'passos_ro', 'produto', 'gatilhos']
-    b3_sim = sum(1 for k in b3_chaves if op_data.get(k, {}).get('r') == 'Sim')
-    b3_na = sum(1 for k in b3_chaves if op_data.get(k, {}).get('r') == 'N/A')
-    nota_b3 = (b3_sim * 14.3) + (b3_na * 2.0)
+    # Definição dos pesos de punição
+    PENALIDADE_NAO = 1.5  # Erro grave / Quebra de política comercial
+    PENALIDADE_NA = 0.5   # Omissão técnica / Deixou de colher informação
 
-    # Nota operacional final ponderada escalada de 0 a 10
-    nota_final = (nota_b1 + nota_b2 + nota_b3) / 30.0
+    # Cálculo dedutivo
+    nota_final = 10.0 - (total_nao * PENALIDADE_NAO) - (total_na * PENALIDADE_NA)
+    
+    # Clampa rigidamente o resultado entre o piso de 0.0 e o teto de 10.0
     return min(max(nota_final, 0.0), 10.0)
 
 def executar_chat_com_retentativa(model, messages, response_format, max_retries=5):
@@ -198,42 +208,47 @@ def process_all_calls():
                 # --------------------------------------------------
                 print(" -> Executando Agente 1: Auditoria de Processos...")
                 prompt_agente1 = f"""
-                Você é o Agente 1: Auditor de Processos Rígido. Sua missão é ler a transcrição e avaliar a Conformidade Operacional.
-                PROIBIDO INVENTAR OU COPIAR O EXEMPLO. Você DEVE julgar cada item verdadeiramente com base na transcrição.
+                Você é o Agente 1: Auditor de Processos Inflexível e Rígido. Sua missão é analisar a transcrição da chamada e julgar o cumprimento exato das políticas comerciais e de qualificação da empresa para o produto {produto_detectado}.
+                Seja agressivo, extremamente criterioso e intolerante com falhas. Menções vagas, superficiais ou desculpas aceitas passivamente pelo SDR DEVEM receber a marcação "Não".
 
-                CRITÉRIOS DE AVALIAÇÃO OBRIGATÓRIOS:
+                DIRETRIZES DE JULGAMENTO CIRÚRGICO (GABARITO DE CONFORMIDADE):
+                
                 [1. ESCUTA E ADAPTAÇÃO]
-                - escuta: O SDR ouviu o cliente sem interrupções bruscas?
-                - validacao: O SDR confirmou as respostas do cliente (ex: "Então o seu cenário atual é...")?
-                - compreensao: O SDR entendeu o contexto de primeira, sem fazer a mesma pergunta duas vezes?
-                - objecoes: O SDR conseguiu contornar objeções de forma inteligente? (Marque "N/A" se não houve objeção).
+                - escuta: Marque "Sim" apenas se o SDR ouviu as dores sem cortar o raciocínio do cliente. Se o SDR atropelou ou ignorou uma fala importante, marque "Não".
+                - validacao: Marque "Sim" se o SDR ancorou o problema do cliente antes de seguir em frente (ex: "Entendi, então o seu principal gargalo hoje é o controle manual, correto?"). Se ele agiu como um mero leitor de questionário, marque "Não".
+                - compreensao: O SDR entendeu o contexto de primeira. Se ele repetiu uma pergunta que o lead já tinha respondido antes por falta de atenção, marque "Não".
+                - objecoes: Como o SDR lidou com barreiras? Se o lead trouxe uma objeção (tempo, dinheiro, sistema atual) e o SDR contornou com argumento técnico, marque "Sim". Se o lead aceitou passivamente a barreira e recuou, marque "Não". Marque "N/A" apenas se a conversa correu 100% lisa sem nenhuma objeção do lead.
 
                 [2. COMUNICAÇÃO]
-                - linguagem: O SDR usou vocabulário profissional, sem vícios de linguagem excessivos (né, tipo, tá)?
-                - receptividade: O SDR foi cordial, receptivo e enérgico no tom de voz?
-                - rapport: O SDR gerou uma conexão inicial genuína em vez de parecer um robô lendo roteiro?
-                - discurso: O tom de voz transmitiu firmeza e autoridade?
-                - compreensao_cliente: O cliente demonstrou entender o SDR sem pedir para repetir?
-                - clareza: As perguntas do SDR foram diretas, claras e fáceis de responder?
+                - linguagem: Uso de vocabulário corporativo limpo. Se o SDR abusou de gírias ou vícios de linguagem excessivos e irritantes (tipo, né, tá, aham, saca), marque "Não".
+                - receptividade: Tom de voz cordial, consultivo e enérgico. Se demonstrou desânimo, pressa ou tédio, marque "Não".
+                - rapport: Conexão real. Se o SDR usou uma abordagem empática inicial baseada no que o lead falou, marque "Sim". Se pareceu um robô de telemarketing operando um script engessado, marque "Não".
+                - discurso: Demonstrou autoridade. O SDR se posicionou como um especialista que entende do mercado do cliente?
+                - compreensao_cliente: O cliente entendeu as explicações do SDR de primeira, sem demonstrar confusão ou pedir para reexplicar?
+                - clareza: Perguntas diretas e limpas. Se o SDR fez perguntas duplas, confusas ou prolixas que o cliente demorou para entender, marque "Não".
 
-                [3. PROCESSO DE QUALIFICAÇÃO]
-                - sla: O SDR qualificou o SLA mínimo? (ERP exige saber qtde de contratos e bancos. CRM exige corretores e CRECI).
-                - spin: O SDR fez perguntas investigativas em vez de fazer apenas um monólogo de vendas?
-                - dor: O SDR conseguiu identificar uma dor real ou problema na operação do cliente?
-                - gestao: O SDR mapeou se o lead é o decisor final ou envolveu a gestão?
-                - passos_ro: O SDR garantiu que o lead vai estar na frente de um COMPUTADOR na próxima reunião?
-                - produto: O SDR explicou de forma breve o valor do {produto_detectado}?
-                - gatilhos: O SDR utilizou gatilhos de urgência ou autoridade no agendamento?
+                [3. PROCESSO E POLÍTICAS DE QUALIFICAÇÃO]
+                - sla: INVESTIGAÇÃO COMPLETA DOS DADOS DE SLA. 
+                  * Para {produto_detectado} CRM: O SDR OBRIGATORIAMENTE precisa extrair o Número de Corretores E a existência/situação do CRECI da imobiliária.
+                  * Para {produto_detectado} ERP: O SDR OBRIGATORIAMENTE precisa extrair a Quantidade de Contratos Ativos E os Bancos com os quais o cliente opera.
+                  Se o SDR esqueceu ou deixou de perguntar QUALQUER um desses dois dados específicos do produto correspondente, marque "Não".
+                - spin: Investigação profunda. O SDR explorou o problema do cliente fazendo perguntas de causa ou o SDR fez um monólogo falando apenas da nossa empresa?
+                - dor: Identificação da raiz do problema. O lead confessou um impacto ou gargalo real na operação? (Se o SDR aceitou um "está tudo bem, só quero conhecer", marque "Não").
+                - gestao: Mapeamento de Decisão. O SDR validou quem toma a decisão final ou se existem outros sócios/diretores envolvidos no processo?
+                - passos_ro (COMPROMISSO ESTREITO DE COMPUTADOR): Esta é a nossa política de demonstração mais crítica. O SDR precisa firmar o compromisso explícito de que o lead estará na frente de um COMPUTADOR (Desktop/Laptop). Se o lead disse "vou tentar", "acho que sim", "vou estar dirigindo", "posso ver pelo celular" ou se o SDR apenas fez uma menção morna e aceitou uma resposta incerta, marque "Não". Exija confirmação verbal clara do lead de estar na frente de um computador.
+                - produto: O SDR apresentou um gancho de valor personalizado conectando o {produto_detectado} diretamente à dor que o lead acabou de confessar?
+                - gatilhos: O SDR gerou senso de urgência ou escassez de agenda para valorizar o horário com o especialista?
 
-                REGRAS DE ERRO FATAL (Se violadas, marque "erro_fatal": true):
-                - {produto_detectado} ERP: Passar preço do sistema ou aceitar agendar com lead que tem 0 contratos.
-                - {produto_detectado} CRM: Passar preço do sistema ou aceitar agendar com lead sem CRECI.
+                REGRAS DE VIOLAÇÃO DE POLÍTICA (ERRO FATAL):
+                Você DEVE marcar "erro_fatal": true se o SDR cometer qualquer uma das infrações abaixo:
+                1. PREÇO: Se o SDR violou a política de sigilo de valores e passou preços, tabelas, estimativas financeiras, taxas ou valores mensais (ex: "custa a partir de R$...", "fica na faixa de X").
+                2. AGENDAMENTO DE LEAD INVÁLIDO: Se o SDR aceitou agendar a reunião com um lead que NÃO possui os critérios mínimos do produto (Para CRM: lead com 0 corretores ou sem CRECI definitivo/em andamento. Para ERP: lead com 0 contratos ativos).
 
-                Retorne OBRIGATORIAMENTE este formato JSON preenchendo o "r" APENAS com "Sim", "Não" ou "N/A":
+                Retorne OBRIGATORIAMENTE este formato JSON preenchendo o campo "r" APENAS com "Sim", "Não" ou "N/A":
                 {{
                   "erro_fatal": false,
                   "operacional": {{
-                    "escuta": {{"r": "[Sim/Não/N/A]", "e": "Extraia a frase da transcrição que prova isso"}},
+                    "escuta": {{"r": "[Sim/Não/N/A]", "e": "Frase exata extraída da transcrição que comprova o seu julgamento rigoroso"}},
                     "validacao": {{"r": "[Sim/Não/N/A]", "e": "Evidência"}},
                     "compreensao": {{"r": "[Sim/Não/N/A]", "e": "Evidência"}},
                     "objecoes": {{"r": "[Sim/Não/N/A]", "e": "Evidência"}},
@@ -345,7 +360,7 @@ def process_all_calls():
                     "transcricao": texto
                 }
                 
-                with open(CONSOLIDATED_FILE, 'w', encoding='utf-8') as sf:
+                with open(CONSOLIDATED_FILE, 'w', encoding='utf-8', errors='ignore') as sf:
                     json.dump(db, sf, ensure_ascii=False, indent=4)
                 
                 print(f"✅ Auditoria Finalizada! SPIN: {nota_spin:.1f} | Conformidade: {nota_op:.1f} | Alerta: {urgencia}")
