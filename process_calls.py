@@ -247,29 +247,31 @@ def process_all_calls():
                 - produto: Conectou a solução tecnológica à dor do cliente de forma inteligente?
                 - gatilhos: Gerou valor e urgência de agenda para o próximo agendamento?
 
-                REGRAS DE ERRO FATAL: Marque "erro_fatal": true APENAS se o SDR quebrar o sigilo e passar preço ou se agendar a reunião com leads totalmente fora de perfil (Zero contratos ou Zero corretores).
+                REGRAS DE ERRO FATAL E JSON: 
+                - Marque "erro_fatal": true APENAS se o SDR quebrar o sigilo e passar preço ou agendar reunião com lead fora de perfil.
+                - 🚨 NUNCA use aspas duplas (") dentro das suas frases de "Evidência". Use sempre aspas simples (').
 
                 Retorne OBRIGATORIAMENTE o JSON preenchendo "r" com "Sim", "Não" ou "N/A":
                 {{
                   "erro_fatal": false,
                   "operacional": {{
-                    "escuta": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}}, 
-                    "validacao": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}},
-                    "compreensao": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}}, 
-                    "objecoes": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}},
-                    "linguagem": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}}, 
-                    "receptividade": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}},
-                    "rapport": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}}, 
-                    "discurso": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}},
-                    "compreensao_cliente": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}}, 
-                    "clareza": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}},
-                    "sla": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}}, 
-                    "spin": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}},
-                    "dor": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}}, 
-                    "gestao": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}},
-                    "passos_ro": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}}, 
-                    "produto": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}},
-                    "gatilhos": {{"r": "[Sim/Não/N/A]", "e": "Evidência real"}}
+                    "escuta": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}}, 
+                    "validacao": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}},
+                    "compreensao": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}}, 
+                    "objecoes": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}},
+                    "linguagem": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}}, 
+                    "receptividade": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}},
+                    "rapport": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}}, 
+                    "discurso": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}},
+                    "compreensao_cliente": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}}, 
+                    "clareza": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}},
+                    "sla": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}}, 
+                    "spin": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}},
+                    "dor": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}}, 
+                    "gestao": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}},
+                    "passos_ro": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}}, 
+                    "produto": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}},
+                    "gatilhos": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}}
                   }}
                 }}
                 """
@@ -293,10 +295,12 @@ def process_all_calls():
                 - Notas 5.0 a 8.5: SEJA FLEXÍVEL. Se o SDR tentou investigar, fez perguntas para identificar o problema e manteve a conversa fluindo de forma minimamente investigativa (mesmo que não tenha sido o SPIN perfeito dos livros), dê notas intermediárias boas para recompensar e validar o esforço técnico.
                 - Notas 0.0 a 4.5: Use apenas se o SDR foi totalmente reativo, raso ou apenas leu perguntas engessadas de "Situação" como um robô, sem criar nenhum tipo de valor para a dor do cliente.
 
+                🚨 REGRA DE FORMATAÇÃO: NUNCA use aspas duplas (") na sua justificativa, pois quebra o JSON. Use apenas aspas simples (').
+
                 Responda estritamente neste formato JSON:
                 {{
                   "spin_scores": {{"s": 5.0, "p": 6.5, "i": 4.0, "n": 3.0}},
-                  "analise_autoridade": "Breve justificativa técnica avaliando a postura do vendedor."
+                  "analise_autoridade": "Breve justificativa técnica avaliando a postura do vendedor usando aspas simples se precisar."
                 }}
                 """
                 chat2 = executar_chat_com_retentativa(
@@ -319,6 +323,10 @@ def process_all_calls():
                 É EXPRESSAMENTE PROIBIDO usar palavras vazias e burocráticas como "você não seguiu o playbook", "você ignorou o roteiro", "faltou sequência lógica" ou "não seguiu as diretrizes". 
                 Se você apontar um erro, VOCÊ DEVE OBRIGATORIAMENTE FORNECER A FALA EXATA que o vendedor deveria ter usado no lugar, como um treinador entregando uma receita prática de vendas.
 
+                🚨 REGRA CRÍTICA DE FORMATAÇÃO JSON (ANTI-ERRO):
+                É EXPRESSAMENTE PROIBIDO usar aspas duplas (") dentro dos seus textos gerados. O uso de aspas duplas quebra a estrutura do banco de dados JSON.
+                Se precisar citar uma fala do cliente ou do vendedor, use APENAS ASPAS SIMPLES ('). Exemplo correto: o cliente disse 'foi uma porcaria'.
+
                 Estruture SUA resposta OBRIGATORIAMENTE com estes tópicos em Markdown:
 
                 ### 1. PARECER E POSTURA CONSULTIVA
@@ -336,8 +344,8 @@ def process_all_calls():
 
                 Responda estritamente neste formato JSON:
                 {{
-                  "parecer_executivo": "O texto completo respeitando fielmente os títulos em Markdown solicitados acima.",
-                  "plano_de_acao_curto": "A pergunta exata ou a postura única que ele deve treinar para a próxima ligação."
+                  "parecer_executivo": "O texto completo respeitando fielmente os títulos em Markdown solicitados acima e sem usar aspas duplas.",
+                  "plano_de_acao_curto": "A pergunta exata ou a postura única que ele deve treinar para a próxima ligação, sem usar aspas duplas."
                 }}
                 """
                 chat3 = executar_chat_com_retentativa(
