@@ -3,290 +3,308 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | Auditoria Comercial</title>
+    <title>Superlógica | Sales Audit Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
-        body { background-color: #0b0f19; color: #f3f4f6; font-family: 'Inter', sans-serif; }
-        .sidebar-active { background: linear-gradient(90deg, rgba(99,102,241,0.15), transparent); border-left: 4px solid #6366f1; color: #fff; }
-        .card-dark { background-color: #111827; border: 1px solid #1f2937; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
-        .badge-sim { background: rgba(16,185,129,0.1); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
-        .badge-nao { background: rgba(244,63,94,0.1); color: #fb7185; border: 1px solid rgba(244,63,94,0.3); }
-        .badge-na { background: rgba(107,114,128,0.1); color: #9ca3af; border: 1px solid rgba(107,114,128,0.3); }
+        body { background-color: #f8fafc; color: #1e293b; font-family: 'Inter', sans-serif; }
+        .sidebar-active { background-color: #eef2ff; border-left: 4px solid #4f46e5; color: #4f46e5; font-weight: 600; }
+        .sidebar-inactive { color: #64748b; font-weight: 500; }
+        .sidebar-inactive:hover { background-color: #f1f5f9; color: #0f172a; }
         
-        /* Regras estritas de quebra de página para o PDF */
+        .card-light { background-color: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        .badge-sim { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+        .badge-nao { background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; }
+        .badge-na { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+        
         .pdf-no-break { page-break-inside: avoid !important; break-inside: avoid !important; }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden">
+<body class="flex h-screen overflow-hidden selection:bg-indigo-100 selection:text-indigo-900">
 
-    <div class="w-64 card-dark h-full flex flex-col p-4 border-r border-gray-800 flex-shrink-0">
-        <div class="flex items-center gap-3 py-4 border-b border-gray-800 mb-6">
-            <div class="bg-indigo-600 p-2 rounded-xl text-white font-black text-xl w-10 h-10 flex items-center justify-center">S</div>
-            <div>
-                <span class="text-lg font-bold text-white block leading-none">Superlógica</span>
-                <span class="text-[10px] text-gray-500 font-semibold uppercase tracking-widest mt-1 block">Sales Audit</span>
-            </div>
+    <div class="w-64 bg-white h-full flex flex-col p-4 border-r border-slate-200 flex-shrink-0 z-20 shadow-sm">
+        <div class="flex items-center gap-3 py-4 border-b border-slate-100 mb-6 px-2">
+            <img src="logo.png" alt="Superlógica Imobi" class="h-8 w-auto object-contain" onerror="this.outerHTML='<div class=\'text-xl font-black text-indigo-600 tracking-tighter\'>Superlógica</div>'">
         </div>
-        <nav class="space-y-1">
-            <button onclick="switchTab('geral')" id="menu-geral" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition sidebar-active font-medium">
-                <i class="fa-solid fa-chart-pie w-5"></i> Visão Geral
+        
+        <nav class="space-y-1.5 flex-1">
+            <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold ml-4 mb-2 block mt-2">Menu Principal</span>
+            <button onclick="switchTab('geral')" id="menu-geral" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition sidebar-active">
+                <i class="fa-solid fa-chart-pie w-5 text-center"></i> Visão Geral
             </button>
-            <button onclick="switchTab('equipe')" id="menu-equipe" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium">
-                <i class="fa-solid fa-users w-5"></i> Equipe SDR
+            <button onclick="switchTab('equipe')" id="menu-equipe" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition sidebar-inactive">
+                <i class="fa-solid fa-users w-5 text-center"></i> Equipe SDR
             </button>
-            <button onclick="switchTab('dash')" id="menu-dash" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium">
-                <i class="fa-solid fa-chart-line w-5"></i> Dashboard Analytics
+            <button onclick="switchTab('dash')" id="menu-dash" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition sidebar-inactive">
+                <i class="fa-solid fa-chart-line w-5 text-center"></i> Analytics
             </button>
-            <button onclick="switchTab('auditorias')" id="menu-auditorias" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium">
-                <i class="fa-solid fa-list-check w-5"></i> Histórico & Dossiês
+            <button onclick="switchTab('auditorias')" id="menu-auditorias" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition sidebar-inactive">
+                <i class="fa-solid fa-folder-open w-5 text-center"></i> Dossiês
             </button>
-            <button onclick="switchTab('playbooks')" id="menu-playbooks" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:text-white transition font-medium">
-                <i class="fa-solid fa-book-open w-5"></i> Playbooks SPIN
+            
+            <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold ml-4 mb-2 block mt-8">Treinamento</span>
+            <button onclick="switchTab('playbooks')" id="menu-playbooks" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition sidebar-inactive">
+                <i class="fa-solid fa-book-bookmark w-5 text-center"></i> Playbooks SPIN
             </button>
         </nav>
+        
+        <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 mt-auto text-center">
+            <i class="fa-solid fa-shield-halved text-indigo-400 text-2xl mb-2"></i>
+            <p class="text-xs font-semibold text-slate-600">Auditoria Blindada</p>
+            <p class="text-[10px] text-slate-400 mt-1">IA de Alta Performance</p>
+        </div>
     </div>
 
-    <div class="flex-1 flex flex-col overflow-y-auto p-8 custom-scrollbar">
+    <div class="flex-1 flex flex-col overflow-y-auto p-8 lg:p-10 custom-scrollbar relative">
         
-        <div class="flex justify-between items-start mb-8 flex-shrink-0">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 flex-shrink-0">
             <div>
                 <div class="flex items-center gap-3">
-                    <h1 id="page-title" class="text-3xl font-extrabold text-white tracking-tight">Visão Geral</h1>
-                    <div class="hidden md:flex bg-indigo-950/40 text-indigo-400 border border-indigo-900/60 px-3 py-1 rounded-full text-[10px] font-bold items-center gap-1.5 shadow-inner">
-                        <span class="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-pulse"></span> Sincronizado
+                    <h1 id="page-title" class="text-3xl font-extrabold text-slate-900 tracking-tight">Visão Geral</h1>
+                    <div class="hidden md:flex bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full text-[10px] font-bold items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span> Sistema Ativo
                     </div>
                 </div>
-                <p class="text-sm text-gray-400 mt-1">Conformidade Operacional vs Técnica SPIN.</p>
+                <p class="text-sm text-slate-500 mt-1 font-medium">Auditoria operacional e inteligência de vendas em tempo real.</p>
             </div>
             <div class="flex gap-4">
-                <div class="w-64">
-                    <label class="text-[10px] uppercase text-gray-500 font-bold block mb-1">Período Analisado</label>
+                <div class="w-56">
+                    <label class="text-[10px] uppercase text-slate-500 font-bold block mb-1.5 tracking-wider">Período Analisado</label>
                     <div class="relative">
-                        <i class="fa-solid fa-calendar-day absolute left-3 top-3 text-indigo-400"></i>
-                        <input type="text" id="date-range" class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg pl-9 p-2 text-sm focus:border-indigo-500 focus:outline-none cursor-pointer" placeholder="Todo o Histórico">
+                        <i class="fa-regular fa-calendar absolute left-3 top-2.5 text-slate-400"></i>
+                        <input type="text" id="date-range" class="w-full bg-white border border-slate-300 text-slate-700 rounded-lg pl-9 p-2 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none cursor-pointer shadow-sm transition" placeholder="Todo o Histórico">
                     </div>
                 </div>
-                <div class="w-56">
-                    <label class="text-[10px] uppercase text-gray-500 font-bold block mb-1">Filtro de Equipe</label>
-                    <select id="filter-sdr" onchange="applyFilters()" class="w-full bg-gray-900 border border-gray-700 text-white rounded-lg p-2 text-sm focus:border-indigo-500 focus:outline-none cursor-pointer">
+                <div class="w-48">
+                    <label class="text-[10px] uppercase text-slate-500 font-bold block mb-1.5 tracking-wider">Filtro de SDR</label>
+                    <select id="filter-sdr" onchange="applyFilters()" class="w-full bg-white border border-slate-300 text-slate-700 rounded-lg p-2 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 focus:outline-none cursor-pointer shadow-sm transition">
                         <option value="todos">Toda a Equipe</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <div id="tab-geral" class="space-y-6">
+        <div id="tab-geral" class="space-y-8 animate-fade-in">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="card-dark p-6 rounded-xl shadow-lg border-l-4 border-indigo-500 relative overflow-hidden">
-                    <span class="text-[10px] uppercase text-gray-400 font-bold tracking-wider block">Nota Média SPIN</span>
-                    <h2 id="media-spin" class="text-4xl font-black text-white mt-2">0.0</h2>
-                    <i class="fa-solid fa-star absolute right-4 bottom-4 text-3xl text-gray-800/50"></i>
+                <div class="card-light p-6 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition duration-300"><i class="fa-solid fa-star text-5xl text-indigo-600"></i></div>
+                    <span class="text-xs uppercase text-slate-500 font-bold tracking-widest block">Média SPIN</span>
+                    <h2 id="media-spin" class="text-4xl font-black text-slate-800 mt-2">0.0</h2>
+                    <p class="text-[10px] text-slate-400 mt-2 font-medium">Aderência à Metodologia</p>
                 </div>
-                <div class="card-dark p-6 rounded-xl shadow-lg border-l-4 border-purple-500 relative overflow-hidden">
-                    <span class="text-[10px] uppercase text-gray-400 font-bold tracking-wider block">Conformidade</span>
-                    <h2 id="media-op" class="text-4xl font-black text-white mt-2">0.0</h2>
-                    <i class="fa-solid fa-clipboard-check absolute right-4 bottom-4 text-3xl text-gray-800/50"></i>
+                <div class="card-light p-6 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition duration-300"><i class="fa-solid fa-clipboard-check text-5xl text-purple-600"></i></div>
+                    <span class="text-xs uppercase text-slate-500 font-bold tracking-widest block">Conformidade</span>
+                    <h2 id="media-op" class="text-4xl font-black text-slate-800 mt-2">0.0</h2>
+                    <p class="text-[10px] text-slate-400 mt-2 font-medium">Execução de Processos</p>
                 </div>
-                <div class="card-dark p-6 rounded-xl shadow-lg border-l-4 border-emerald-500 relative overflow-hidden">
-                    <span class="text-[10px] uppercase text-gray-400 font-bold tracking-wider block">Ritmo de Fala (WPS)</span>
-                    <h2 id="media-wps" class="text-4xl font-black text-emerald-400 mt-2">0.0 <span class="text-sm font-medium text-gray-500">pal/s</span></h2>
-                    <i class="fa-solid fa-stopwatch absolute right-4 bottom-4 text-3xl text-gray-800/50"></i>
+                <div class="card-light p-6 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition duration-300"><i class="fa-solid fa-stopwatch text-5xl text-emerald-600"></i></div>
+                    <span class="text-xs uppercase text-slate-500 font-bold tracking-widest block">Ritmo (WPS)</span>
+                    <h2 id="media-wps" class="text-4xl font-black text-slate-800 mt-2 flex items-baseline gap-1">0.0 <span class="text-sm font-semibold text-slate-400">pal/s</span></h2>
+                    <p class="text-[10px] text-slate-400 mt-2 font-medium">Velocidade de Fala</p>
                 </div>
-                <div class="card-dark p-6 rounded-xl shadow-lg bg-amber-950/10 border border-amber-900/30 relative overflow-hidden">
-                    <span class="text-[10px] uppercase text-amber-400 font-bold tracking-wider block flex items-center gap-1.5">
-                        <i class="fa-solid fa-triangle-exclamation"></i> Chamadas para Ajuste
-                    </span>
-                    <h2 id="casos-criticos" class="text-4xl font-black text-amber-500 mt-2">0</h2>
-                    <i class="fa-solid fa-sliders absolute right-4 bottom-4 text-3xl text-amber-900/20"></i>
+                <div class="card-light p-6 rounded-2xl border-l-4 border-amber-400 relative overflow-hidden bg-amber-50/30 group">
+                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition duration-300"><i class="fa-solid fa-triangle-exclamation text-5xl text-amber-600"></i></div>
+                    <span class="text-xs uppercase text-amber-600 font-bold tracking-widest block">Para Ajuste</span>
+                    <h2 id="casos-criticos" class="text-4xl font-black text-slate-800 mt-2">0</h2>
+                    <p class="text-[10px] text-amber-600/70 mt-2 font-semibold">Feedbacks Pendentes</p>
                 </div>
             </div>
 
-            <div class="card-dark p-6 rounded-xl mt-6 shadow-lg border border-gray-800">
-                <div class="flex justify-between items-center mb-5 border-b border-gray-800 pb-3">
-                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> Central de Ajustes e Feedback
-                    </h3>
-                    <span class="text-xs text-gray-400 font-medium bg-gray-900 px-3 py-1 rounded-full border border-gray-800">Contatos que necessitam de calibração de roteiro</span>
+            <div class="card-light rounded-2xl overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-white">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-check text-indigo-500"></i> Central de Ajustes e Feedback
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-1 font-medium">Lotes de ligações que necessitam de calibração de roteiro.</p>
+                    </div>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="border-b border-gray-800 weeds-gray-500 text-[10px] font-bold uppercase tracking-widest">
-                                <th class="pb-3">SDR Responsável</th>
-                                <th class="pb-3">Data</th>
-                                <th class="pb-3 text-center">Produto</th>
-                                <th class="pb-3">Motivo do Alerta</th>
-                                <th class="pb-3 text-right pr-2">Ação</th>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+                                <th class="p-4 whitespace-nowrap">SDR Responsável</th>
+                                <th class="p-4 whitespace-nowrap">Data</th>
+                                <th class="p-4 text-center whitespace-nowrap">Produto</th>
+                                <th class="p-4 whitespace-nowrap">Motivo do Alerta</th>
+                                <th class="p-4 text-right pr-6 whitespace-nowrap">Ação</th>
                             </tr>
                         </thead>
-                        <tbody id="tabela-criticos" class="text-sm divide-y divide-gray-800/60"></tbody>
+                        <tbody id="tabela-criticos" class="text-sm divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <div id="tab-equipe" class="hidden space-y-6">
+        <div id="tab-equipe" class="hidden space-y-8 animate-fade-in">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="grid-cards-sdr"></div>
             
-            <div id="container-tabela-equipe" class="hidden card-dark p-6 rounded-xl shadow-lg mt-6 border-t-4 border-indigo-500">
-                <div class="flex justify-between items-center mb-6 border-b border-gray-800 pb-4">
+            <div id="container-tabela-equipe" class="hidden card-light rounded-2xl overflow-hidden mt-8 border-t-4 border-indigo-500">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-white">
                     <div>
-                        <h3 id="titulo-tabela-equipe" class="text-xl font-black text-white flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-indigo-400"></i> Histórico de Chamadas
+                        <h3 id="titulo-tabela-equipe" class="text-lg font-bold text-slate-800 flex items-center gap-2">
+                            <i class="fa-solid fa-user-clock text-indigo-500"></i> Histórico do Colaborador
                         </h3>
-                        <p class="text-xs text-gray-500 mt-1">Lista filtrada exclusivamente para este SDR.</p>
+                        <p class="text-xs text-slate-500 mt-1 font-medium">Dossiê completo filtrado por vendedor.</p>
                     </div>
-                    <button onclick="document.getElementById('filter-sdr').value='todos'; applyFilters();" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold px-4 py-2 rounded-lg border border-gray-700 transition flex items-center gap-2 shadow">
-                        <i class="fa-solid fa-arrow-left"></i> Voltar à Visão Geral
+                    <button onclick="document.getElementById('filter-sdr').value='todos'; applyFilters();" class="text-xs bg-white hover:bg-slate-50 text-slate-600 font-semibold px-4 py-2 rounded-lg border border-slate-300 transition flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-arrow-left"></i> Ver Todos
                     </button>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="border-b border-gray-800 text-gray-400 text-xs font-bold uppercase tracking-wider">
-                                <th class="pb-3 pl-2">Data</th>
-                                <th class="pb-3">SDR</th>
-                                <th class="pb-3 text-center">Produto</th>
-                                <th class="pb-3 text-center">Ritmo (WPS)</th>
-                                <th class="pb-3 text-center">SPIN</th>
-                                <th class="pb-3 text-center">Conformidade</th>
-                                <th class="pb-3 text-right pr-2">Auditoria</th>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+                                <th class="p-4 pl-6">Data</th>
+                                <th class="p-4">SDR</th>
+                                <th class="p-4 text-center">Produto</th>
+                                <th class="p-4 text-center">WPS</th>
+                                <th class="p-4 text-center">SPIN</th>
+                                <th class="p-4 text-center">Conformidade</th>
+                                <th class="p-4 text-right pr-6">Auditoria</th>
                             </tr>
                         </thead>
-                        <tbody id="tabela-sdr-equipe" class="text-sm divide-y divide-gray-800"></tbody>
+                        <tbody id="tabela-sdr-equipe" class="text-sm divide-y divide-slate-100"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <div id="tab-dash" class="hidden space-y-6">
-            <div class="flex flex-col gap-6">
-                <div class="card-dark p-8 rounded-xl shadow-lg flex flex-col items-center">
-                    <h3 class="text-base font-bold text-white mb-6 self-start flex items-center">
-                        <i class="fa-solid fa-chart-radar text-indigo-400 mr-2"></i>Aderência Metodológica (SPIN)
+        <div id="tab-dash" class="hidden space-y-8 animate-fade-in">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="card-light p-8 rounded-2xl flex flex-col items-center">
+                    <h3 class="text-sm font-bold text-slate-800 mb-6 self-start flex items-center uppercase tracking-wider">
+                        <i class="fa-solid fa-chart-radar text-indigo-500 mr-2"></i> Aderência Metodológica (SPIN)
                     </h3>
-                    <div class="w-full max-w-[600px] h-[350px] relative">
+                    <div class="w-full max-w-[450px] aspect-square relative">
                         <canvas id="spiderChart"></canvas>
                     </div>
-                    <div class="w-full max-w-[800px] mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-gray-800 pt-6">
-                        <div class="flex flex-col items-center p-3 bg-gray-900/50 rounded-lg border border-gray-800">
-                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px] mb-1">Situação (S)</span>
-                            <span id="rx-s" class="text-indigo-400 font-black text-xl">0.0</span>
+                    <div class="w-full mt-8 grid grid-cols-4 gap-3 border-t border-slate-100 pt-6">
+                        <div class="flex flex-col items-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <span class="text-slate-400 font-bold uppercase tracking-wider text-[9px] mb-1">Situação</span>
+                            <span id="rx-s" class="text-indigo-600 font-black text-lg">0.0</span>
                         </div>
-                        <div class="flex flex-col items-center p-3 bg-gray-900/50 rounded-lg border border-gray-800">
-                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px] mb-1">Problema (P)</span>
-                            <span id="rx-p" class="text-indigo-400 font-black text-xl">0.0</span>
+                        <div class="flex flex-col items-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <span class="text-slate-400 font-bold uppercase tracking-wider text-[9px] mb-1">Problema</span>
+                            <span id="rx-p" class="text-indigo-600 font-black text-lg">0.0</span>
                         </div>
-                        <div class="flex flex-col items-center p-3 bg-gray-900/50 rounded-lg border border-gray-800">
-                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px] mb-1">Implicação (I)</span>
-                            <span id="rx-i" class="text-indigo-400 font-black text-xl">0.0</span>
+                        <div class="flex flex-col items-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <span class="text-slate-400 font-bold uppercase tracking-wider text-[9px] mb-1">Implicação</span>
+                            <span id="rx-i" class="text-indigo-600 font-black text-lg">0.0</span>
                         </div>
-                        <div class="flex flex-col items-center p-3 bg-gray-900/50 rounded-lg border border-gray-800">
-                            <span class="text-gray-400 font-bold uppercase tracking-wider text-[10px] mb-1">Necessidade (N)</span>
-                            <span id="rx-n" class="text-indigo-400 font-black text-xl">0.0</span>
+                        <div class="flex flex-col items-center p-3 bg-slate-50 rounded-xl border border-slate-100">
+                            <span class="text-slate-400 font-bold uppercase tracking-wider text-[9px] mb-1">Necessidade</span>
+                            <span id="rx-n" class="text-indigo-600 font-black text-lg">0.0</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-dark p-8 rounded-xl shadow-lg flex flex-col h-[500px]">
-                    <h3 class="text-base font-bold text-white mb-6 flex items-center">
-                        <i class="fa-solid fa-arrow-trend-up text-purple-400 mr-2"></i>Evolução Temporal: Técnica vs Processo
+                <div class="card-light p-8 rounded-2xl flex flex-col">
+                    <h3 class="text-sm font-bold text-slate-800 mb-6 flex items-center uppercase tracking-wider">
+                        <i class="fa-solid fa-arrow-trend-up text-purple-500 mr-2"></i> Evolução Temporal Global
                     </h3>
-                    <div class="w-full flex-1 relative">
+                    <div class="w-full flex-1 relative min-h-[300px]">
                         <canvas id="lineChart"></canvas>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="tab-auditorias" class="hidden card-dark p-6 rounded-xl shadow-lg">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="border-b border-gray-800 text-gray-400 text-xs font-bold uppercase tracking-wider">
-                            <th class="pb-3 pl-2">Data</th>
-                            <th class="pb-3">SDR</th>
-                            <th class="pb-3 text-center">Produto</th>
-                            <th class="pb-3 text-center">Ritmo (WPS)</th>
-                            <th class="pb-3 text-center">SPIN</th>
-                            <th class="pb-3 text-center">Conformidade</th>
-                            <th class="pb-3 text-right pr-2">Auditoria</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabela-historico" class="text-sm divide-y divide-gray-800"></tbody>
-                </table>
+        <div id="tab-auditorias" class="hidden animate-fade-in">
+            <div class="card-light rounded-2xl overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 text-[10px] font-bold uppercase tracking-widest">
+                                <th class="p-4 pl-6">Data</th>
+                                <th class="p-4">SDR</th>
+                                <th class="p-4 text-center">Produto</th>
+                                <th class="p-4 text-center">Ritmo (WPS)</th>
+                                <th class="p-4 text-center">SPIN</th>
+                                <th class="p-4 text-center">Conformidade</th>
+                                <th class="p-4 text-right pr-6">Auditoria</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-historico" class="text-sm divide-y divide-slate-100"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <div id="tab-playbooks" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="card-dark p-6 rounded-xl shadow-md border-t-4 border-indigo-500">
-                <h3 class="text-lg font-black text-indigo-400 border-b border-gray-800 pb-3 mb-4 flex items-center gap-2"><i class="fa-solid fa-compass"></i> S - Perguntas de Situação</h3>
-                <p class="text-gray-400 text-xs leading-relaxed mb-4">Utilizadas para coletar dados, fatos e entender o pano de fundo do lead. Não devem ser usadas em excesso para não tornar o contato cansativo.</p>
-                <div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-xs space-y-3 text-gray-300 font-mono">
-                    <div class="flex gap-2"><span class="text-indigo-400">👉</span> "Qual ferramenta você utiliza hoje para gerenciar a operação?"</div>
-                    <div class="flex gap-2"><span class="text-indigo-400">👉</span> "Quantas pessoas compõem a sua equipe comercial atualmente?"</div>
-                    <div class="flex gap-2"><span class="text-indigo-400">👉</span> "Como está desenhado o seu processo atual de captação?"</div>
-                </div>
+        <div id="tab-playbooks" class="hidden animate-fade-in max-w-5xl mx-auto w-full">
+            <div class="mb-8 text-center">
+                <h2 class="text-2xl font-black text-slate-800 tracking-tight">Base de Conhecimento SPIN</h2>
+                <p class="text-slate-500 text-sm mt-2">Referência de roteiro para alinhamento e treinamento da equipe.</p>
             </div>
-            <div class="card-dark p-6 rounded-xl shadow-md border-t-4 border-amber-500">
-                <h3 class="text-lg font-black text-amber-400 border-b border-gray-800 pb-3 mb-4 flex items-center gap-2"><i class="fa-solid fa-circle-question"></i> P - Perguntas de Problema</h3>
-                <p class="text-gray-400 text-xs leading-relaxed mb-4">Investigam dores, dificuldades ou insatisfações ocultas. É aqui que o lead começa a perceber que precisa de ajuda externa.</p>
-                <div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-xs space-y-3 text-gray-300 font-mono">
-                    <div class="flex gap-2"><span class="text-amber-400">👉</span> "Esse sistema atual costuma apresentar lentidão ou gargalos?"</div>
-                    <div class="flex gap-2"><span class="text-amber-400">👉</span> "Qual é a sua maior queixa hoje em relação ao fornecedor atual?"</div>
-                    <div class="flex gap-2"><span class="text-amber-400">👉</span> "Você sente que a equipe perde muito tempo executando tarefas manuais?"</div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card-light p-8 rounded-2xl border-t-4 border-indigo-500 hover:shadow-md transition">
+                    <h3 class="text-xl font-black text-slate-800 mb-2 flex items-center gap-3"><span class="bg-indigo-100 text-indigo-600 w-8 h-8 rounded-lg flex items-center justify-center">S</span> Situação</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">Fatos, dados e cenário atual do cliente. Use com moderação para não transformar a call num interrogatório de IBGE.</p>
+                    <div class="space-y-3">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-indigo-400 mr-2">🎯</span> "Qual sistema você usa hoje para gerenciar os repasses?"</div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-indigo-400 mr-2">🎯</span> "Hoje a sua imobiliária atua mais com vendas ou locação?"</div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-dark p-6 rounded-xl shadow-md border-t-4 border-rose-500">
-                <h3 class="text-lg font-black text-rose-400 border-b border-gray-800 pb-3 mb-4 flex items-center gap-2"><i class="fa-solid fa-shuffle"></i> I - Perguntas de Implicação</h3>
-                <p class="text-gray-400 text-xs leading-relaxed mb-4">Exploram os efeitos e desdobramentos gerados pelos problemas. Transformam pequenas dores em problemas urgentes e caros.</p>
-                <div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-xs space-y-3 text-gray-300 font-mono">
-                    <div class="flex gap-2"><span class="text-rose-400">👉</span> "O atraso nessa entrega chega a impactar o seu faturamento no fim do mês?"</div>
-                    <div class="flex gap-2"><span class="text-rose-400">👉</span> "Se esse erro continuar acontecendo, qual o prejuízo estimado para o trimestre?"</div>
-                    <div class="flex gap-2"><span class="text-rose-400">👉</span> "Como essa dor reflete na motivação ou turnover da sua equipe?"</div>
+                <div class="card-light p-8 rounded-2xl border-t-4 border-amber-500 hover:shadow-md transition">
+                    <h3 class="text-xl font-black text-slate-800 mb-2 flex items-center gap-3"><span class="bg-amber-100 text-amber-600 w-8 h-8 rounded-lg flex items-center justify-center">P</span> Problema</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">Investiga dores, insatisfações e dificuldades. Onde a operação do cliente trava hoje?</p>
+                    <div class="space-y-3">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-amber-400 mr-2">🎯</span> "Você sente que sua equipe perde muito tempo fechando caixa?"</div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-amber-400 mr-2">🎯</span> "O seu sistema atual trava muito na emissão da DIMOB?"</div>
+                    </div>
                 </div>
-            </div>
-            <div class="card-dark p-6 rounded-xl shadow-md border-t-4 border-emerald-500">
-                <h3 class="text-lg font-black text-emerald-400 border-b border-gray-800 pb-3 mb-4 flex items-center gap-2"><i class="fa-solid fa-circle-check"></i> N - Necessidade de Solução</h3>
-                <p class="text-gray-400 text-xs leading-relaxed mb-4">Focando no valor, utilidade e nos benefícios práticos da resolução do problema. Fazem o próprio lead declarar a importância do seu produto.</p>
-                <div class="bg-gray-900 border border-gray-800 p-4 rounded-lg text-xs space-y-3 text-gray-300 font-mono">
-                    <div class="flex gap-2"><span class="text-emerald-400">👉</span> "Se conseguíssemos reduzir esse tempo pela metade, o que mudaria na rotina?"</div>
-                    <div class="flex gap-2"><span class="text-emerald-400">👉</span> "Por que automatizar esse fluxo seria importante para a empresa hoje?"</div>
-                    <div class="flex gap-2"><span class="text-emerald-400">👉</span> "Qual seria o impacto de ter relatórios em tempo real para a diretoria?"</div>
+                <div class="card-light p-8 rounded-2xl border-t-4 border-rose-500 hover:shadow-md transition">
+                    <h3 class="text-xl font-black text-slate-800 mb-2 flex items-center gap-3"><span class="bg-rose-100 text-rose-600 w-8 h-8 rounded-lg flex items-center justify-center">I</span> Implicação</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">Desdobramentos do problema. Transforma uma dor "pequena" em algo urgente, mostrando impacto financeiro/tempo.</p>
+                    <div class="space-y-3">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-rose-400 mr-2">🎯</span> "Se esse erro persistir, quanto de multa vocês podem pagar?"</div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-rose-400 mr-2">🎯</span> "Como essa perda de tempo afeta o volume de captações no mês?"</div>
+                    </div>
+                </div>
+                <div class="card-light p-8 rounded-2xl border-t-4 border-emerald-500 hover:shadow-md transition">
+                    <h3 class="text-xl font-black text-slate-800 mb-2 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-600 w-8 h-8 rounded-lg flex items-center justify-center">N</span> Necessidade</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">Foca na solução e valor. Faz o cliente declarar o desejo pelo seu produto antes mesmo do pitch.</p>
+                    <div class="space-y-3">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-emerald-400 mr-2">🎯</span> "Se você zerasse a inadimplência amanhã, o que mudaria no caixa?"</div>
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-emerald-400 mr-2">🎯</span> "Qual seria o impacto pro seu time ter tudo isso automatizado?"</div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="modal-sdr" class="hidden fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-opacity">
-        <div id="printable-dossier" class="bg-gray-900 w-[1280px] max-w-full rounded-2xl h-[95vh] flex flex-col shadow-2xl relative border border-gray-800">
-            <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-[#111827] rounded-t-2xl flex-shrink-0 shadow-sm z-10">
+    <div id="modal-sdr" class="hidden fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4 lg:p-8 z-50 transition-opacity">
+        <div id="printable-dossier" class="bg-white w-[1280px] max-w-full rounded-3xl h-[95vh] flex flex-col shadow-2xl relative overflow-hidden">
+            <div class="px-8 py-6 border-b border-slate-200 flex justify-between items-center bg-white flex-shrink-0 z-10">
                 <div>
-                    <h2 id="modal-title" class="text-2xl font-extrabold text-white tracking-tight">Auditoria</h2>
-                    <p id="modal-subtitle" class="text-xs text-indigo-400 font-bold uppercase tracking-widest mt-1">ID: -</p>
+                    <h2 id="modal-title" class="text-2xl font-black text-slate-900 tracking-tight">Auditoria do SDR</h2>
+                    <p id="modal-subtitle" class="text-xs text-indigo-600 font-bold uppercase tracking-widest mt-1">ID: -</p>
                 </div>
                 <div class="flex gap-4 items-center">
-                    <div id="modal-links" class="flex gap-2"></div>
-                    <button id="btn-close-modal" onclick="fecharModal()" class="text-gray-400 hover:text-white hover:bg-gray-800 p-2 rounded-xl transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+                    <div id="modal-links" class="flex gap-3"></div>
+                    <button id="btn-close-modal" onclick="fecharModal()" class="text-slate-400 hover:text-slate-700 hover:bg-slate-100 w-10 h-10 rounded-full transition flex items-center justify-center"><i class="fa-solid fa-xmark text-xl"></i></button>
                 </div>
             </div>
             
-            <div id="modal-body-scroll" class="flex-1 flex overflow-hidden rounded-b-2xl">
-                <div class="w-1/3 border-r border-gray-800 overflow-y-auto p-6 space-y-6 custom-scrollbar bg-gray-900" id="modal-matriz"></div>
-                <div class="w-2/3 overflow-y-auto p-8 space-y-6 custom-scrollbar bg-[#0b0f19]" id="modal-tecnico"></div>
+            <div id="modal-body-scroll" class="flex-1 flex flex-col lg:flex-row overflow-hidden bg-slate-50">
+                <div class="w-full lg:w-1/3 border-r border-slate-200 overflow-y-auto p-8 space-y-8 custom-scrollbar bg-white" id="modal-matriz"></div>
+                <div class="w-full lg:w-2/3 overflow-y-auto p-8 custom-scrollbar bg-slate-50/50" id="modal-tecnico"></div>
             </div>
         </div>
     </div>
@@ -297,7 +315,8 @@
         let picker;
 
         function initCalendario() {
-            picker = flatpickr("#date-range", { mode: "range", dateFormat: "Y-m-d", locale: "pt", theme: "dark", onChange: applyFilters });
+            // Removido dark theme do flatpickr, usa o light/default
+            picker = flatpickr("#date-range", { mode: "range", dateFormat: "Y-m-d", locale: "pt", onChange: applyFilters });
         }
 
         function switchTab(tab) {
@@ -305,9 +324,11 @@
             tabs.forEach(t => {
                 document.getElementById(`tab-${t}`).classList.add('hidden');
                 document.getElementById(`menu-${t}`).classList.remove('sidebar-active');
+                document.getElementById(`menu-${t}`).classList.add('sidebar-inactive');
             });
             document.getElementById(`tab-${tab}`).classList.remove('hidden');
             document.getElementById(`menu-${tab}`).classList.add('sidebar-active');
+            document.getElementById(`menu-${tab}`).classList.remove('sidebar-inactive');
             
             const titles = { geral: "Visão Geral", equipe: "Equipe SDR", dash: "Dashboard Analytics", auditorias: "Histórico & Dossiês", playbooks: "Playbooks SPIN" };
             document.getElementById('page-title').innerText = titles[tab];
@@ -332,8 +353,8 @@
                 applyFilters();
             } catch (e) { 
                 console.error("Aguardando dados...", e);
-                document.getElementById('tabela-historico').innerHTML = `<tr><td colspan="7" class="py-6 text-center text-gray-500">Sem dados. Por favor, processe as chamadas na Action do GitHub.</td></tr>`;
-                document.getElementById('tabela-criticos').innerHTML = `<tr><td colspan="5" class="py-6 text-center text-gray-500">Nenhum dado processado.</td></tr>`;
+                document.getElementById('tabela-historico').innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500 font-medium">Sem dados. Por favor, processe as chamadas na Action do GitHub.</td></tr>`;
+                document.getElementById('tabela-criticos').innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500 font-medium">Nenhum dado processado.</td></tr>`;
             }
         }
 
@@ -362,7 +383,7 @@
             
             if(sdrSel !== 'todos' && document.getElementById('tab-equipe').classList.contains('hidden') === false) {
                 containerTabelaEquipe.classList.remove('hidden');
-                tituloSDR.innerHTML = `<i class="fa-solid fa-list-check text-indigo-400"></i> Histórico Analisado: ${sdrSel}`;
+                tituloSDR.innerHTML = `<i class="fa-solid fa-user-check text-indigo-500"></i> Histórico Analisado: ${sdrSel}`;
             } else {
                 containerTabelaEquipe.classList.add('hidden');
             }
@@ -381,7 +402,7 @@
                 document.getElementById('media-wps').innerText = "0.0";
                 document.getElementById('casos-criticos').innerText = "0";
                 document.getElementById('grid-cards-sdr').innerHTML = "";
-                tbCriticos.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-gray-500">Nenhum dado encontrado para este filtro.</td></tr>`;
+                tbCriticos.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-slate-500">Nenhum dado encontrado para este filtro.</td></tr>`;
                 return;
             }
             
@@ -408,46 +429,45 @@
                 const mOp = chamadas.reduce((a,c)=>a+(parseFloat(c.nota_op)||0),0)/chamadas.length;
                 
                 gridCards.innerHTML += `
-                    <div class="card-dark p-6 rounded-xl shadow-lg hover:border-indigo-500/50 transition cursor-pointer" onclick="document.getElementById('filter-sdr').value='${nome}'; applyFilters();">
+                    <div class="card-light p-6 rounded-2xl hover:shadow-md transition cursor-pointer group" onclick="document.getElementById('filter-sdr').value='${nome}'; applyFilters();">
                         <div class="flex items-center gap-4 mb-6">
-                            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center font-bold text-white shadow text-lg">${nome.substring(0,2).toUpperCase()}</div>
+                            <div class="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-100 flex items-center justify-center font-bold shadow-sm text-lg">${nome.substring(0,2).toUpperCase()}</div>
                             <div>
-                                <h4 class="font-bold text-white text-base">${nome}</h4>
-                                <span class="text-[10px] text-gray-500 uppercase tracking-widest block">${chamadas.length} chamadas analisadas</span>
+                                <h4 class="font-bold text-slate-800 text-base group-hover:text-indigo-600 transition">${nome}</h4>
+                                <span class="text-[10px] text-slate-400 uppercase tracking-widest block font-semibold">${chamadas.length} chamadas</span>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4 text-center">
-                            <div class="bg-gray-900/50 rounded-lg p-3 border border-gray-800"><span class="text-[10px] text-gray-500 uppercase block font-bold mb-1">SPIN</span><span class="text-xl font-black text-indigo-400">${mSpin.toFixed(1)}</span></div>
-                            <div class="bg-gray-900/50 rounded-lg p-3 border border-gray-800"><span class="text-[10px] text-gray-500 uppercase block font-bold mb-1">Conformidade</span><span class="text-xl font-black text-purple-400">${mOp.toFixed(1)}</span></div>
+                            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100"><span class="text-[10px] text-slate-400 uppercase block font-bold mb-1 tracking-wider">SPIN</span><span class="text-xl font-black text-indigo-600">${mSpin.toFixed(1)}</span></div>
+                            <div class="bg-slate-50 rounded-xl p-3 border border-slate-100"><span class="text-[10px] text-slate-400 uppercase block font-bold mb-1 tracking-wider">Conformidade</span><span class="text-xl font-black text-purple-600">${mOp.toFixed(1)}</span></div>
                         </div>
                     </div>`;
             });
 
             tbCriticos.innerHTML = '';
             if(listaCriticos.length === 0) {
-                tbCriticos.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-emerald-500/80 font-medium">Nenhum ponto de atenção detectado! Todos operando no padrão estável.</td></tr>`;
+                tbCriticos.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-emerald-600 font-semibold bg-emerald-50/50">Nenhum ponto de atenção detectado! Todos operando no padrão.</td></tr>`;
             } else {
                 listaCriticos.forEach(c => {
                     let motivo = "";
                     let nOp = parseFloat(c.nota_op) || 0;
                     let nSpin = parseFloat(c.nota_spin) || 0;
 
-                    // Mecanismo de Cascata Estrita por Cores e Emojis Sólidos
                     if (nOp <= 5.0) {
-                        motivo = '<span class="flex items-center gap-1.5 font-bold text-rose-400">🔴 Ajuste Conformidade</span>';
+                        motivo = '<span class="flex items-center gap-1.5 font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md text-xs w-max border border-rose-100">🔴 Ajuste Conformidade</span>';
                     } else if (nSpin <= 5.0) {
-                        motivo = '<span class="flex items-center gap-1.5 font-bold text-amber-400">🟡 Ajuste SPIN</span>';
+                        motivo = '<span class="flex items-center gap-1.5 font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md text-xs w-max border border-amber-100">🟡 Ajuste SPIN</span>';
                     } else {
-                        motivo = '<span class="flex items-center gap-1.5 font-bold text-emerald-400">🟢 Desempenho Estável</span>';
+                        motivo = '<span class="flex items-center gap-1.5 font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md text-xs w-max border border-emerald-100">🟢 Estável</span>';
                     }
 
                     tbCriticos.innerHTML += `
-                        <tr class="hover:bg-gray-800/40 transition">
-                            <td class="py-4 font-bold text-white flex items-center gap-2">${c.sdr}</td>
-                            <td class="py-4 text-gray-400">${c.data}</td>
-                            <td class="py-4 text-center"><span class="bg-gray-800 px-2 py-1 rounded text-[10px] uppercase font-bold text-gray-300">${c.produto}</span></td>
-                            <td class="py-4">${motivo}</td>
-                            <td class="py-4 text-right pr-2"><button onclick="abrirDossie('${c.id}')" class="text-indigo-400 font-bold hover:text-white transition bg-indigo-900/20 px-3 py-1.5 rounded-lg border border-indigo-500/20 hover:bg-indigo-600">Revisar</button></td>
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100 last:border-0">
+                            <td class="p-4 font-bold text-slate-800">${c.sdr}</td>
+                            <td class="p-4 text-slate-500 font-medium">${c.data}</td>
+                            <td class="p-4 text-center"><span class="bg-slate-100 px-2.5 py-1 rounded border border-slate-200 text-[10px] uppercase font-bold text-slate-600">${c.produto}</span></td>
+                            <td class="p-4">${motivo}</td>
+                            <td class="p-4 text-right pr-6"><button onclick="abrirDossie('${c.id}')" class="text-indigo-600 font-bold bg-indigo-50 px-4 py-1.5 rounded-lg border border-indigo-100 hover:bg-indigo-600 hover:text-white transition shadow-sm text-xs">Revisar</button></td>
                         </tr>`;
                 });
             }
@@ -464,8 +484,8 @@
             if(spiderChart) spiderChart.destroy();
             spiderChart = new Chart(document.getElementById('spiderChart'), {
                 type: 'radar',
-                data: { labels: ['S (Situação)', 'P (Problema)', 'I (Implicação)', 'N (Necessidade)'], datasets: [{ data: [S, P, I, N], backgroundColor: 'rgba(99,102,241,0.2)', borderColor: '#6366f1', pointBackgroundColor: '#818cf8', borderWidth: 2 }] },
-                options: { maintainAspectRatio: false, scales: { r: { min: 0, max: 10, angleLines: {color: '#1f2937'}, grid: {color: '#1f2937'}, pointLabels: {color: '#9ca3af', font: {size: 12, weight: 'bold'}, padding: 15}, ticks: { display: false, stepSize: 2 } } }, plugins: { legend: {display: false} } }
+                data: { labels: ['S (Situação)', 'P (Problema)', 'I (Implicação)', 'N (Necessidade)'], datasets: [{ data: [S, P, I, N], backgroundColor: 'rgba(79, 70, 229, 0.15)', borderColor: '#4f46e5', pointBackgroundColor: '#4f46e5', borderWidth: 2 }] },
+                options: { maintainAspectRatio: false, scales: { r: { min: 0, max: 10, angleLines: {color: '#e2e8f0'}, grid: {color: '#e2e8f0'}, pointLabels: {color: '#64748b', font: {size: 11, weight: 'bold'}, padding: 15}, ticks: { display: false, stepSize: 2 } } }, plugins: { legend: {display: false} } }
             });
 
             document.getElementById('rx-s').innerText = S.toFixed(1);
@@ -481,8 +501,8 @@
             if(lineChart) lineChart.destroy();
             lineChart = new Chart(document.getElementById('lineChart'), {
                 type: 'line',
-                data: { labels, datasets: [{ label: 'SPIN', data: n_spin, borderColor: '#6366f1', backgroundColor: '#6366f1', tension: 0.3, borderWidth: 2, pointRadius: 3 }, { label: 'Conformidade', data: n_op, borderColor: '#a855f7', backgroundColor: '#a855f7', tension: 0.3, borderWidth: 2, pointRadius: 3 }]},
-                options: { maintainAspectRatio: false, scales: { y: { min: 0, max: 10, grid: {color: '#1f2937'} }, x: { grid: {color: '#1f2937'}, ticks: {display: false} } }, plugins: { legend: { position: 'bottom', labels: {color: '#9ca3af', boxWidth: 12} } } }
+                data: { labels, datasets: [{ label: 'SPIN', data: n_spin, borderColor: '#4f46e5', backgroundColor: '#4f46e5', tension: 0.3, borderWidth: 2, pointRadius: 3 }, { label: 'Conformidade', data: n_op, borderColor: '#a855f7', backgroundColor: '#a855f7', tension: 0.3, borderWidth: 2, pointRadius: 3 }]},
+                options: { maintainAspectRatio: false, scales: { y: { min: 0, max: 10, grid: {color: '#e2e8f0'} }, x: { grid: {color: '#e2e8f0'}, ticks: {display: false} } }, plugins: { legend: { position: 'bottom', labels: {color: '#64748b', boxWidth: 12, font: {weight: 'bold'}} } } }
             });
         }
 
@@ -494,7 +514,7 @@
             if(tbEquipe) tbEquipe.innerHTML = '';
 
             if(!dados || dados.length === 0) { 
-                const emptyStr = `<tr><td colspan="7" class="py-4 text-center text-gray-500">Sem registos no período.</td></tr>`;
+                const emptyStr = `<tr><td colspan="7" class="p-6 text-center text-slate-500">Sem registros no período.</td></tr>`;
                 tbHistorico.innerHTML = emptyStr;
                 if(tbEquipe) tbEquipe.innerHTML = emptyStr;
                 return; 
@@ -502,25 +522,21 @@
 
             let htmlStr = '';
             dados.sort((a,b)=>b.id - a.id).forEach(c => {
-                const wColor = (c.wps||0) < 1.5 || (c.wps||0) > 2.5 ? 'text-amber-400' : 'text-emerald-400';
+                const wColor = (c.wps||0) < 1.5 || (c.wps||0) > 2.5 ? 'text-amber-500' : 'text-emerald-600';
                 
-                // Mapeamento dinâmico do marcador na listagem geral para combinar com a Central de Ajustes
                 let dotStatus = '🟢';
-                if ((parseFloat(c.nota_op) || 0) <= 5.0) {
-                    dotStatus = '🔴';
-                } else if ((parseFloat(c.nota_spin) || 0) <= 5.0) {
-                    dotStatus = '🟡';
-                }
+                if ((parseFloat(c.nota_op) || 0) <= 5.0) dotStatus = '🔴';
+                else if ((parseFloat(c.nota_spin) || 0) <= 5.0) dotStatus = '🟡';
 
                 htmlStr += `
-                <tr class="border-b border-gray-800/50 hover:bg-gray-800/30 transition text-xs">
-                    <td class="py-3.5 pl-2 text-gray-400 font-mono">${c.data}</td>
-                    <td class="py-3.5 font-bold text-white flex items-center gap-1.5"><span class="text-sm select-none">${dotStatus}</span>${c.sdr}</td>
-                    <td class="py-3.5 text-center"><span class="bg-gray-800 px-2 py-0.5 rounded border border-gray-700 text-gray-300 font-semibold">${c.produto}</span></td>
-                    <td class="py-3.5 text-center font-mono font-bold ${wColor}">${parseFloat(c.wps||0).toFixed(2)}</td>
-                    <td class="py-3.5 text-center"><span class="px-2 py-0.5 rounded bg-indigo-950/30 text-indigo-400 border border-indigo-900/50 font-bold">${parseFloat(c.nota_spin||0).toFixed(1)}</span></td>
-                    <td class="py-3.5 text-center"><span class="px-2 py-0.5 rounded bg-purple-950/30 text-purple-400 border border-purple-900/50 font-bold">${parseFloat(c.nota_op||0).toFixed(1)}</span></td>
-                    <td class="py-3.5 text-right pr-2"><button onclick="abrirDossie('${c.id}')" class="bg-indigo-600/20 text-indigo-400 border border-indigo-500/30 px-3 py-1 rounded hover:bg-indigo-600 hover:text-white transition font-bold">Analisar</button></td>
+                <tr class="hover:bg-slate-50 transition text-xs border-b border-slate-100 last:border-0">
+                    <td class="p-4 pl-6 text-slate-500 font-medium whitespace-nowrap">${c.data}</td>
+                    <td class="p-4 font-bold text-slate-800 flex items-center gap-2 whitespace-nowrap"><span class="text-sm select-none">${dotStatus}</span>${c.sdr}</td>
+                    <td class="p-4 text-center whitespace-nowrap"><span class="bg-slate-100 px-2 py-0.5 rounded border border-slate-200 text-slate-600 font-bold uppercase">${c.produto}</span></td>
+                    <td class="p-4 text-center font-mono font-bold ${wColor} whitespace-nowrap">${parseFloat(c.wps||0).toFixed(2)}</td>
+                    <td class="p-4 text-center whitespace-nowrap"><span class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-100 font-black text-sm">${parseFloat(c.nota_spin||0).toFixed(1)}</span></td>
+                    <td class="p-4 text-center whitespace-nowrap"><span class="px-2 py-0.5 rounded bg-purple-50 text-purple-700 border border-purple-100 font-black text-sm">${parseFloat(c.nota_op||0).toFixed(1)}</span></td>
+                    <td class="p-4 text-right pr-6 whitespace-nowrap"><button onclick="abrirDossie('${c.id}')" class="bg-white text-indigo-600 border border-slate-200 shadow-sm px-4 py-1.5 rounded-lg hover:border-indigo-300 hover:bg-indigo-50 transition font-bold">Analisar</button></td>
                 </tr>`;
             });
             
@@ -529,16 +545,16 @@
         }
 
         function getBadge(resp) {
-            if(resp==="Sim") return '<span class="badge-sim px-2 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider">Sim</span>';
-            if(resp==="Não") return '<span class="badge-nao px-2 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider">Não</span>';
-            return '<span class="badge-na px-2 py-0.5 rounded text-[9px] font-extrabold uppercase tracking-wider">N/A</span>';
+            if(resp==="Sim") return '<span class="badge-sim px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider">Sim</span>';
+            if(resp==="Não") return '<span class="badge-nao px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider">Não</span>';
+            return '<span class="badge-na px-2 py-0.5 rounded text-[9px] font-black uppercase tracking-wider">N/A</span>';
         }
 
-        // FORMATADOR: Transforma cabeçalhos Markdown em blocos estáticos limpos e elegantes
         function formatMarkdown(text) {
             if (!text) return '';
-            return text.replace(/###\s([^\n]+)/g, '<br><span class="block mt-2 mb-2 text-indigo-400 font-black uppercase tracking-widest border-b border-gray-800 pb-1">$1</span>')
-                       .replace(/\*\/(.*?)\*\//g, '<strong class="text-white">$1</strong>');
+            return text.replace(/###\s([^\n]+)/g, '<br><span class="block mt-4 mb-2 text-indigo-700 font-black uppercase tracking-widest border-b border-slate-200 pb-1">$1</span>')
+                       .replace(/\*\*(.*?)\*\*/g, '<strong class="text-slate-900">$1</strong>')
+                       .replace(/\*(.*?)\*/g, '<em class="text-slate-600 bg-slate-100 px-1 rounded not-italic text-xs">$1</em>');
         }
 
         function fecharModal() { document.getElementById('modal-sdr').classList.add('hidden'); }
@@ -555,76 +571,82 @@
             }
 
             document.getElementById('modal-links').innerHTML = `
-                <button id="btn-gerar-pdf" onclick="exportarDossiePDF()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs px-3 py-2 rounded-lg transition font-bold shadow flex items-center gap-2">
+                <button id="btn-gerar-pdf" onclick="exportarDossiePDF()" class="bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 text-xs px-4 py-2 rounded-lg transition font-bold shadow-sm flex items-center gap-2">
                     <i class="fa-solid fa-file-pdf"></i> Gerar PDF
                 </button>
-                ${safeUrl ? `<a href="${safeUrl}" target="_blank" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-2 rounded-lg transition font-bold shadow flex items-center gap-2"><i class="fa-solid fa-briefcase"></i> Negócio</a>` : ''}
-                <a href="${c.audio_url}" target="_blank" class="bg-[#ff7a59] hover:bg-[#ff8f73] text-white text-xs px-3 py-2 rounded-lg transition font-bold shadow flex items-center gap-2"><i class="fa-solid fa-headphones"></i> Gravação</a>
+                ${safeUrl ? `<a href="${safeUrl}" target="_blank" class="bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-600 hover:text-white text-xs px-4 py-2 rounded-lg transition font-bold shadow-sm flex items-center gap-2"><i class="fa-solid fa-briefcase"></i> Negócio</a>` : ''}
+                <a href="${c.audio_url}" target="_blank" class="bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-600 hover:text-white text-xs px-4 py-2 rounded-lg transition font-bold shadow-sm flex items-center gap-2"><i class="fa-solid fa-headphones"></i> Gravação</a>
             `;
 
             let f = c.formulario || {};
             const itemHTML = (label, obj) => `
-                <div class="bg-gray-900/50 border border-gray-800 p-3 rounded-xl mb-2 hover:border-gray-700 transition pdf-no-break">
-                    <div class="flex justify-between items-start mb-1.5"><span class="text-xs font-bold text-gray-300 leading-tight">${label}</span>${getBadge(obj?.r)}</div>
-                    ${obj?.e && obj?.e !== "..." ? `<p class="text-[10px] text-gray-500 italic border-l-2 border-gray-700 pl-2 mt-2 leading-relaxed">"${obj.e}"</p>` : ''}
+                <div class="bg-white border border-slate-200 p-3.5 rounded-xl mb-3 shadow-sm hover:border-indigo-300 transition pdf-no-break">
+                    <div class="flex justify-between items-start mb-1.5"><span class="text-xs font-bold text-slate-700 leading-tight">${label}</span>${getBadge(obj?.r)}</div>
+                    ${obj?.e && obj?.e !== "..." ? `<p class="text-[10px] text-slate-500 italic border-l-2 border-indigo-200 pl-2 mt-2 leading-relaxed">"${obj.e}"</p>` : ''}
                 </div>`;
             
             document.getElementById('modal-matriz').innerHTML = `
-                <div class="mb-8"><h3 class="text-[10px] font-black text-indigo-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-ear-listen"></i> Escuta & Adaptação</h3>
+                <div class="mb-8"><h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fa-solid fa-ear-listen text-indigo-500 text-sm"></i> Escuta & Adaptação</h3>
                 ${itemHTML('Escuta Ativa', f.escuta)}${itemHTML('Validação', f.validacao)}${itemHTML('Compreensão', f.compreensao)}${itemHTML('Contorno de Objeções', f.objecoes)}</div>
                 
-                <div class="mb-8"><h3 class="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-comments"></i> Comunicação</h3>
+                <div class="mb-8"><h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fa-solid fa-comments text-purple-500 text-sm"></i> Comunicação</h3>
                 ${itemHTML('Linguagem/Vícios', f.linguagem)}${itemHTML('Receptividade', f.receptividade)}${itemHTML('Rapport', f.rapport)}${itemHTML('Discurso e Tom', f.discurso)}${itemHTML('Clareza', f.clareza)}</div>
                 
-                <div><h3 class="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fa-solid fa-check-double"></i> Conformidade de Regras (${c.produto})</h3>
+                <div><h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2"><i class="fa-solid fa-check-double text-emerald-500 text-sm"></i> Conformidade de Regras (${c.produto})</h3>
                 ${itemHTML('Coleta de SLA', f.sla)}${itemHTML('SPIN (3 etapas)', f.spin)}${itemHTML('Uso da Dor', f.dor)}${itemHTML('Gestão/Preço', f.gestao)}${itemHTML('Passos RO (Computador)', f.passos_ro)}${itemHTML('Venda do Produto', f.produto)}${itemHTML('Gatilhos Mentais', f.gatilhos)}</div>
             `;
 
             document.getElementById('modal-tecnico').innerHTML = `
-                <div class="grid grid-cols-3 gap-4 mb-6">
-                    <div class="bg-indigo-950/20 border border-indigo-900/30 p-4 rounded-xl text-center shadow-inner pdf-no-break">
-                        <span class="text-[10px] font-black tracking-widest text-indigo-400 uppercase block mb-1">Aderência SPIN</span>
-                        <span class="text-3xl font-black text-white">${parseFloat(c.nota_spin||0).toFixed(1)}</span>
+                <div class="grid grid-cols-3 gap-6 mb-8">
+                    <div class="bg-indigo-50 border border-indigo-100 p-5 rounded-2xl text-center shadow-sm pdf-no-break">
+                        <span class="text-[10px] font-bold tracking-widest text-indigo-600 uppercase block mb-1">Aderência SPIN</span>
+                        <span class="text-4xl font-black text-indigo-900">${parseFloat(c.nota_spin||0).toFixed(1)}</span>
                     </div>
-                    <div class="bg-purple-950/20 border border-purple-900/30 p-4 rounded-xl text-center shadow-inner pdf-no-break">
-                        <span class="text-[10px] font-black tracking-widest text-purple-400 uppercase block mb-1">Conformidade</span>
-                        <span class="text-3xl font-black text-white">${parseFloat(c.nota_op||0).toFixed(1)}</span>
+                    <div class="bg-purple-50 border border-purple-100 p-5 rounded-2xl text-center shadow-sm pdf-no-break">
+                        <span class="text-[10px] font-bold tracking-widest text-purple-600 uppercase block mb-1">Conformidade</span>
+                        <span class="text-4xl font-black text-purple-900">${parseFloat(c.nota_op||0).toFixed(1)}</span>
                     </div>
-                    <div class="bg-emerald-950/20 border border-emerald-900/30 p-4 rounded-xl text-center shadow-inner pdf-no-break">
-                        <span class="text-[10px] font-black tracking-widest text-emerald-400 uppercase block mb-1">Ritmo (WPS)</span>
-                        <span class="text-3xl font-black text-white">${parseFloat(c.wps||0).toFixed(2)}</span>
+                    <div class="bg-emerald-50 border border-emerald-100 p-5 rounded-2xl text-center shadow-sm pdf-no-break">
+                        <span class="text-[10px] font-bold tracking-widest text-emerald-600 uppercase block mb-1">Ritmo (WPS)</span>
+                        <span class="text-4xl font-black text-emerald-900">${parseFloat(c.wps||0).toFixed(2)}</span>
                     </div>
                 </div>
                 
-                <div class="bg-gray-800/40 border border-gray-700/60 rounded-xl p-6 mb-6 relative overflow-hidden border-l-4 border-indigo-500 pdf-no-break">
-                    <h4 class="text-xs font-black text-white uppercase tracking-widest flex items-center gap-2 mb-4 border-b border-gray-700 pb-3">
-                        <i class="fa-solid fa-gavel text-indigo-400 text-lg"></i> Relatório de Enablement
-                    </h4>
-                    <div class="text-sm text-gray-300 whitespace-pre-line leading-relaxed font-medium">
+                <div class="bg-white border border-slate-200 rounded-2xl p-8 mb-6 shadow-sm border-l-4 border-l-indigo-500 pdf-no-break">
+                    <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+                        <h4 class="text-sm font-black text-slate-800 uppercase tracking-widest flex items-center gap-2">
+                            <i class="fa-solid fa-gavel text-indigo-500"></i> Relatório de Enablement
+                        </h4>
+                        <button onclick="fecharModal(); switchTab('playbooks');" class="text-[10px] font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-3 py-1.5 rounded-lg transition uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-book-open"></i> Ver Playbook Base
+                        </button>
+                    </div>
+                    <div class="text-sm text-slate-600 whitespace-pre-line leading-relaxed font-medium">
                         ${formatMarkdown(c.parecer) || 'Ainda não foi gerado um parecer técnico.'}
                     </div>
                 </div>
                 
-                <div class="bg-rose-950/20 border border-rose-900/40 rounded-xl p-6 mb-6 relative overflow-hidden border-l-4 border-rose-500 pdf-no-break">
-                    <h4 class="text-xs font-black text-rose-300 uppercase tracking-widest flex items-center gap-2 mb-4 border-b border-rose-900/50 pb-3">
-                        <i class="fa-solid fa-bullseye text-rose-500 text-lg"></i> Próximos Passos
+                <div class="bg-amber-50 border border-amber-100 rounded-2xl p-8 mb-6 shadow-sm border-l-4 border-l-amber-500 pdf-no-break">
+                    <h4 class="text-sm font-black text-amber-800 uppercase tracking-widest flex items-center gap-2 mb-4 border-b border-amber-200/50 pb-3">
+                        <i class="fa-solid fa-bullseye text-amber-500"></i> Próximos Passos (Ação do SDR)
                     </h4>
-                    <div class="text-sm text-rose-100/90 whitespace-pre-line leading-relaxed font-medium">
+                    <div class="text-sm text-amber-900 whitespace-pre-line leading-relaxed font-bold bg-white p-4 rounded-xl border border-amber-200">
                         ${formatMarkdown(c.sugestoes) || 'Sem pontos de ação traçados.'}
                     </div>
                 </div>
                 
-                <div class="space-y-3 mt-8 pt-4 border-t border-gray-800 pdf-no-break">
-                    <h4 class="text-[10px] font-black text-gray-600 uppercase tracking-widest flex items-center gap-2 mb-4">
-                        <i class="fa-solid fa-file-lines"></i> Transcrição da Chamada
+                <div class="mt-8 pt-6 border-t border-slate-200 pdf-no-break">
+                    <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 mb-4">
+                        <i class="fa-solid fa-file-lines text-slate-400"></i> Transcrição da Chamada
                     </h4>
-                    <div id="box-transcricao" class="bg-gray-900/50 border border-gray-800 p-5 rounded-xl text-[11px] text-gray-500 h-56 overflow-y-auto custom-scrollbar leading-relaxed whitespace-pre-line">${c.transcricao}</div>
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl text-[11px] text-slate-500 max-h-72 overflow-y-auto custom-scrollbar leading-relaxed whitespace-pre-line shadow-inner">${c.transcricao}</div>
                 </div>
             `;
 
             document.getElementById('modal-sdr').classList.remove('hidden');
         }
 
+        // MOTOR DO PDF BLINDADO CALIBRADO PARA LIGHT MODE
         function exportarDossiePDF() {
             const btn = document.getElementById('btn-gerar-pdf');
             const originalText = btn.innerHTML;
@@ -637,16 +659,17 @@
             element.style.height = 'auto';
             element.style.width = '1280px'; 
             element.style.position = 'relative';
-            element.style.backgroundColor = '#0b0f19'; 
+            element.style.backgroundColor = '#ffffff'; // Fundo branco absoluto para impressão
             
-            const scrolls = element.querySelectorAll('.overflow-y-auto, .overflow-hidden, .custom-scrollbar, .h-56');
+            const scrolls = element.querySelectorAll('.overflow-y-auto, .overflow-hidden, .custom-scrollbar, .max-h-72');
             scrolls.forEach(el => {
-                el.classList.remove('overflow-y-auto', 'overflow-hidden', 'custom-scrollbar', 'h-56');
+                el.classList.remove('overflow-y-auto', 'overflow-hidden', 'custom-scrollbar', 'max-h-72');
                 el.style.overflow = 'visible';
                 el.style.height = 'auto';
+                el.style.maxHeight = 'none';
             });
 
-            const avoidBreaks = element.querySelectorAll('.bg-gray-900\\/50, .pdf-no-break');
+            const avoidBreaks = element.querySelectorAll('.bg-slate-50, .bg-white, .pdf-no-break');
             avoidBreaks.forEach(el => {
                 el.style.pageBreakInside = 'avoid';
                 el.style.breakInside = 'avoid';
@@ -666,7 +689,7 @@
             wrapper.appendChild(element);
             document.body.appendChild(wrapper);
 
-            const sdrName = document.getElementById('modal-title').innerText.replace('Auditoria: ', '');
+            const sdrName = document.getElementById('modal-title').innerText.replace('Auditoria do SDR: ', '').replace('Auditoria: ', '');
 
             const opt = {
                 margin:       [10, 10, 10, 10],
