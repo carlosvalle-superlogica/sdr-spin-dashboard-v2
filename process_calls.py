@@ -65,37 +65,49 @@ def calcular_segundos(duracao_str):
 
 def calcular_nota_operacional(op_data, erro_fatal):
     """
-    MATEMÁTICA DE AUDITORIA DE TOLERÂNCIA ZERO:
+    MATEMÁTICA DE AUDITORIA DE TOLERÂNCIA ZERO COM PESOS DE GRAVIDADE:
     - O SDR inicia com a nota máxima de 10.0 (Exigência de perfeição).
     - O 'Sim' mantém a nota estável.
-    - O 'Não' indica quebra ativa de processo e penaliza agressivamente (-1.5 pontos).
-    - O 'N/A' indica omissão e penaliza (-0.5 pontos), EXCETO para 'objecoes' 
-      (pois se o cliente não fez objeção, o SDR não pode ser punido por isso).
+    - As 17 chaves originais são divididas por impacto real no funil de vendas.
+    - O 'Não' e o 'N/A' penalizam proporcionalmente de acordo com o Tier do critério.
+    - A chave 'objecoes' em N/A continua totalmente isenta de punição (venda lisa).
     """
     if erro_fatal: 
         return 0.0
 
-    # Consolidação estrita de todas as 17 chaves de checagem
-    todas_chaves = [
-        'escuta', 'validacao', 'compreensao', 'objecoes',
-        'linguagem', 'receptividade', 'rapport', 'discurso', 'compreensao_cliente', 'clareza',
-        'sla', 'spin', 'dor', 'gestao', 'passos_ro', 'produto', 'gatilhos'
-    ]
+    # Divisão estratégica das 17 chaves originais por Tiers de Impacto
+    chaves_criticas = ['sla', 'passos_ro', 'gestao']
+    chaves_estrategicas = ['spin', 'dor', 'validacao', 'objecoes', 'produto', 'escuta', 'compreensao']
+    chaves_formais = ['linguagem', 'receptividade', 'rapport', 'discurso', 'compreensao_cliente', 'clareza', 'gatilhos']
 
-    # Contagem exata das falhas cometidas pelo SDR ao longo da ligação
-    total_nao = sum(1 for k in todas_chaves if op_data.get(k, {}).get('r') == 'Não')
-    
-    # Conta N/A para todas as chaves, exceto 'objecoes' para não punir chamadas perfeitamente lisas
-    total_na = sum(1 for k in todas_chaves if k != 'objecoes' and op_data.get(k, {}).get('r') == 'N/A')
+    nota_final = 10.0
 
-    # Definição dos pesos de punição
-    PENALIDADE_NAO = 1.5  # Erro grave / Quebra de política comercial
-    PENALIDADE_NA = 0.5   # Omissão técnica / Deixou de colher informação
+    # 1. Penalidades para Critérios Críticos (Mata a agenda do Closer se falhar)
+    for k in chaves_criticas:
+        r = op_data.get(k, {}).get('r')
+        if r == 'Não':
+            nota_final -= 2.0  # Punição severa por quebra ativa de processo
+        elif r == 'N/A':
+            nota_final -= 1.0  # Punição por omissão ou falta de coleta do dado vital
 
-    # Cálculo dedutivo
-    nota_final = 10.0 - (total_nao * PENALIDADE_NAO) - (total_na * PENALIDADE_NA)
-    
-    # Clampa rigidamente o resultado entre o piso de 0.0 e o teto de 10.0
+    # 2. Penalidades para Critérios Estratégicos (Afeta a construção de valor e qualificação)
+    for k in chaves_estrategicas:
+        r = op_data.get(k, {}).get('r')
+        if r == 'Não':
+            nota_final -= 1.0
+        elif r == 'N/A':
+            if k != 'objecoes':  # Preserva a trava de segurança de objeções em N/A
+                nota_final -= 0.5
+
+    # 3. Penalidades para Critérios Formais (Soft Skills, Etiqueta e Postura B2B)
+    for k in chaves_formais:
+        r = op_data.get(k, {}).get('r')
+        if r == 'Não':
+            nota_final -= 0.5
+        elif r == 'N/A':
+            nota_final -= 0.25
+
+    # Clampa rigidamente o resultado final entre o piso de 0.0 e o teto de 10.0
     return min(max(nota_final, 0.0), 10.0)
 
 def executar_chat_com_retentativa(model, messages, response_format, max_retries=5):
@@ -208,36 +220,36 @@ def process_all_calls():
                 # --------------------------------------------------
                 print(" -> Executando Agente 1: Auditoria de Processos...")
                 prompt_agente1 = f"""
-                Você é o Agente 1: Auditor de Processos Inflexível e Rígido. Sua missão é analisar a transcrição da chamada e julgar o cumprimento exato das políticas comerciais e de qualificação da empresa para o produto {produto_detectado}.
+                Você é o Agente 1: Auditor de Processos Inflexível, Rígido e Analítico. Sua missão é analisar a transcrição da chamada e julgar o cumprimento exato das políticas comerciais, de qualificação e de postura B2B da empresa para o produto {produto_detectado}.
                 Seja agressivo, extremamente criterioso e intolerante com falhas. Menções vagas, superficiais ou desculpas aceitas passivamente pelo SDR DEVEM receber a marcação "Não".
 
-                DIRETRIZES DE JULGAMENTO CIRÚRGICO (GABARITO DE CONFORMIDADE):
+                DIRETRIZES DE AUDITORIA (FOCO ESTRITO EM CONFORMIDADE DE ROTEIRO E PLAYBOOK):
                 
                 [1. ESCUTA E ADAPTAÇÃO]
-                - escuta: Marque "Sim" apenas se o SDR ouviu as dores sem cortar o raciocínio do cliente. Se o SDR atropelou ou ignorou uma fala importante, marque "Não".
-                - validacao: Marque "Sim" se o SDR ancorou o problema do cliente antes de seguir em frente (ex: "Entendi, então o seu principal gargalo hoje é o controle manual, correto?"). Se ele agiu como um mero leitor de questionário, marque "Não".
-                - compreensao: O SDR entendeu o contexto de primeira. Se ele repetiu uma pergunta que o lead já tinha respondido antes por falta de atenção, marque "Não".
-                - objecoes: Como o SDR lidou com barreiras? Se o lead trouxe uma objeção (tempo, dinheiro, sistema atual) e o SDR contornou com argumento técnico, marque "Sim". Se o lead aceitou passivamente a barreira e recuou, marque "Não". Marque "N/A" apenas se a conversa correu 100% lisa sem nenhuma objeção do lead.
+                - escuta: Avalie se o SDR adaptou a ordem das perguntas do roteiro com base nas falas espontâneas do cliente. Se o SDR interrompeu o lead ou ignorou uma informação útil para apenas seguir lendo o texto, marque "Não".
+                - validacao: O SDR aplicou a técnica de ancoragem prevista no roteiro para confirmar o problema? (Ex de roteiro obrigatório: "Deixa eu ver se entendi bem, o seu principal gargalo hoje é X, correto?").
+                - compreensao: Inteligência de fluxo. Marque "Não" se o SDR fez alguma pergunta do roteiro cujo dado o cliente já havia entregue espontaneamente antes. Isso demonstra leitura mecânica.
+                - objecoes: O SDR utilizou a matriz de contorno de objeções técnica do playbook para responder às travas do lead (tempo, sistema atual, financeiro)? Marque "Não" se ele aceitou o recuo do cliente sem contra-argumentar. Marque "N/A" apenas se a chamada não teve objeções.
 
-                [2. COMUNICAÇÃO]
-                - linguagem: Uso de vocabulário corporativo limpo. Se o SDR abusou de gírias ou vícios de linguagem excessivos e irritantes (tipo, né, tá, aham, saca), marque "Não".
-                - receptividade: Tom de voz cordial, consultivo e enérgico. Se demonstrou desânimo, pressa ou tédio, marque "Não".
-                - rapport: Conexão real. Se o SDR usou uma abordagem empática inicial baseada no que o lead falou, marque "Sim". Se pareceu um robô de telemarketing operando um script engessado, marque "Não".
-                - discurso: Demonstrou autoridade. O SDR se posicionou como um especialista que entende do mercado do cliente?
-                - compreensao_cliente: O cliente entendeu as explicações do SDR de primeira, sem demonstrar confusão ou pedir para reexplicar?
-                - clareza: Perguntas diretas e limpas. Se o SDR fez perguntas duplas, confusas ou prolixas que o cliente demorou para entender, marque "Não".
+                [2. COMUNICAÇÃO E POSTURA B2B]
+                - linguagem: Uso da norma culta e ausência de vícios recorrentes. ATENÇÃO: Se o SDR violou o manual de termos proibidos e usou QUALQUER diminutivo para falar do produto ou processo (ex: sisteminha, minutinho, propostinha, conversinha), marque "Não" imediatamente por quebrar a postura corporativa madura.
+                - receptividade: Execução do script de abertura. O SDR seguiu a estrutura mandatória de saudação da empresa (Identificação pessoal + Identificação da Superlógica + Gancho do motivo do contato)?
+                - rapport: O SDR aproveitou o contexto inicial trazido pelo lead para fazer uma quebra de gelo contextualizada ou agiu como um robô frio de telemarketing?
+                - discurso: Domínio dos termos do mercado. O SDR aplicou corretamente o vocabulário técnico do playbook (Repasse, Inadimplência, DIMOB, Leads, CRM, Captação) de forma natural?
+                - compreensao_cliente: O SDR executou as perguntas de validação de clareza previstas no roteiro após explicar uma funcionalidade (ex: "Faz sentido essa dinâmica na sua imobiliária?", "Conseguiu visualizar esse processo?")?
+                - clareza: Estrutura das perguntas. O SDR fez perguntas curtas e diretas conforme o playbook ou formulou perguntas duplas/confusas que fizeram o cliente pedir para repetir?
 
                 [3. PROCESSO E POLÍTICAS DE QUALIFICAÇÃO]
-                - sla: INVESTIGAÇÃO COMPLETA DOS DADOS DE SLA. 
-                  * Para {produto_detectado} CRM: O SDR OBRIGATORIAMENTE precisa extrair o Número de Corretores E a existência/situação do CRECI da imobiliária.
-                  * Para {produto_detectado} ERP: O SDR OBRIGATORIAMENTE precisa extrair a Quantidade de Contratos Ativos E os Bancos com os quais o cliente opera.
-                  Se o SDR esqueceu ou deixou de perguntar QUALQUER um desses dois dados específicos do produto correspondente, marque "Não".
-                - spin: Investigação profunda. O SDR explorou o problema do cliente fazendo perguntas de causa ou o SDR fez um monólogo falando apenas da nossa empresa?
-                - dor: Identificação da raiz do problema. O lead confessou um impacto ou gargalo real na operação? (Se o SDR aceitou um "está tudo bem, só quero conhecer", marque "Não").
-                - gestao: Mapeamento de Decisão. O SDR validou quem toma a decisão final ou se existem outros sócios/diretores envolvidos no processo?
-                - passos_ro (COMPROMISSO ESTREITO DE COMPUTADOR): Esta é a nossa política de demonstração mais crítica. O SDR precisa firmar o compromisso explícito de que o lead estará na frente de um COMPUTADOR (Desktop/Laptop). Se o lead disse "vou tentar", "acho que sim", "vou estar dirigindo", "posso ver pelo celular" ou se o SDR apenas fez uma menção morna e aceitou uma resposta incerta, marque "Não". Exija confirmação verbal clara do lead de estar na frente de um computador.
-                - produto: O SDR apresentou um gancho de valor personalizado conectando o {produto_detectado} diretamente à dor que o lead acabou de confessar?
-                - gatilhos: O SDR gerou senso de urgência ou escassez de agenda para valorizar o horário com o especialista?
+                - sla: Extração obrigatória de dados de qualificação por linha de produto.
+                  * Para {produto_detectado} CRM: O roteiro exige coletar Número de Corretores E Situação do CRECI.
+                  * Para {produto_detectado} ERP: O roteiro exige coletar Quantidade de Contratos Ativos E Bancos operados.
+                  Se o SDR pulou a coleta de qualquer um dos dois dados exigidos para o produto correspondente, marque "Não".
+                - spin: O SDR seguiu a sequência lógica de investigação do playbook (Situação -> Problema -> Implicação) ou limitou-se a fazer um monólogo institucional sobre a Superlógica?
+                - dor: Identificação de gargalo técnico. O SDR seguiu o roteiro de investigação até obter a confirmação de um problema real na operação, ou aceitou respostas evasivas ("está tudo ótimo", "só quero conhecer") sem insistir ou aplicar uma redundância para expor a dor real? Se aceitou a enrolação passivamente, marque "Não".
+                - gestao: O SDR executou o bloco de mapeamento de organograma para descobrir quem é o decisor final ou se existem outros sócios/diretores envolvidos no processo de escolha?
+                - passos_ro: Alinhamento estrito de expectativas para a Demonstração. O SDR exigiu e obteve o compromisso verbal explícito do lead de que ele estará sentado na frente de um COMPUTADOR ou NOTEBOOK? Se o lead sugeriu ver pelo celular ou dirigir durante a call e o SDR aceitou, marque "Não".
+                - produto: O SDR conectou a solução do {produto_detectado} como resposta direta à dor específica que o lead confessou, respeitando os ganchos de valor do manual?
+                - gatilhos: O SDR aplicou os gatilhos de escassez de agenda ou urgência previstos no script para valorizar o horário com o especialista técnico?
 
                 REGRAS DE VIOLAÇÃO DE POLÍTICA (ERRO FATAL):
                 Você DEVE marcar "erro_fatal": true se o SDR cometer qualquer uma das infrações abaixo:
@@ -248,7 +260,7 @@ def process_all_calls():
                 {{
                   "erro_fatal": false,
                   "operacional": {{
-                    "escuta": {{"r": "[Sim/Não/N/A]", "e": "Frase exata extraída da transcrição que comprova o seu julgamento rigoroso"}},
+                    "escuta": {{"r": "[Sim/Não/N/A]", "e": "Evidência exata extraída da transcrição"}},
                     "validacao": {{"r": "[Sim/Não/N/A]", "e": "Evidência"}},
                     "compreensao": {{"r": "[Sim/Não/N/A]", "e": "Evidência"}},
                     "objecoes": {{"r": "[Sim/Não/N/A]", "e": "Evidência"}},
@@ -301,7 +313,7 @@ def process_all_calls():
                 time.sleep(4)
 
                 # --------------------------------------------------
-                # AGENTE 3: O Diretor de Enablement (Consolidador Técnico Llama 3.3 70B)
+                # AGENTE 3: O Diretor de Enablement (Consolidador de Roteiro Llama 3.3 70B)
                 # --------------------------------------------------
                 print(" -> Executando Agente 3: Diagnóstico de Impacto e Feedbacks Imediatos...")
                 contexto_sintese = f"""
@@ -309,27 +321,27 @@ def process_all_calls():
                 Resultados do Agente 2 (SPIN): {json.dumps(res2)}
                 """
                 prompt_agente3 = """
-                Você é o Agente 3: Diretor de Enablement e Performance Comercial. Sua missão é consolidar os relatórios dos agentes anteriores e gerar um feedback de alto impacto, cirúrgico e direto para o SDR.
-                Seja extremamente franco e firme. Não amacie o feedback. Mostre exatamente a ferida operacional do vendedor.
+                Você é o Agente 3: Diretor de Enablement e Performance Comercial. Sua missão é consolidar os relatórios dos agentes anteriores e gerar um feedback de alto impacto, cirúrgico e direto focado na CORREÇÃO DO ROTEIRO E DO PLAYBOOK comercial.
+                Foque estritamente na execução técnica das etapas do processo de qualificação e no roteiro. Não faça puxadas de orelha comportamentais ou julgamentos subjetivos sobre o tom emocional do vendedor. Mostre exatamente qual linha do manual de vendas foi violada ou ignorada.
 
                 Você DEVE estruturar sua resposta OBRIGATORIAMENTE usando exatamente estes tópicos formatados em Markdown:
 
                 ### 1. PARECER E POSTURA CONSULTIVA
-                [Descreva o diagnóstico macro da postura, se demonstrou autoridade ou se agiu como um mero atendente reativo]
+                [Descreva o diagnóstico macro da postura técnica e aderência ao playbook de processos da empresa]
 
                 ### 2. O QUE ERROU
-                - [Aponte de forma direta e sem rodeios os desvios cometidos, os dados ignorados ou as dores que aceitou sem aprofundar]
+                - [Aponte de forma direta, com marcação de tempo ou citação, os desvios cometidos em relação ao roteiro, os dados do SLA pulados ou as dores ignoradas]
 
                 ### 3. COMO DEVERIA TER FEITO
-                - [Apresente exemplos práticos de roteiro e perguntas de follow-up assertivas que o SDR deveria ter aplicado neste caso real]
+                - [Apresente exemplos práticos de roteiro adaptado, roteiros de contra-argumentação de objeções e perguntas de follow-up assertivas do manual que o SDR deveria ter aplicado neste caso real]
 
                 ### 4. CAUSA E EFEITO NO FUNIL DE VENDAS
-                - [Explique matematicamente o prejuízo operacional gerado por essa falha (ex: pipeline inflado, closer perdendo tempo, queda na conversão de SQL para Fechamento, reuniões superficiais)]
+                - [Explique matematicamente o prejuízo operacional gerado por essa quebra de processo técnico no pipeline (ex: pipeline inflado com leads frios, perda de conversão de SQL para Fechamento, Closers perdendo tempo de demonstração)]
 
                 Responda estritamente neste formato JSON:
                 {{
                   "parecer_executivo": "Texto completo contendo os 4 tópicos estruturados exatamente com seus títulos em Markdown como exigido no prompt acima.",
-                  "plano_de_acao_curto": "Direcionamento prático e direto para o próximo contato do SDR."
+                  "plano_de_acao_curto": "Direcionamento prático de roteiro e pergunta exata a ser aplicada no próximo contato do SDR."
                 }}
                 """
                 chat3 = executar_chat_com_retentativa(
