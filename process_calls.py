@@ -323,29 +323,30 @@ def process_all_calls():
                 É EXPRESSAMENTE PROIBIDO usar palavras vazias e burocráticas como "você não seguiu o playbook", "você ignorou o roteiro", "faltou sequência lógica" ou "não seguiu as diretrizes". 
                 Se você apontar um erro, VOCÊ DEVE OBRIGATORIAMENTE FORNECER A FALA EXATA que o vendedor deveria ter usado no lugar, como um treinador entregando uma receita prática de vendas.
 
-                🚨 REGRA CRÍTICA DE FORMATAÇÃO JSON (ANTI-ERRO):
-                É EXPRESSAMENTE PROIBIDO usar aspas duplas (") dentro dos seus textos gerados. O uso de aspas duplas quebra a estrutura do banco de dados JSON.
-                Se precisar citar uma fala do cliente ou do vendedor, use APENAS ASPAS SIMPLES ('). Exemplo correto: o cliente disse 'foi uma porcaria'.
+                🚨 REGRAS CRÍTICAS DE FORMATAÇÃO JSON (ANTI-ERRO):
+                1. Os valores das chaves DO JSON DEVEM SER STRINGS (iniciar e terminar com aspas duplas).
+                2. NUNCA use aspas duplas (") DENTRO do seu texto. Se precisar citar algo, use aspas simples (').
+                3. NUNCA quebre a linha fisicamente. Para pular linhas e formatar os tópicos em Markdown, use OBRIGATORIAMENTE os caracteres literais \\n.
 
-                Estruture SUA resposta OBRIGATORIAMENTE com estes tópicos em Markdown:
+                Estruture SUA resposta OBRIGATORIAMENTE com estes tópicos em Markdown usando \\n:
 
                 ### 1. PARECER E POSTURA CONSULTIVA
                 [Um resumo direto de 2 linhas sobre o controle de conversa e inteligência comercial demonstrada na ligação]
 
                 ### 2. O QUE ERROU
-                - [Aponte falhas REAIS encontradas na transcrição. Ex: "No minuto 03:10, o cliente disse que perde horas fechando o caixa, mas você não aprofundou e mudou de assunto perguntando de sistema atual."]
+                - [Aponte falhas REAIS encontradas na transcrição. Ex: 'No minuto 03:10, o cliente disse que perde horas, mas você não aprofundou.']
 
                 ### 3. COMO DEVERIA TER FEITO (SCRIPT PRÁTICO)
-                - [Obrigatoriamente forneça o texto exato em formato de fala. Ex: "Em vez de mudar de assunto, você deveria ter ancorado a dor e perguntado: 'Cliente, se você perde todo esse tempo fechando o caixa, como fica o seu repasse para os proprietários no final do mês?'"]
-                *Aviso: Consulte a aba 'Playbooks SPIN' no menu lateral do sistema operacional para revisar a estrutura de perguntas abertas e fechadas.*
+                - [Forneça o texto exato em formato de fala. Ex: 'Em vez de mudar de assunto, pergunte: Cliente, como fica o seu repasse no final do mês?']
+                *Aviso: Consulte a aba 'Playbooks SPIN' no menu lateral.*
 
                 ### 4. CAUSA E EFEITO NO FUNIL DE VENDAS
-                - [Explique de forma direta e rápida como esse erro específico na call acaba esfriando o lead e prejudicando a taxa de conversão na Demonstração com o Closer.]
+                - [Explique de forma direta como esse erro esfria o lead.]
 
                 Responda estritamente neste formato JSON:
                 {{
-                  "parecer_executivo": "O texto completo respeitando fielmente os títulos em Markdown solicitados acima e sem usar aspas duplas.",
-                  "plano_de_acao_curto": "A pergunta exata ou a postura única que ele deve treinar para a próxima ligação, sem usar aspas duplas."
+                  "parecer_executivo": "### 1. PARECER E POSTURA CONSULTIVA\\nResumo aqui.\\n\\n### 2. O QUE ERROU\\nErro aqui.\\n\\n### 3. COMO DEVERIA TER FEITO\\nCorreção aqui.\\n\\n### 4. CAUSA E EFEITO\\nEfeito aqui.",
+                  "plano_de_acao_curto": "Ação exata sem usar aspas duplas no meio do texto."
                 }}
                 """
                 chat3 = executar_chat_com_retentativa(
