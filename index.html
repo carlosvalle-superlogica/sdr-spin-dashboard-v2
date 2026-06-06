@@ -4,16 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Superlógica | Sales Audit Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
+    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
+    <link href="[https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap)" rel="stylesheet">
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="[https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css](https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css)">
+    <script src="[https://cdn.jsdelivr.net/npm/flatpickr](https://cdn.jsdelivr.net/npm/flatpickr)"></script>
+    <script src="[https://npmcdn.com/flatpickr/dist/l10n/pt.js](https://npmcdn.com/flatpickr/dist/l10n/pt.js)"></script>
+    <script src="[https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js](https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js)"></script>
 
     <style>
         body { background-color: #f8fafc; color: #1e293b; font-family: 'Inter', sans-serif; }
@@ -85,7 +84,7 @@
                 
                 <span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold ml-4 mb-2 block mt-8">Treinamento</span>
                 <button onclick="switchTab('playbooks')" id="menu-playbooks" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition sidebar-inactive">
-                    <i class="fa-solid fa-book-bookmark w-5 text-center"></i> Playbooks SPIN
+                    <i class="fa-solid fa-book-bookmark w-5 text-center"></i> Playbooks & Base
                 </button>
             </nav>
             
@@ -241,7 +240,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="card-light p-8 rounded-2xl flex flex-col">
                         <h3 class="text-sm font-bold text-slate-800 mb-6 flex items-center uppercase tracking-wider">
                             <i class="fa-solid fa-arrow-trend-up text-purple-500 mr-2"></i> Evolução Temporal Global
@@ -274,42 +272,150 @@
                 </div>
             </div>
 
-            <div id="tab-playbooks" class="hidden animate-fade-in max-w-5xl mx-auto w-full">
-                <div class="mb-8 text-center">
-                    <h2 class="text-2xl font-black text-slate-800 tracking-tight">Base de Conhecimento SPIN</h2>
-                    <p class="text-slate-500 text-sm mt-2">Referência de roteiro para alinhamento e treinamento da equipe.</p>
+            <div id="tab-playbooks" class="hidden animate-fade-in max-w-6xl mx-auto w-full pb-10">
+                <div class="mb-10 text-center">
+                    <h2 class="text-3xl font-black text-slate-800 tracking-tight">Base de Conhecimento Sales Audit</h2>
+                    <p class="text-slate-500 text-sm mt-2 max-w-2xl mx-auto">Referência completa de roteiro, técnicas e conformidade operacional para alinhamento e treinamento da equipe SDR.</p>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="card-light p-8 rounded-2xl border-t-4 border-indigo-500 hover:shadow-md transition">
-                        <h3 class="text-xl font-black text-slate-800 mb-2 flex items-center gap-3"><span class="bg-indigo-100 text-indigo-600 w-8 h-8 rounded-lg flex items-center justify-center">S</span> Situação</h3>
-                        <p class="text-slate-500 text-sm leading-relaxed mb-6">Fatos, dados e cenário atual do cliente. Use com moderação para não transformar a call num interrogatório de IBGE.</p>
-                        <div class="space-y-3">
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-indigo-400 mr-2">🎯</span> "Qual sistema você usa hoje para gerenciar os repasses?"</div>
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-indigo-400 mr-2">🎯</span> "Hoje a sua imobiliária atua mais com vendas ou locação?"</div>
+
+                <div class="mb-14">
+                    <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-3 border-b border-slate-200 pb-2"><i class="fa-solid fa-diagram-project text-indigo-500"></i> Metodologia SPIN</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="card-light p-6 rounded-2xl border-t-4 border-indigo-500">
+                            <h4 class="text-lg font-black text-slate-800 mb-2 flex items-center gap-2"><span class="bg-indigo-100 text-indigo-600 w-7 h-7 rounded text-sm flex items-center justify-center">S</span> Situação</h4>
+                            <p class="text-slate-500 text-sm mb-4">Fatos e cenário atual. Use com moderação.</p>
+                            <div class="space-y-2">
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-700">"Qual sistema você usa hoje?"</div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-700">"Atua mais com vendas ou locação?"</div>
+                            </div>
+                        </div>
+                        <div class="card-light p-6 rounded-2xl border-t-4 border-amber-500">
+                            <h4 class="text-lg font-black text-slate-800 mb-2 flex items-center gap-2"><span class="bg-amber-100 text-amber-600 w-7 h-7 rounded text-sm flex items-center justify-center">P</span> Problema</h4>
+                            <p class="text-slate-500 text-sm mb-4">Dores e dificuldades. Onde a operação trava?</p>
+                            <div class="space-y-2">
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-700">"Sente que a equipe perde muito tempo fechando caixa?"</div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-700">"O sistema atual trava na DIMOB?"</div>
+                            </div>
+                        </div>
+                        <div class="card-light p-6 rounded-2xl border-t-4 border-rose-500">
+                            <h4 class="text-lg font-black text-slate-800 mb-2 flex items-center gap-2"><span class="bg-rose-100 text-rose-600 w-7 h-7 rounded text-sm flex items-center justify-center">I</span> Implicação</h4>
+                            <p class="text-slate-500 text-sm mb-4">Desdobramentos do problema. Crie urgência.</p>
+                            <div class="space-y-2">
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-700">"Se o erro persistir, quanto de multa pagam?"</div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-700">"Como essa perda de tempo afeta as captações?"</div>
+                            </div>
+                        </div>
+                        <div class="card-light p-6 rounded-2xl border-t-4 border-emerald-500">
+                            <h4 class="text-lg font-black text-slate-800 mb-2 flex items-center gap-2"><span class="bg-emerald-100 text-emerald-600 w-7 h-7 rounded text-sm flex items-center justify-center">N</span> Necessidade</h4>
+                            <p class="text-slate-500 text-sm mb-4">Foco no valor e na solução pelo próprio cliente.</p>
+                            <div class="space-y-2">
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-700">"Se zerasse a inadimplência amanhã, o que mudaria?"</div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-700">"Qual o impacto de ter isso tudo automatizado?"</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-light p-8 rounded-2xl border-t-4 border-amber-500 hover:shadow-md transition">
-                        <h3 class="text-xl font-black text-slate-800 mb-2 flex items-center gap-3"><span class="bg-amber-100 text-amber-600 w-8 h-8 rounded-lg flex items-center justify-center">P</span> Problema</h3>
-                        <p class="text-slate-500 text-sm leading-relaxed mb-6">Investiga dores, insatisfações e dificuldades. Onde a operação do cliente trava hoje?</p>
-                        <div class="space-y-3">
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-amber-400 mr-2">🎯</span> "Esse sistema atual costuma apresentar lentidão ou gargalos?"</div>
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-amber-400 mr-2">🎯</span> "Você sente que a equipe perde muito tempo executando tarefas manuais?"</div>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-2 flex items-center gap-3"><i class="fa-solid fa-list-check text-purple-500"></i> Gabarito de Conformidade (Os 17 Critérios)</h3>
+                    <p class="text-sm text-slate-500 mb-8 border-b border-slate-200 pb-4">O manual definitivo de como a Inteligência Artificial pontua a sua ligação para compor a nota 10.0.</p>
+
+                    <h4 class="text-[10px] font-black uppercase tracking-widest text-indigo-600 mb-4 ml-2">Bloco 1: Escuta e Adaptação</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">1. Escuta Ativa</h5>
+                            <p class="text-xs text-slate-600 mb-3">Ouvir o cliente e adaptar o roteiro. Não seja um robô lendo script.</p>
+                            <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100"><span class="text-[9px] uppercase font-bold text-emerald-600 block mb-1">Dica de Ouro</span><p class="text-xs text-slate-700 italic">"Nossa, até as 20h? E isso acontece com frequência no fim do mês?"</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">2. Validação (Ancoragem)</h5>
+                            <p class="text-xs text-slate-600 mb-3">"Carimbar" o problema na mente do lead antes de avançar.</p>
+                            <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100"><span class="text-[9px] uppercase font-bold text-emerald-600 block mb-1">Dica de Ouro</span><p class="text-xs text-slate-700 italic">"Deixa eu ver se entendi: seu principal gargalo hoje é o controle manual, certo?"</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">3. Compreensão (Fluxo)</h5>
+                            <p class="text-xs text-slate-600 mb-3">Atenção plena. Não faça perguntas que o cliente já respondeu sozinho.</p>
+                            <div class="bg-rose-50/50 p-3 rounded-lg border border-rose-100"><span class="text-[9px] uppercase font-bold text-rose-600 block mb-1">O que Reprova</span><p class="text-xs text-slate-700">Perguntar "Quantos contratos vocês têm?" se o lead já falou isso no minuto 2.</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">4. Contorno de Objeções</h5>
+                            <p class="text-xs text-slate-600 mb-3">Não recuar no primeiro "não" ou desculpa de falta de tempo.</p>
+                            <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100"><span class="text-[9px] uppercase font-bold text-emerald-600 block mb-1">Dica de Ouro</span><p class="text-xs text-slate-700 italic">"Justamente por sua rotina ser corrida que eu liguei. O sistema devolve o seu tempo."</p></div>
                         </div>
                     </div>
-                    <div class="card-light p-8 rounded-2xl border-t-4 border-rose-500 hover:shadow-md transition">
-                        <h3 class="text-xl font-black text-slate-800 mb-2 flex items-center gap-3"><span class="bg-rose-100 text-rose-600 w-8 h-8 rounded-lg flex items-center justify-center">I</span> Implicação</h3>
-                        <p class="text-slate-500 text-sm leading-relaxed mb-6">Desdobramentos do problema. Transforma uma dor "pequena" em algo urgente, mostrando impacto financeiro/tempo.</p>
-                        <div class="space-y-3">
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-rose-400 mr-2">🎯</span> "Se esse erro persistir, quanto de multa vocês podem pagar?"</div>
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-rose-400 mr-2">🎯</span> "Como essa perda de tempo afeta o volume de captações no mês?"</div>
+
+                    <h4 class="text-[10px] font-black uppercase tracking-widest text-purple-600 mb-4 ml-2">Bloco 2: Comunicação e Postura B2B</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">5. Linguagem</h5>
+                            <p class="text-xs text-slate-600 mb-3">Comunicação profissional B2B. Zero vícios e gírias.</p>
+                            <div class="bg-rose-50/50 p-3 rounded-lg border border-rose-100"><span class="text-[9px] uppercase font-bold text-rose-600 block mb-1">O que Reprova</span><p class="text-xs text-slate-700">Diminutivos (sisteminha, propostinha) e vícios (tipo assim, né).</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">6. Receptividade</h5>
+                            <p class="text-xs text-slate-600 mb-3">Energia alta e uso do script de saudação padrão.</p>
+                            <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100"><span class="text-[9px] uppercase font-bold text-emerald-600 block mb-1">Dica de Ouro</span><p class="text-xs text-slate-700 italic">"Olá [Nome], bom dia! Aqui é o [Nome] da Superlógica, tudo bem?"</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">7. Rapport</h5>
+                            <p class="text-xs text-slate-600 mb-3">Quebra de gelo baseada em contexto real da imobiliária.</p>
+                            <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100"><span class="text-[9px] uppercase font-bold text-emerald-600 block mb-1">Dica de Ouro</span><p class="text-xs text-slate-700 italic">"Vi no portal de vocês que têm uma carteira forte na região Sul..."</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">8. Discurso (Autoridade)</h5>
+                            <p class="text-xs text-slate-600 mb-3">Domínio dos termos do mercado imobiliário e postura de Especialista.</p>
+                            <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100"><span class="text-[9px] uppercase font-bold text-emerald-600 block mb-1">Dica de Ouro</span><p class="text-xs text-slate-700 italic">Falar com segurança sobre DIMOB, Repasse, Inadimplência.</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">9. Compreensão do Cliente</h5>
+                            <p class="text-xs text-slate-600 mb-3">Pausar e validar se o lead entendeu sua explicação complexa.</p>
+                            <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100"><span class="text-[9px] uppercase font-bold text-emerald-600 block mb-1">Dica de Ouro</span><p class="text-xs text-slate-700 italic">"Conseguiu visualizar como essa automação funcionaria na sua operação?"</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">10. Clareza</h5>
+                            <p class="text-xs text-slate-600 mb-3">Perguntas diretas e fáceis de responder.</p>
+                            <div class="bg-rose-50/50 p-3 rounded-lg border border-rose-100"><span class="text-[9px] uppercase font-bold text-rose-600 block mb-1">O que Reprova</span><p class="text-xs text-slate-700">Perguntas duplas: "Usam sistema ou planilha, e alimentam todo dia?"</p></div>
                         </div>
                     </div>
-                    <div class="card-light p-8 rounded-2xl border-t-4 border-emerald-500 hover:shadow-md transition">
-                        <h3 class="text-xl font-black text-slate-800 mb-2 flex items-center gap-3"><span class="bg-emerald-100 text-emerald-600 w-8 h-8 rounded-lg flex items-center justify-center">N</span> Necessidade</h3>
-                        <p class="text-slate-500 text-sm leading-relaxed mb-6">Foca na solução e valor. Faz o cliente declarar o desejo pelo seu produto antes mesmo do pitch.</p>
-                        <div class="space-y-3">
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-emerald-400 mr-2">🎯</span> "Se você zerasse a inadimplência amanhã, o que mudaria no caixa?"</div>
-                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-sm text-slate-700 font-medium"><span class="text-emerald-400 mr-2">🎯</span> "Qual seria o impacto pro seu time ter tudo isso automatizado?"</div>
+
+                    <h4 class="text-[10px] font-black uppercase tracking-widest text-emerald-600 mb-4 ml-2">Bloco 3: Processo e Qualificação</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="card-light p-5 rounded-2xl border-l-4 border-emerald-400">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">11. Coleta de SLA (MANDATÓRIO)</h5>
+                            <p class="text-xs text-slate-600 mb-3">Critérios que decidem se o lead é lixo ou oportunidade.</p>
+                            <ul class="text-xs text-slate-700 space-y-1.5 font-medium">
+                                <li><span class="text-emerald-500">✔</span> <b>CRM:</b> Nº de Corretores + Situação do CRECI</li>
+                                <li><span class="text-emerald-500">✔</span> <b>ERP:</b> Vol. de Contratos + Bancos Operados</li>
+                            </ul>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">12. Metodologia SPIN</h5>
+                            <p class="text-xs text-slate-600 mb-3">Obrigatório aplicar as etapas de investigação (Acima).</p>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">13. Uso da Dor</h5>
+                            <p class="text-xs text-slate-600 mb-3">Não aceite evasivas. Cave até achar o incômodo operacional.</p>
+                            <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100"><span class="text-[9px] uppercase font-bold text-emerald-600 block mb-1">Dica de Ouro</span><p class="text-xs text-slate-700 italic">"Se pudesse mudar uma única coisa hoje para ficar mais rápido, o que seria?"</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">14. Gestão de Decisão</h5>
+                            <p class="text-xs text-slate-600 mb-3">Mapear o organograma e quem assina o cheque.</p>
+                            <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100"><span class="text-[9px] uppercase font-bold text-emerald-600 block mb-1">Dica de Ouro</span><p class="text-xs text-slate-700 italic">"Além de você, existe mais algum sócio que precisa avaliar a ferramenta?"</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl border-l-4 border-rose-400 bg-rose-50/20">
+                            <h5 class="text-sm font-bold text-rose-800 mb-1">15. Passos RO (PC/NOTEBOOK)</h5>
+                            <p class="text-xs text-slate-600 mb-3">Trava anti no-show. O lead PRECISA assumir compromisso explícito.</p>
+                            <div class="bg-white p-3 rounded-lg border border-rose-100"><span class="text-[9px] uppercase font-bold text-rose-600 block mb-1">Obrigatório ouvir o "Sim"</span><p class="text-xs text-slate-700 italic font-medium">"Posso confirmar que amanhã você estará na frente de um computador para ver a tela?"</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">16. Venda do Produto</h5>
+                            <p class="text-xs text-slate-600 mb-3">Conectar o pitch da Superlógica DIRETAMENTE à dor confessada.</p>
+                            <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100"><span class="text-[9px] uppercase font-bold text-emerald-600 block mb-1">Dica de Ouro</span><p class="text-xs text-slate-700 italic">"Como você me disse que perde horas, a demonstração será focada no módulo de conciliação."</p></div>
+                        </div>
+                        <div class="card-light p-5 rounded-2xl">
+                            <h5 class="text-sm font-bold text-slate-800 mb-1">17. Gatilhos Mentais</h5>
+                            <p class="text-xs text-slate-600 mb-3">Valorizar o Closer criando urgência e escassez de agenda.</p>
+                            <div class="bg-emerald-50/50 p-3 rounded-lg border border-emerald-100"><span class="text-[9px] uppercase font-bold text-emerald-600 block mb-1">Dica de Ouro</span><p class="text-xs text-slate-700 italic">"A agenda do especialista é muito concorrida, mas vou verificar se consigo um encaixe..."</p></div>
                         </div>
                     </div>
                 </div>
@@ -342,9 +448,6 @@
         let spiderChart, lineChart;
         let picker;
 
-        // =====================================
-        // CONTROLE DE ACESSO E SESSÃO
-        // =====================================
         function checkSession() {
             if (sessionStorage.getItem('isLoggedIn') === 'true') {
                 document.getElementById('login-screen').classList.add('hidden');
@@ -355,9 +458,7 @@
         }
 
         function handleEnter(event) {
-            if (event.key === 'Enter') {
-                realizarLogin();
-            }
+            if (event.key === 'Enter') realizarLogin();
         }
 
         function realizarLogin() {
@@ -365,7 +466,6 @@
             const pass = document.getElementById('login-pass').value;
             const errorMsg = document.getElementById('login-error');
 
-            // Aceita variações de acentuação para evitar bloqueios acidentais
             if (user === 'aquisições' || user === 'aquisicoes' || user === 'aquisiçoes' || user === 'aquisição') {
                 if (pass === '2024') {
                     sessionStorage.setItem('isLoggedIn', 'true');
@@ -386,9 +486,6 @@
             window.location.reload();
         }
 
-        // =====================================
-        // NÚCLEO DO SISTEMA E RENDERS
-        // =====================================
         function initCalendario() {
             picker = flatpickr("#date-range", { mode: "range", dateFormat: "Y-m-d", locale: "pt", onChange: applyFilters });
         }
@@ -404,7 +501,7 @@
             document.getElementById(`menu-${tab}`).classList.add('sidebar-active');
             document.getElementById(`menu-${tab}`).classList.remove('sidebar-inactive');
             
-            const titles = { geral: "Visão Geral", equipe: "Equipe SDR", dash: "Dashboard Analytics", auditorias: "Histórico & Dossiês", playbooks: "Playbooks SPIN" };
+            const titles = { geral: "Visão Geral", equipe: "Equipe SDR", dash: "Dashboard Analytics", auditorias: "Histórico & Dossiês", playbooks: "Base de Conhecimento" };
             document.getElementById('page-title').innerText = titles[tab];
         }
 
@@ -527,7 +624,7 @@
                     let nOp = parseFloat(c.nota_op) || 0;
                     let nSpin = parseFloat(c.nota_spin) || 0;
 
-                    if (nOp <= 5.0) {
+                    if (nOp < 10.0) {
                         motivo = '<span class="flex items-center gap-1.5 font-bold text-rose-600 bg-rose-50 px-2.5 py-1 rounded-md text-xs w-max border border-rose-100">🔴 Ajuste Conformidade</span>';
                     } else if (nSpin <= 5.0) {
                         motivo = '<span class="flex items-center gap-1.5 font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md text-xs w-max border border-amber-100">🟡 Ajuste SPIN</span>';
@@ -599,7 +696,7 @@
                 const wColor = (c.wps||0) < 1.5 || (c.wps||0) > 2.5 ? 'text-amber-500' : 'text-emerald-600';
                 
                 let dotStatus = '🟢';
-                if ((parseFloat(c.nota_op) || 0) <= 5.0) dotStatus = '🔴';
+                if ((parseFloat(c.nota_op) || 0) < 10.0) dotStatus = '🔴';
                 else if ((parseFloat(c.nota_spin) || 0) <= 5.0) dotStatus = '🟡';
 
                 htmlStr += `
@@ -720,7 +817,6 @@
             document.getElementById('modal-sdr').classList.remove('hidden');
         }
 
-        // MOTOR DO PDF BLINDADO CALIBRADO PARA LIGHT MODE
         function exportarDossiePDF() {
             const btn = document.getElementById('btn-gerar-pdf');
             const originalText = btn.innerHTML;
@@ -790,7 +886,6 @@
             });
         }
 
-        // Inicia a checagem de sessão ao abrir a página
         window.onload = checkSession;
     </script>
 </body>
