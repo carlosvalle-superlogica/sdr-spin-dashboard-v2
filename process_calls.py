@@ -75,7 +75,7 @@ def calcular_nota_operacional(op_data, erro_fatal):
     MATEMÁTICA ADITIVA RÍGIDA (A BUSCA PELO 10.0):
     O SDR começa com 0.0. Para tirar 10.0, precisa de 17 "Sim".
     Qualquer "N/A" soma 0.0 (logo, o teto da nota diminui naturalmente de forma justa).
-    Qualquer "Não" aplica penalidade real por erro ou oportunidade desperdiçada.
+    Qualquer "Não" aplica penalidade real por erro.
     """
     nota = 0.0
 
@@ -88,9 +88,16 @@ def calcular_nota_operacional(op_data, erro_fatal):
     chaves_formais = ['linguagem', 'receptividade', 'rapport', 'discurso', 'compreensao_cliente', 'clareza', 'gatilhos'] 
     # 7 itens (0.3 cada = 2.1 max)
 
+    # Função interna para limpar o texto que a IA devolve (Garante precisão no cálculo)
+    def normalizar_resposta(valor):
+        texto = str(valor).strip().title()
+        if texto == 'Nao': return 'Não'
+        if texto == 'N/a' or texto == 'N/A': return 'N/A'
+        return texto
+
     # --- TIER 1: CRÍTICOS ---
     for k in chaves_criticas:
-        r = op_data.get(k, {}).get('r')
+        r = normalizar_resposta(op_data.get(k, {}).get('r', ''))
         if r == 'Sim': 
             nota += 1.0
         elif r == 'Não': 
@@ -98,7 +105,7 @@ def calcular_nota_operacional(op_data, erro_fatal):
 
     # --- TIER 2: ESTRATÉGICOS ---
     for k in chaves_estrategicas:
-        r = op_data.get(k, {}).get('r')
+        r = normalizar_resposta(op_data.get(k, {}).get('r', ''))
         if r == 'Sim': 
             nota += 0.7
         elif r == 'Não': 
@@ -106,7 +113,7 @@ def calcular_nota_operacional(op_data, erro_fatal):
 
     # --- TIER 3: FORMAIS ---
     for k in chaves_formais:
-        r = op_data.get(k, {}).get('r')
+        r = normalizar_resposta(op_data.get(k, {}).get('r', ''))
         if r == 'Sim': 
             nota += 0.3
         elif r == 'Não': 
@@ -206,10 +213,10 @@ def process_all_calls():
             txt_verif = (title + " " + json.dumps(row)).lower()
             produto_detectado = "CRM" if any(p in txt_verif for p in ["crm", "creci", "corretor"]) else "ERP"
 
-            # Trava de Segurança Isolada para Download de Áudio (Timeout de 10s)
+            # Trava de Segurança Aprimorada para Download de Áudio (Timeout de 30s)
             try:
                 req = urllib.request.Request(audio_url, headers={'User-Agent': 'Mozilla/5.0'})
-                with urllib.request.urlopen(req, timeout=10) as response: 
+                with urllib.request.urlopen(req, timeout=30) as response: 
                     audio_bytes = response.read()
             except Exception as e:
                 print(f"   ⚠️ [TIMEOUT/ERRO DOWNLOAD] Servidor de áudio falhou ou demorou muito: {e}. Pulando...")
@@ -239,47 +246,47 @@ def process_all_calls():
                 wps = round(len(texto.split()) / segundos, 2) if segundos > 0 else 0.0
 
                 # --------------------------------------------------
-                # AGENTE 1: CONFORMIDADE CALIBRADA (SIM, NÃO E N/A)
+                # AGENTE 1: CONFORMIDADE COM NOVO RIGOR 
                 # --------------------------------------------------
-                print(" -> Agente 1: Analisando Conformidade e Adaptação...")
+                print(" -> Agente 1: Analisando Conformidade e Processo com Alto Rigor...")
                 prompt_agente1 = f"""
-                Você é o Agente 1: Auditor Comercial Inteligente. Avalie o SDR no produto {produto_detectado}.
-                
-                MUITO IMPORTANTE - REGRA DO SIM, NÃO E N/A:
-                - SIM (Objetivo Atingido): O SDR executou a técnica ativamente OU o lead entregou a informação de bandeja e o SDR teve a maturidade de não repetir a pergunta.
-                - NÃO (Oportunidade Desperdiçada): O cenário/oportunidade existiu na conversa, mas o SDR falhou, ignorou a dor, atropelou o cliente, leu script como robô ou quebrou o processo.
-                - N/A (Cenário Inexistente): A oportunidade técnica NUNCA se materializou (ex: lead não apresentou objeções, o lead monopolizou a fala sozinho, ou o lead foi desqualificado e a chamada foi abortada antes da agenda).
+                Você é o Agente 1: Auditor Comercial Implacável. Avalie o SDR no produto {produto_detectado}.
+                Sua missão é eliminar a complacência. Não dê "Sim" fácil. Seja extremamente rigoroso na análise.
 
-                DIRETRIZES DE AUDITORIA POR ITEM (LEIA E JULGUE COM ATENÇÃO):
+                REGRAS ABSOLUTAS DE ATRIBUIÇÃO (SIM, NÃO, N/A):
+                - SIM: O SDR executou a técnica com clareza OU o lead entregou o dado de bandeja espontaneamente (escuta ativa madura).
+                - NÃO: O cenário existia, mas o SDR errou, foi raso, ignorou ganchos, usou diminutivos ou aceitou respostas evasivas sem contornar.
+                - N/A: A oportunidade técnica NUNCA existiu na chamada (ex: lead concordou com tudo e não fez nenhuma objeção).
+
+                MANUAL DE RIGOR ITEM A ITEM (LIGAÇÕES LONGAS > 3 MIN):
                 [1. ESCUTA E ADAPTAÇÃO]
-                - escuta: SIM se o SDR ouviu e adaptou. NÃO se interrompeu ou ignorou algo para ler o script passivamente. N/A se a ligação foi 100% um monólogo do lead.
-                - validacao: SIM se o lead expôs dor e o SDR demonstrou empatia. NÃO se o lead desabafou e o SDR mudou de assunto secamente. N/A se o lead NÃO expôs nenhuma dor na chamada.
-                - compreensao: SIM se o SDR usou inteligentemente informações já ditas. NÃO se o SDR perguntou de novo algo que o lead já havia respondido. N/A se a chamada caiu antes de poder avaliar a memória.
-                - objecoes: SIM se contornou barreiras. NÃO se o lead trouxe objeção e o SDR aceitou facilmente ou desistiu. N/A se o lead concordou com tudo e NÃO apresentou objeção alguma.
+                - escuta: SIM se o SDR adaptou a conversa. NÃO se interrompeu ou ignorou falas para ler o script. N/A se a call foi 100% monólogo do lead.
+                - validacao: SIM se o lead trouxe um problema e o SDR acolheu com empatia. NÃO se mudou de assunto secamente após um desabafo. N/A se o lead não expôs problemas emocionais/operacionais graves.
+                - compreensao: SIM se usou dados ditos antes. NÃO se o SDR perguntou de novo algo que o cliente já tinha respondido (desatenção). N/A se a chamada caiu antes dessa validação.
+                - objecoes: SIM se contornou a barreira. NÃO se o lead trouxe objeção (tempo, preço, processo) e o SDR aceitou passivamente ou desistiu. N/A apenas se o lead concordou com tudo e NÃO fez objeção alguma.
 
                 [2. COMUNICAÇÃO E POSTURA B2B]
-                - linguagem: SIM se manteve postura formal. NÃO se usou diminutivos infantis (sisteminha, minutinho, propostinha). N/A se quase não há amostra de voz do SDR para avaliar.
-                - receptividade: SIM se executou saudação acolhedora. NÃO se começou de forma ríspida ou confusa. N/A se a gravação já começou no meio da conversa.
-                - rapport: SIM se aproveitou contexto para quebrar o gelo. NÃO se iniciou interrogatório seco. N/A se o lead atendeu apressado/agressivo matando a chance de rapport.
-                - discurso: SIM se usou vocabulário técnico imobiliário correto. NÃO se falou bobagem técnica. N/A se a ligação abortou antes de entrar no tema do sistema.
-                - compreensao_cliente: SIM se após explicar algo, perguntou se fez sentido. NÃO se fez um monólogo gigante sem checar entendimento. N/A se não houve explicação de produto/processo.
-                - clareza: SIM se fez perguntas curtas e diretas. NÃO se fez perguntas confusas. N/A se o SDR quase não fez perguntas.
+                - linguagem: SIM se manteve postura formal corporativa. NÃO se usou UM ÚNICO diminutivo infantilizado (sisteminha, minutinho, propostinha, tempinho) ou gíria informal. N/A se o SDR quase não falou.
+                - receptividade: SIM se fez saudação acolhedora e completa. NÃO se começou ríspida, confusa ou atropelada. N/A se a gravação começou cortada.
+                - rapport: SIM se quebrou o gelo usando ganchos reais (região, empresa, tom de voz). NÃO se foi robótico ou seco. N/A se o lead atendeu agressivo impossibilitando conexão.
+                - discurso: SIM se usou vocabulário técnico e maduro do mercado imobiliário/ERP. NÃO se demonstrou desconhecimento ou falou bobagem técnica. N/A se abortou antes do tema principal.
+                - compreensao_cliente: SIM se após uma explicação densa, checou o entendimento ("faz sentido?"). NÃO se fez monólogos gigantes sem pausar para validar se o cliente acompanhava. N/A se não houve explicação técnica.
+                - clareza: SIM se fez perguntas curtas e diretas. NÃO se fez perguntas duplas, confusas ou se enrolou na dicção. N/A se o lead falou tudo sozinho.
 
                 [3. PROCESSO E QUALIFICAÇÃO]
                 - sla: 
-                  * {produto_detectado} CRM: Coletou Número de Corretores E Situação do CRECI?
-                  * {produto_detectado} ERP: Coletou Quantidade de Contratos E Bancos operados?
-                  (SIM se coletou ou se o lead já falou sozinho. NÃO se não descobriu. N/A se o lead foi desqualificado antes disso).
-                - spin: SIM se fez investigação sequencial lógica. NÃO se virou um "panfleteiro" apresentando funcionalidades do nada. N/A se o lead já despejou o cenário e problemas todos sozinho.
-                - dor: SIM se arrancou uma dor real. NÃO se o lead deu respostas rasas e o SDR não insistiu para descobrir o gargalo. N/A se o lead for irredutível e blindado afirmando estar tudo perfeito.
-                - gestao: SIM se mapeou o decisor ou se o lead revelou. NÃO se agendou sem fazer ideia de quem decide. N/A se desqualificou antes dessa fase.
-                - passos_ro: SIM se conseguiu a confirmação VERBAL CLARA de que o lead estará num COMPUTADOR na próxima reunião. NÃO se aceitou "vou ver pelo celular/carro". N/A se a ligação NÃO gerou agendamento de reunião.
-                - produto: SIM se conectou a solução à dor de forma inteligente. NÃO se tentou empurrar agenda listando recursos inúteis pro cliente. N/A se não evoluiu para o pitch de agendamento.
-                - gatilhos: SIM se gerou valor e urgência de agenda. NÃO se agendou de forma desleixada. N/A se a ligação NÃO gerou agendamento de reunião.
+                  * Para {produto_detectado} CRM: Coletou OBRIGATORIAMENTE Número de Corretores E Situação do CRECI. Faltou um deles, é NÃO.
+                  * Para {produto_detectado} ERP: Coletou OBRIGATORIAMENTE Quantidade de Contratos E Bancos operados. Faltou um deles, é NÃO.
+                  (Marque SIM se coletou ambos ou se o lead entregou de bandeja. N/A se o lead foi desqualificado precocemente).
+                - spin: SIM se seguiu uma sequência exploratória de investigação. NÃO se virou panfleteiro pulando direto para as telas/recursos do sistema. N/A se o lead já despejou tudo sozinho.
+                - dor: SIM se extraiu e aprofundou um gargalo real. NÃO se aceitou respostas rasas ("tá tudo bem") e mudou de assunto sem cavar o impacto financeiro/operacional. N/A se o lead foi totalmente irredutível afirmando que não tem dores.
+                - gestao: SIM se mapeou quem toma a decisão final. NÃO se agendou a demo sem fazer ideia se o lead tem poder de decisão. N/A se desqualificou antes dessa etapa.
+                - passos_ro: RIGOR MÁXIMO. SIM se conseguiu a confirmação VERBAL CLARA de que o lead estará na frente de um COMPUTADOR. NÃO se aceitou respostas vagas ("vou tentar", "vejo do celular", "estarei no carro") sem bater o pé e corrigir. N/A se a chamada NÃO gerou agendamento de reunião.
+                - produto: SIM se conectou a solução diretamente à dor mapeada. NÃO se listou recursos genéricos sem nexo com o problema do cliente. N/A se não houve pitch de agendamento.
+                - gatilhos: SIM se gerou valor e senso de compromisso com o horário. NÃO se agendou de forma desleixada ("marca qualquer hora aí"). N/A se a chamada NÃO gerou agendamento de reunião.
 
-                REGRAS DE ERRO FATAL E JSON: 
-                - Marque 'erro_fatal': true APENAS se o SDR quebrar o sigilo e passar preço ou agendar reunião com lead fora de perfil.
-                - 🚨 NUNCA use aspas duplas (") dentro das suas frases de 'Evidência'. Use sempre aspas simples (').
+                REGRAS DE ERRO FATAL: Marque 'erro_fatal': true APENAS se o SDR quebrar sigilo passando preço ou agendar reunião com lead totalmente fora do perfil.
+                🚨 REGRA DE JSON: NUNCA use aspas duplas (") dentro das frases de 'Evidência'. Use sempre aspas simples (').
 
                 Retorne OBRIGATORIAMENTE o JSON preenchendo 'r' com 'Sim', 'Não' ou 'N/A':
                 {{
@@ -314,24 +321,29 @@ def process_all_calls():
                 time.sleep(2)
 
                 # --------------------------------------------------
-                # AGENTE 2: SPIN COM AVALIAÇÃO JUSTA E FLEXÍVEL
+                # AGENTE 2: SPIN SCORE
                 # --------------------------------------------------
                 print(" -> Agente 2: Avaliando Notas de Metodologia SPIN...")
                 prompt_agente2 = """
-                Você é o Agente 2: Especialista em Metodologia de Vendas e Psicologia Comercial.
+                Você é o Agente 2: Especialista em Metodologia SPIN e Psicologia Comercial.
+                Avalie o nível de aprofundamento das perguntas realizadas pelo SDR.
+                - S (Situação): Mapeamento do cenário atual.
+                - P (Problema): Investigação dos gargalos e dores.
+                - I (Implicação): Investigação das consequências de não resolver o problema (gera urgência). Rigor extremo aqui.
+                - N (Necessidade de Solução): Fez o cliente declarar o valor da solução.
                 
-                INSTRUÇÕES DE NOTAS (SEJA JUSTO E FLEXÍVEL NAS NOTAS MÉDIAS):
-                - Notas 9.0 a 10.0: Seja extremamente rigoroso. Só dê nota máxima se o SDR foi cirúrgico, tocou na ferida do cliente e gerou uma urgência inquestionável usando perguntas de Implicação e Necessidade maravilhosas.
-                - Notas 5.0 a 8.5: SEJA FLEXÍVEL. Se o SDR tentou investigar, fez perguntas para identificar o problema e manteve a conversa fluindo de forma minimamente investigativa (mesmo que não tenha sido o SPIN perfeito dos livros), dê notas intermediárias boas para recompensar e validar o esforço técnico.
-                - Notas 0.0 a 4.5: Use apenas se o SDR foi totalmente reativo, raso ou apenas leu perguntas engessadas de "Situação" como um robô, sem criar nenhum tipo de valor para a dor do cliente.
+                Régua de Notas:
+                - 9.0 a 10.0: Cirúrgico. Gerou urgência real e profunda usando Implicação e Necessidade maravilhosas.
+                - 5.0 a 8.5: Intermediário bom. Demonstrou esforço técnico e investigou dores, mantendo a conversa fluindo de forma consultiva.
+                - 0.0 a 4.5: Totalmente reativo, raso ou leu perguntas engessadas sem criar valor.
 
-                🚨 REGRA DE FORMATAÇÃO: NUNCA use aspas duplas (") na sua justificativa, pois quebra o JSON. Use apenas aspas simples (').
+                🚨 REGRA DE FORMATAÇÃO: NUNCA use aspas duplas (") na sua justificativa. Use apenas aspas simples (').
 
                 Responda estritamente neste formato JSON:
-                {{
-                  "spin_scores": {{"s": 5.0, "p": 6.5, "i": 4.0, "n": 3.0}},
-                  "analise_autoridade": "Breve justificativa técnica avaliando a postura do vendedor usando aspas simples se precisar."
-                }}
+                {
+                  "spin_scores": {"s": 5.0, "p": 6.5, "i": 4.0, "n": 3.0},
+                  "analise_autoridade": "Justificativa técnica avaliando a postura do vendedor usando aspas simples."
+                }
                 """
                 chat2 = executar_chat_com_retentativa(
                     model=MODELO_RAPIDO, 
@@ -340,47 +352,52 @@ def process_all_calls():
                 )
                 res2 = json.loads(clean_json(chat2.choices[0].message.content))
                 
-                # 🚨 RESPIRO ABSOLUTO DE 35 SEGUNDOS PARA ZERAR O RATE LIMIT 🚨
-                print("   ⏳ Dando fôlego estratégico (35s) para a cota da IA limpar antes do modelo pesado...")
+                # 🚨 RESPIRO ABSOLUTO DE 35 SEGUNDOS PARA ZERAR O RATE LIMIT DO MODELO 70B 🚨
+                print("   ⏳ Dando fôlego estratégico (35s) para a cota da IA limpar antes do modelo de pareceres...")
                 time.sleep(35)
 
                 # --------------------------------------------------
-                # AGENTE 3: FEEDBACK TÁTICO, DIRETO E SEM DESCULPAS GENÉRICAS
+                # AGENTE 3: FEEDBACK ALINHADO AO NOVO PLAYBOOK & BASE
                 # --------------------------------------------------
-                print(" -> Agente 3: Construindo Feedback Técnico Estruturado...")
+                print(" -> Agente 3: Construindo Feedback Técnico Alinhado com o Novo Playbook...")
                 contexto_sintese = f"Resultados Agente 1: {json.dumps(res1)}\nResultados Agente 2: {json.dumps(res2)}"
                 prompt_agente3 = """
-                Você é o Diretor de Enablement. Sua missão é dar feedback técnico para o vendedor de forma absurdamente prática, útil e aplicável.
+                Você é o Diretor de Enablement. Sua missão é dar feedback de alta performance totalmente alinhado com o nosso Playbook e Base de Conhecimento Rígida.
+                Você deve ser o treinador de elite. Se o Agente 1 apontou uma falha (NÃO), você deve cruzar com o Playbook e ensinar como reverter.
 
-                🚨 REGRA DE OURO INQUEBRÁVEL (TOLERÂNCIA ZERO PARA FEEDBACK GENÉRICO E PALESTRAS DE IA):
-                É EXPRESSAMENTE PROIBIDO usar palavras vazias e burocráticas como 'você não seguiu o playbook', 'você ignorou o roteiro', 'faltou sequência lógica' ou 'não seguiu as diretrizes'. 
-                Se você apontar um erro, VOCÊ DEVE OBRIGATORIAMENTE FORNECER A FALA EXATA que o vendedor deveria ter usado no lugar, como um treinador entregando uma receita prática de vendas.
+                🚨 DIRETRIZ DA BASE DE CONHECIMENTO E PLAYBOOKS COMERCIAIS:
+                - Se falhou em 'passos_ro' (aceitou celular/carro): Ensine o script de barreira de tela. Ex: 'Em vez de aceitar, use o Playbook: Perfeito, fulano, mas como vou te mostrar as telas de contratos e conciliação de bancos, preciso que você esteja em telas grandes para avaliar 100%. Conseguimos ajustar o horário para quando você estiver no escritório?'
+                - Se falhou em 'dor' (aceitou resposta rasa): Ensine a técnica de desdobramento de impacto financeiro. Ex: 'Quando o cliente disser que o sistema atual é lento, não mude de assunto. Pergunte: E hoje, quanto tempo a sua equipe perde refazendo esse processo na mão por causa dessa lentidão?'
+                - Se falhou em 'linguagem' (usou diminutivo): Alerte sobre a quebra de postura corporativa sênior B2B.
 
-                🚨 REGRAS CRÍTICAS DE FORMATAÇÃO JSON (ANTI-ERRO):
+                🚨 REGRA DE OURO INQUEBRÁVEL (TOLERÂNCIA ZERO PARA FEEDBACK GENÉRICO):
+                É PROIBIDO usar clichês burocráticos como 'você não seguiu o playbook' ou 'faltou sequência lógica'. Se apontar um erro, FORNEÇA O TEXTO EXATO DA FALA EM FORMATO DE SCRIPT PRÁTICO.
+
+                🚨 REGRAS CRÍTICAS DE FORMATAÇÃO JSON:
                 1. Os valores das chaves DO JSON DEVEM SER STRINGS (iniciar e terminar com aspas duplas).
-                2. NUNCA use aspas duplas (") DENTRO do seu texto. Se precisar citar algo, use aspas simples (').
-                3. NUNCA quebre a linha fisicamente. Para pular linhas e formatar os tópicos em Markdown, use OBRIGATORIAMENTE os caracteres literais \\n.
+                2. NUNCA use aspas duplas (") DENTRO do seu texto. Use aspas simples (').
+                3. NUNCA quebre a linha fisicamente. Para pular linhas no Markdown, use caracteres literais \\n.
 
-                Estruture SUA resposta OBRIGATORIAMENTE com estes tópicos em Markdown usando \\n:
+                Estruture sua resposta estritamente com estes tópicos em Markdown usando \\n:
 
                 ### 1. PARECER E POSTURA CONSULTIVA
-                [Um resumo direto de 2 linhas sobre o controle de conversa e inteligência comercial demonstrada na ligação]
+                [Resumo direto de 2 linhas sobre o controle de conversa demonstrado]
 
                 ### 2. O QUE ERROU
-                - [Aponte falhas REAIS encontradas na transcrição. Ex: 'No minuto 03:10, o cliente disse que perde horas, mas você não aprofundou.']
+                - [Aponte as falhas REAIS baseadas nos 'NÃOs' apontados pelo Agente 1 com os minutos da transcrição]
 
-                ### 3. COMO DEVERIA TER FEITO (SCRIPT PRÁTICO)
-                - [Forneça o texto exato em formato de fala. Ex: 'Em vez de mudar de assunto, pergunte: Cliente, como fica o seu repasse no final do mês?']
+                ### 3. COMO DEVERIA TER FEITO (SCRIPT PRÁTICO DA BASE DE CONHECIMENTO)
+                - [Forneça a fala exata extraída das diretrizes do nosso Playbook Comercial para corrigir a falha]
                 *Aviso: Consulte a aba 'Playbooks SPIN' no menu lateral.*
 
                 ### 4. CAUSA E EFEITO NO FUNIL DE VENDAS
-                - [Explique de forma direta como esse erro esfria o lead.]
+                - [Explique o impacto direto desse erro no esfriamento ou no no-show da reunião]
 
                 Responda estritamente neste formato JSON:
-                {{
-                  "parecer_executivo": "### 1. PARECER E POSTURA CONSULTIVA\\nResumo aqui.\\n\\n### 2. O QUE ERROU\\nErro aqui.\\n\\n### 3. COMO DEVERIA TER FEITO\\nCorreção aqui.\\n\\n### 4. CAUSA E EFEITO\\nEfeito aqui.",
-                  "plano_de_acao_curto": "Ação exata sem usar aspas duplas no meio do texto."
-                }}
+                {
+                  "parecer_executivo": "### 1. PARECER E POSTURA CONSULTIVA\\nResumo aqui.\\n\\n### 2. O QUE ERROU\\nErro aqui.\\n\\n### 3. COMO DEVERIA TER FEITO\\nCorreção baseada no Playbook aqui.\\n\\n### 4. CAUSA E EFEITO\\nEfeito aqui.",
+                  "plano_de_acao_curto": "Ação exata e direta sem usar aspas duplas no meio do texto."
+                }
                 """
                 
                 chat3 = executar_chat_com_retentativa(
@@ -394,13 +411,25 @@ def process_all_calls():
                 res3 = json.loads(clean_json(chat3.choices[0].message.content))
 
                 # --------------------------------------------------
-                # 4. CONSOLIDAÇÃO DOS DADOS NO ARQUIVO
+                # 4. CONSOLIDAÇÃO DA INTELIGÊNCIA MACRO (MATEMÁTICA NOVA)
                 # --------------------------------------------------
                 s_spin = res2.get("spin_scores", {})
                 nota_spin = sum([safe_float(s_spin.get(k)) for k in ['s','p','i','n']]) / 4.0
                 nota_op = calcular_nota_operacional(res1.get("operacional", {}), res1.get("erro_fatal", False))
                 
-                urgencia = "SIM" if (nota_op <= 5.0 or nota_spin <= 5.0) else "NÃO"
+                # FÓRMULA PONDERADA DOS PARAMETROS MACRO (60% Conformidade / 40% SPIN)
+                nota_geral = (nota_op * 0.6) + (nota_spin * 0.4)
+                
+                # MOTOR DE STATUS SEGURO (SEMÁFORO DE PERFORMANCE)
+                if res1.get("erro_fatal", False) or nota_geral <= 6.4:
+                    status = "CRÍTICO"   # Vermelho 🔴
+                elif nota_geral <= 8.4:
+                    status = "ATENÇÃO"   # Amarelo 🟡
+                else:
+                    status = "OK"        # Verde 🟢
+
+                # Mantém retrocompatibilidade com o motor anterior do painel
+                urgencia = "SIM" if status == "CRÍTICO" else "NÃO"
 
                 db[call_id] = {
                     "id": call_id, 
@@ -411,6 +440,8 @@ def process_all_calls():
                     "wps": wps, 
                     "nota_spin": round(nota_spin, 1), 
                     "nota_op": round(nota_op, 1),
+                    "nota_geral": round(nota_geral, 1), # Chave macro de controle veloz
+                    "status": status,                  # String de controle de cor (OK, ATENÇÃO, CRÍTICO)
                     "urgencia": urgencia, 
                     "deal_url": deal_url, 
                     "audio_url": audio_url,
@@ -424,15 +455,14 @@ def process_all_calls():
                 with open(CONSOLIDATED_FILE, 'w', encoding='utf-8') as sf: 
                     json.dump(db, sf, ensure_ascii=False, indent=4)
                 
-                print(f"✅ Auditoria Finalizada com Sucesso! SPIN: {nota_spin:.1f} | Conformidade: {nota_op:.1f}")
+                print(f"✅ Auditoria Finalizada com Sucesso! GERAL: {nota_geral:.1f} ({status}) | SPIN: {nota_spin:.1f} | Op: {nota_op:.1f}")
                 
-                # Zera o fluxo final com mais uma pequena folga antes da próxima linha do CSV
+                # Zera o fluxo final de requisições com uma folga antes da próxima linha do CSV
                 time.sleep(10)
 
             except Exception as e:
                 print(f"❌ Erro na auditoria do ID {call_id}: {e}")
                 traceback.print_exc()
-                # Em caso de erro pesado, o robô dorme e recupera as forças
                 time.sleep(30)
 
 if __name__ == "__main__":
