@@ -5,9 +5,10 @@ import time
 import urllib.request
 import io
 import re
+import tempfile
 import traceback
 from groq import Groq
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Literal
 
 # ==========================================
@@ -17,6 +18,26 @@ from typing import Literal
 class AvaliacaoItem(BaseModel):
     r: Literal["Sim", "Não", "N/A"] = Field(description="OBRIGATÓRIO: Apenas 'Sim', 'Não' ou 'N/A' baseado nas regras de silêncio e proatividade.")
     e: str = Field(description="Evidência real extraída da transcrição com aspas simples.")
+
+    @field_validator('r', mode='before')
+    @classmethod
+    def normalizar_r(cls, valor):
+        """
+        Normaliza variações triviais de capitalização/acentuação ANTES do Literal
+        rejeitar a resposta. Sem isso, um 'nao' sem acento ou um 'SIM' maiúsculo
+        derrubava a auditoria inteira daquela ligação (transcrição + Agente 1
+        já gastos) sem nenhuma retentativa real.
+        """
+        if not isinstance(valor, str):
+            return valor
+        chave = valor.strip().lower().replace('ã', 'a')
+        if chave == 'sim':
+            return 'Sim'
+        if chave == 'nao':
+            return 'Não'
+        if chave.replace(' ', '').replace('-', '') in ('n/a', 'na', 'naoaplicavel'):
+            return 'N/A'
+        return valor  # Não bateu em nenhuma variação conhecida: deixa o Literal rejeitar e acionar a retentativa.
 
 class OperacionalAuditoria(BaseModel):
     escuta: AvaliacaoItem
@@ -40,6 +61,23 @@ class OperacionalAuditoria(BaseModel):
 class AuditoriaAgente1(BaseModel):
     erro_fatal: bool = Field(description="True APENAS se quebrou sigilo de preço ou agendou lead fora do perfil.")
     operacional: OperacionalAuditoria
+
+# ------------------------------------------------------------
+# BLINDAGEM DOS AGENTES 2 E 3 (antes só o Agente 1 era validado)
+# ------------------------------------------------------------
+class SpinScores(BaseModel):
+    s: float = Field(ge=0.0, le=10.0)
+    p: float = Field(ge=0.0, le=10.0)
+    i: float = Field(ge=0.0, le=10.0)
+    n: float = Field(ge=0.0, le=10.0)
+
+class AuditoriaAgente2(BaseModel):
+    spin_scores: SpinScores
+    analise_autoridade: str = Field(min_length=1)
+
+class AuditoriaAgente3(BaseModel):
+    parecer_executivo: str = Field(min_length=1)
+    plano_de_acao_curto: str = Field(min_length=1)
 
 # ==========================================
 # 1. CONFIGURAÇÕES E VARIÁVEIS DE AMBIENTE
@@ -105,59 +143,51 @@ def calcular_segundos(duracao_str):
 
 def calcular_nota_operacional(op_data, erro_fatal):
     """
-    MATEMÁTICA ADITIVA RÍGIDA (A BUSCA PELO 10.0):
-    O SDR começa com 0.0. Para tirar 10.0, precisa de 17 "Sim".
-    Qualquer "N/A" soma 0.0 (logo, o teto da nota diminui naturalmente de forma justa, pois foi uma ligação mais fácil).
-    Qualquer "Não" aplica penalidade real por erro ou oportunidade desperdiçada.
+    MATEMÁTICA COM TETO DINÂMICO (VERSÃO VALIDADA):
+    O N/A é estritamente NEUTRO. Se um critério é 'N/A', ele sai do cálculo —
+    não soma, não subtrai, e o 'maximo_possivel' daquela ligação específica
+    encolhe na mesma proporção. Isso garante que o SDR seja avaliado (e possa
+    tirar 10.0) apenas sobre os critérios que ele teve chance real de executar,
+    em vez de ser punido por falta de oportunidade contra um teto sempre fixo em 10.0.
+
+    Os valores 'r' que chegam aqui já passaram pela normalização e validação
+    do Pydantic (AvaliacaoItem), então são garantidamente 'Sim', 'Não' ou 'N/A'.
     """
-    nota = 0.0
+    nota_obtida = 0.0
+    maximo_possivel = 0.0
 
-    chaves_criticas = ['sla', 'passos_ro', 'gestao']  
-    # 3 itens (1.0 cada = 3.0 max)
-    
-    chaves_estrategicas = ['spin', 'dor', 'validacao', 'objecoes', 'produto', 'escuta', 'compreensao'] 
-    # 7 itens (0.7 cada = 4.9 max)
-    
-    chaves_formais = ['linguagem', 'receptividade', 'rapport', 'discurso', 'compreensao_cliente', 'clareza', 'gatilhos'] 
-    # 7 itens (0.3 cada = 2.1 max)
+    chaves_criticas = {'sla': 1.0, 'passos_ro': 1.0, 'gestao': 1.0}
+    chaves_estrategicas = {'spin': 0.7, 'dor': 0.7, 'validacao': 0.7, 'objecoes': 0.7, 'produto': 0.7, 'escuta': 0.7, 'compreensao': 0.7}
+    chaves_formais = {'linguagem': 0.3, 'receptividade': 0.3, 'rapport': 0.3, 'discurso': 0.3, 'compreensao_cliente': 0.3, 'clareza': 0.3, 'gatilhos': 0.3}
 
-    # Função interna para limpar o texto que a IA devolve (Garante precisão no cálculo)
-    def normalizar_resposta(valor):
-        texto = str(valor).strip().title()
-        if texto == 'Nao': return 'Não'
-        if texto.upper() == 'N/A' or texto == 'N/a': return 'N/A'
-        return texto
+    todos_pesos = {**chaves_criticas, **chaves_estrategicas, **chaves_formais}
 
-    # --- TIER 1: CRÍTICOS ---
-    for k in chaves_criticas:
-        r = normalizar_resposta(op_data.get(k, {}).get('r', ''))
-        if r == 'Sim': 
-            nota += 1.0
-        elif r == 'Não': 
-            nota -= 1.0 # Penalidade grave
+    for k, peso in todos_pesos.items():
+        r = op_data.get(k, {}).get('r', '')
 
-    # --- TIER 2: ESTRATÉGICOS ---
-    for k in chaves_estrategicas:
-        r = normalizar_resposta(op_data.get(k, {}).get('r', ''))
-        if r == 'Sim': 
-            nota += 0.7
-        elif r == 'Não': 
-            nota -= 0.5 # Penalidade média
+        if r == 'N/A':
+            continue  # Totalmente neutro: não soma no numerador nem no teto
 
-    # --- TIER 3: FORMAIS ---
-    for k in chaves_formais:
-        r = normalizar_resposta(op_data.get(k, {}).get('r', ''))
-        if r == 'Sim': 
-            nota += 0.3
-        elif r == 'Não': 
-            nota -= 0.2 # Penalidade leve
+        # O item era aplicável, logo entra no teto daquela ligação
+        maximo_possivel += peso
 
-    # --- ERRO FATAL ---
+        if r == 'Sim':
+            nota_obtida += peso
+        elif r == 'Não':
+            # Penalidades proporcionais ao peso e à gravidade do erro
+            if k in chaves_criticas: nota_obtida -= (peso * 1.0)
+            elif k in chaves_estrategicas: nota_obtida -= (peso * 0.71)
+            elif k in chaves_formais: nota_obtida -= (peso * 0.66)
+
     if erro_fatal:
-        nota -= 4.0
+        nota_obtida -= 4.0
 
-    # CLAMPEAMENTO SEGURO
-    return min(max(nota, 0.0), 10.0)
+    if maximo_possivel == 0:
+        return 0.0
+
+    # Normalização justa de 0.0 a 10.0 baseada apenas nos itens que realmente aconteceram
+    nota_final = (nota_obtida / maximo_possivel) * 10.0
+    return min(max(nota_final, 0.0), 10.0)
 
 def executar_chat_com_retentativa(model, messages, response_format, max_retries=6):
     """Executa chamadas à API do Groq controlando de forma inteligente erros de Rate Limit (429)."""
@@ -195,6 +225,60 @@ def executar_chat_com_retentativa(model, messages, response_format, max_retries=
                 raise e
                 
     raise RuntimeError(f"Erro: Falha persistente na API da Groq após {max_retries} tentativas.")
+
+def chamar_agente_com_validacao(model, messages, response_format, modelo_pydantic, max_tentativas_validacao=3):
+    """
+    BLINDAGEM NÍVEL 11/10 DE VERDADE: além do retry de rate limit (já tratado
+    dentro de executar_chat_com_retentativa), esta função adiciona uma
+    retentativa específica para quando o JSON é sintaticamente válido mas
+    desobedece o schema Pydantic (ex: um campo fora do Literal, um campo
+    faltando, um score fora do intervalo 0-10). Antes, isso descartava a
+    ligação inteira (transcrição + Agente 1 já gastos) sem nenhuma nova chance.
+    Agora o modelo recebe o próprio erro de volta e tem até max_tentativas_validacao
+    chances de se autocorrigir antes de desistirmos daquela ligação.
+    """
+    ultimo_erro = None
+    mensagens_tentativa = list(messages)
+
+    for tentativa in range(1, max_tentativas_validacao + 1):
+        chat = executar_chat_com_retentativa(model=model, messages=mensagens_tentativa, response_format=response_format)
+        bruto = chat.choices[0].message.content
+
+        try:
+            dados = json.loads(clean_json(bruto))
+            validado = modelo_pydantic(**dados)
+            return validado.model_dump()
+        except Exception as e:
+            ultimo_erro = e
+            print(f"   ⚠️ [VALIDAÇÃO PYDANTIC] Resposta fora do schema (tentativa {tentativa}/{max_tentativas_validacao}): {e}")
+            if tentativa < max_tentativas_validacao:
+                mensagens_tentativa = list(messages) + [
+                    {"role": "assistant", "content": bruto},
+                    {"role": "user", "content": f"Sua resposta anterior não passou na validação: {e}. Releia as instruções originais e responda de novo respeitando ESTRITAMENTE a estrutura e os valores exigidos, sem nenhum campo ou texto extra."}
+                ]
+                time.sleep(2)
+
+    raise RuntimeError(f"Falha de validação Pydantic persistente após {max_tentativas_validacao} tentativas: {ultimo_erro}")
+
+def salvar_consolidado_atomico(db, caminho):
+    """
+    Evita corrupção do histórico completo de auditorias: em vez de escrever
+    direto em cima do consolidated_data.json, grava primeiro num arquivo
+    temporário no mesmo diretório e só troca pelo definitivo (os.replace,
+    operação atômica no sistema de arquivos) depois que a escrita terminou
+    com sucesso. Se o processo cair no meio do caminho, o arquivo original
+    permanece intacto.
+    """
+    diretorio = os.path.dirname(os.path.abspath(caminho)) or '.'
+    fd, caminho_temp = tempfile.mkstemp(dir=diretorio, suffix='.tmp')
+    try:
+        with os.fdopen(fd, 'w', encoding='utf-8') as sf:
+            json.dump(db, sf, ensure_ascii=False, indent=4)
+        os.replace(caminho_temp, caminho)
+    except Exception:
+        if os.path.exists(caminho_temp):
+            os.remove(caminho_temp)
+        raise
 
 # ==========================================
 # 3. PIPELINE DE EXECUÇÃO MULTIAGENTE
@@ -234,7 +318,7 @@ def process_all_calls():
             deal_url = ""
             if deal_id:
                 primeiro_id = deal_id.split(',')[0].strip()
-                deal_url = f"[https://app.hubspot.com/contacts/](https://app.hubspot.com/contacts/){PORTAL_ID}/deal/{primeiro_id}/"
+                deal_url = f"https://app.hubspot.com/contacts/{PORTAL_ID}/deal/{primeiro_id}/"
 
             if not call_id or not audio_url.startswith("http") or result.lower() not in ["ligação atendida", "connected", "atendida"] or call_id in db:
                 continue
@@ -262,10 +346,12 @@ def process_all_calls():
                     print(f"   ⚠️ [PULANDO CHAMADA] O arquivo possui {tamanho_mb:.2f} MB excedendo o teto seguro de 20MB da API.")
                     continue
 
-                # Transcrição com Whisper-Large-V3
+                # Transcrição com Whisper-Large-V3 (idioma fixado em pt para evitar
+                # tradução/erro de detecção automática em áudio ruidoso ou curto)
                 transcription = client.audio.transcriptions.create(
                     file=("audio.mp3", io.BytesIO(audio_bytes)), 
                     model="whisper-large-v3", 
+                    language="pt",
                     response_format="json"
                 )
                 
@@ -348,16 +434,12 @@ def process_all_calls():
                   }}
                 }}
                 """
-                chat1 = executar_chat_com_retentativa(
-                    model=MODELO_RAPIDO, 
-                    messages=[{"role": "system", "content": prompt_agente1}, {"role": "user", "content": texto}], 
-                    response_format={"type": "json_object"}
+                res1 = chamar_agente_com_validacao(
+                    model=MODELO_RAPIDO,
+                    messages=[{"role": "system", "content": prompt_agente1}, {"role": "user", "content": texto}],
+                    response_format={"type": "json_object"},
+                    modelo_pydantic=AuditoriaAgente1
                 )
-                
-                # VALIDAÇÃO PYDANTIC
-                res1_bruto = json.loads(clean_json(chat1.choices[0].message.content))
-                AuditoriaAgente1(**res1_bruto) # Blindagem: Se o JSON não tiver estritamente Sim, Não ou N/A, vai gerar erro e forçar retentativa
-                res1 = res1_bruto
                 time.sleep(2)
 
                 # --------------------------------------------------
@@ -385,12 +467,12 @@ def process_all_calls():
                   "analise_autoridade": "Breve justificativa técnica avaliando a postura do vendedor usando aspas simples."
                 }
                 """
-                chat2 = executar_chat_com_retentativa(
-                    model=MODELO_RAPIDO, 
-                    messages=[{"role": "system", "content": prompt_agente2}, {"role": "user", "content": texto}], 
-                    response_format={"type": "json_object"}
+                res2 = chamar_agente_com_validacao(
+                    model=MODELO_RAPIDO,
+                    messages=[{"role": "system", "content": prompt_agente2}, {"role": "user", "content": texto}],
+                    response_format={"type": "json_object"},
+                    modelo_pydantic=AuditoriaAgente2
                 )
-                res2 = json.loads(clean_json(chat2.choices[0].message.content))
                 
                 # 🚨 RESPIRO ABSOLUTO DE 35 SEGUNDOS PARA ZERAR O RATE LIMIT DO MODELO 70B 🚨
                 print("   ⏳ Dando fôlego estratégico (35s) para a cota da IA limpar antes do modelo de pareceres...")
@@ -440,15 +522,15 @@ def process_all_calls():
                 }
                 """
                 
-                chat3 = executar_chat_com_retentativa(
-                    model=MODELO_PARERES, 
+                res3 = chamar_agente_com_validacao(
+                    model=MODELO_PARERES,
                     messages=[
                         {"role": "system", "content": prompt_agente3}, 
                         {"role": "user", "content": f"Contexto Analítico: {contexto_sintese}\nTranscrição da Chamada: {texto}"}
-                    ], 
-                    response_format={"type": "json_object"}
+                    ],
+                    response_format={"type": "json_object"},
+                    modelo_pydantic=AuditoriaAgente3
                 )
-                res3 = json.loads(clean_json(chat3.choices[0].message.content))
 
                 # --------------------------------------------------
                 # 4. CONSOLIDAÇÃO DA INTELIGÊNCIA MACRO E SEMÁFORO
@@ -492,8 +574,7 @@ def process_all_calls():
                     "transcricao": texto
                 }
                 
-                with open(CONSOLIDATED_FILE, 'w', encoding='utf-8') as sf: 
-                    json.dump(db, sf, ensure_ascii=False, indent=4)
+                salvar_consolidado_atomico(db, CONSOLIDATED_FILE)
                 
                 print(f"✅ Auditoria Finalizada com Sucesso! GERAL: {nota_geral:.1f} ({status}) | SPIN: {nota_spin:.1f} | Op: {nota_op:.1f}")
                 

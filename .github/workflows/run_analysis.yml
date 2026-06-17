@@ -7,6 +7,12 @@ on:
 permissions:
   contents: write
 
+# Evita que dois disparos manuais simultâneos processem o mesmo CSV em paralelo
+# e disputem o git push no final (o segundo fica na fila em vez de rodar junto).
+concurrency:
+  group: auditoria-sdr
+  cancel-in-progress: false
+
 jobs:
   audit_calls:
     runs-on: ubuntu-latest
