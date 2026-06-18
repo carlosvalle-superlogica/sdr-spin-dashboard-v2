@@ -59,6 +59,7 @@ class OperacionalAuditoria(BaseModel):
     gatilhos: AvaliacaoItem
 
 class AuditoriaAgente1(BaseModel):
+    autocritica: str = Field(min_length=1, description="Busca ativa por falhas ANTES de responder qualquer item. Releia a ligação caçando o pior momento do SDR.")
     erro_fatal: bool = Field(description="True APENAS se quebrou sigilo de preço ou agendou lead fora do perfil.")
     operacional: OperacionalAuditoria
 
@@ -372,6 +373,15 @@ def process_all_calls():
                 Você é o Agente 1: Auditor Comercial Implacável. Avalie o SDR no produto {produto_detectado}.
                 Sua missão é eliminar a complacência. Não dê "Sim" fácil. Seja extremamente rigoroso na análise.
 
+                🚨 PASSO OBRIGATÓRIO ANTES DE QUALQUER NOTA: AUTOCRÍTICA
+                Preencha o campo 'autocritica' ANTES de decidir qualquer 'r'. Releia a transcrição como se você fosse o crítico mais rigoroso da empresa, caçando ativamente o pior momento do SDR em cada um dos 3 blocos (Escuta/Postura, Comunicação, Processo). Escreva de 2 a 4 frases citando literalmente o que você encontrou de mais fraco — mesmo que pequeno (uma hesitação, uma pergunta que ficou sem resposta, um diminutivo, uma confirmação vaga, uma chance de aprofundar que passou batido).
+
+                🚨 SINAL DE ALERTA — 17/17 "SIM" É ESTATISTICAMENTE RARÍSSIMO:
+                Ligações reais de SDR quase nunca são perfeitas nos 17 critérios. Se depois de escrever a autocrítica você ainda está perto de marcar tudo "Sim", isso é sinal de que você está sendo complacente, não de que a ligação foi perfeita — volte e releia cada item com o padrão mais rigoroso possível antes de confirmar.
+
+                🚨 REDEFININDO O QUE É "SIM":
+                "Sim" exige quase-perfeição, não só "o SDR fez a coisa de qualquer jeito". Para cada item, pergunte-se: "o SDR fez isso da MELHOR forma possível, sem nenhuma hesitação, gancho perdido ou imprecisão?" Se a resposta for "fez, mas dava pra ser melhor" ou "fez de forma incompleta", a nota é "Não" — não existe meio-termo escondido dentro do "Sim".
+
                 MUITO IMPORTANTE - USO ESTRATÉGICO DO N/A (A REGRA DE OURO):
                 O 'N/A' (Não Aplicável) SÓ DEVE SER CONSIDERADO em três situações exclusivas:
                 1) Proatividade Total do Lead: quando o lead já entrega a informação espontaneamente antes do SDR precisar perguntar (ex: já diz o número de corretores, o CRECI, ou se declara o único decisor sem o SDR perguntar).
@@ -414,8 +424,9 @@ def process_all_calls():
                 - Marque 'erro_fatal': true APENAS se o SDR quebrar o sigilo e passar preço ou agendar reunião com lead fora de perfil.
                 - 🚨 NUNCA use aspas duplas (") dentro das suas frases de 'Evidência'. Use sempre aspas simples (').
 
-                Retorne OBRIGATORIAMENTE o JSON preenchendo 'r' estritamente com 'Sim', 'Não' ou 'N/A':
+                Retorne OBRIGATORIAMENTE o JSON preenchendo 'r' estritamente com 'Sim', 'Não' ou 'N/A', e preenchendo 'autocritica' ANTES de tudo:
                 {{
+                  "autocritica": "2 a 4 frases citando o pior momento real do SDR na ligação, mesmo que pequeno",
                   "erro_fatal": false,
                   "operacional": {{
                     "escuta": {{"r": "[Sim/Não/N/A]", "e": "Evidencia real com aspas simples"}}, 
@@ -573,6 +584,7 @@ def process_all_calls():
                     "audio_url": audio_url,
                     "notas_s_p_i_n": s_spin, 
                     "formulario": res1.get("operacional", {}),
+                    "autocritica_ia": res1.get("autocritica", ""),
                     "parecer": res3.get("parecer_executivo", ""), 
                     "sugestoes": res3.get("plano_de_acao_curto", ""),
                     "transcricao": texto
