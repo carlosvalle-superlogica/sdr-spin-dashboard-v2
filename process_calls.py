@@ -373,18 +373,22 @@ def process_all_calls():
                 Sua missão é eliminar a complacência. Não dê "Sim" fácil. Seja extremamente rigoroso na análise.
 
                 MUITO IMPORTANTE - USO ESTRATÉGICO DO N/A (A REGRA DE OURO):
-                O 'N/A' (Não Aplicável) SÓ DEVE SER CONSIDERADO em duas situações exclusivas:
-                1) Quando NÃO houver a necessidade do SDR fazer a pergunta porque o Lead mesmo já informou antes do SDR precisar perguntar (A proatividade do cliente anula a necessidade da técnica).
-                2) Quando o cenário da técnica NUNCA existiu na ligação (Ex: o lead não fez nenhuma objeção, logo não houve o que contornar).
+                O 'N/A' (Não Aplicável) SÓ DEVE SER CONSIDERADO em três situações exclusivas:
+                1) Proatividade Total do Lead: quando o lead já entrega a informação espontaneamente antes do SDR precisar perguntar (ex: já diz o número de corretores, o CRECI, ou se declara o único decisor sem o SDR perguntar).
+                2) Ausência Absoluta de Gatilho: quando o cenário da técnica nunca existiu na ligação (ex: o lead concordou com tudo e não apresentou nenhuma objeção, barreira ou dúvida — não invente uma falha de contorno que não aconteceu).
+                3) Impossibilidade Técnica: quando a ligação caiu na caixa postal, foi interrompida abruptamente nos primeiros segundos, ou terminou antes de qualquer chance real de aplicar a técnica.
                 
-                É ESTREITAMENTE PROIBIDO usar N/A se o SDR falhou, ignorou um gancho ou cometeu um erro. Nesses casos, a nota é NÃO.
+                É ESTREITAMENTE PROIBIDO usar N/A se o SDR teve a oportunidade e falhou, ignorou um gancho ou cometeu um erro. Nesses casos, a nota é NÃO.
+
+                🚨 REGRA ANTI-GENÉRICO (EVIDÊNCIA OBRIGATORIAMENTE ESPECÍFICA):
+                Toda evidência ('e') deve descrever o momento EXATO da ligação que sustenta a nota — o que o lead disse e como o SDR reagiu. Frases genéricas e reaproveitáveis entre ligações diferentes (ex: "o SDR contornou as objeções do lead e apresentou soluções", sem dizer QUAL objeção e QUAL solução) são PROIBIDAS. Se você não conseguir descrever o momento específico da transcrição, a resposta correta provavelmente é 'Não' ou 'N/A', não 'Sim' por padrão.
 
                 DIRETRIZES DE AUDITORIA ITEM A ITEM:
                 [1. ESCUTA E ADAPTAÇÃO]
                 - escuta: O SDR adaptou a conversa? Se interrompeu o lead ou ignorou uma fala, marque 'Não'.
                 - validacao: Marque 'N/A' APENAS se o lead não expôs nenhum problema. Se expôs e o SDR acolheu, marque 'Sim'. Se mudou de assunto, marque 'Não'.
                 - compreensao: Inteligência de fluxo. Marque 'Não' se o SDR perguntou de novo algo que o lead já tinha respondido antes.
-                - objecoes: Contornou barreiras? Se o lead não apresentou nenhuma objeção, marque OBRIGATORIAMENTE 'N/A'. Se apresentou e o SDR falhou, marque 'Não'.
+                - objecoes: Contornou barreiras? Identifique a objeção EXATA que o lead levantou (com as palavras dele) e a resposta EXATA do SDR. Se o lead não apresentou nenhuma objeção real durante toda a ligação, marque OBRIGATORIAMENTE 'N/A'. Se apresentou e o SDR ignorou, gaguejou ou aceitou passivamente, marque 'Não'.
 
                 [2. COMUNICAÇÃO E POSTURA B2B]
                 - linguagem: Norma culta. ATENÇÃO: Se o SDR usou um único diminutivo (sisteminha, minutinho, propostinha), marque 'Não'.
