@@ -895,11 +895,22 @@
             const original = document.getElementById('printable-dossier');
             const element = original.cloneNode(true);
 
-            element.classList.remove('h-[95vh]', 'max-w-full');
+            element.classList.remove('h-[95vh]', 'max-w-full', 'overflow-hidden');
             element.style.height = 'auto';
-            element.style.width = '1280px'; 
+            element.style.width = '1080px';
+            element.style.minWidth = '1080px';
+            element.style.maxWidth = '1080px';
+            element.style.overflow = 'visible';
             element.style.position = 'relative';
-            element.style.backgroundColor = '#ffffff'; 
+            element.style.backgroundColor = '#ffffff';
+
+            // Remove overflow do body interno do modal (o flex de duas colunas)
+            const modalBody = element.querySelector('#modal-body-scroll');
+            if (modalBody) {
+                modalBody.style.overflow = 'visible';
+                modalBody.style.height = 'auto';
+                modalBody.style.maxHeight = 'none';
+            }
             
             const scrolls = element.querySelectorAll('.overflow-y-auto, .overflow-hidden, .custom-scrollbar, .max-h-72');
             scrolls.forEach(el => {
