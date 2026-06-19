@@ -921,27 +921,25 @@
             if(closeBtn) closeBtn.style.display = 'none';
 
             const wrapper = document.createElement('div');
-            wrapper.style.position = 'absolute';
-            wrapper.style.top = '0px';
-            wrapper.style.left = '0px';
-            wrapper.style.width = '1280px';
-            wrapper.style.zIndex = '-9999';
+            wrapper.style.cssText = 'position:absolute;top:0;left:0;width:1080px;z-index:-9999;overflow:visible;';
+            element.style.width = '1080px';
             wrapper.appendChild(element);
             document.body.appendChild(wrapper);
 
             const sdrName = document.getElementById('modal-title').innerText.replace('Auditoria do SDR: ', '').replace('Auditoria: ', '');
 
             const opt = {
-                margin:       [10, 10, 10, 10],
+                margin:       [5, 5, 5, 5],
                 filename:     `Auditoria_SDR_${sdrName.replace(/\s+/g, '_')}.pdf`,
                 image:        { type: 'jpeg', quality: 1.0 },
                 html2canvas:  { 
                     scale: 2, 
                     useCORS: true, 
-                    windowWidth: 1280, 
-                    width: 1280, 
+                    windowWidth: 1080, 
+                    width: 1080,
                     scrollY: 0, 
-                    scrollX: 0 
+                    scrollX: 0,
+                    logging: false
                 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' }
             };
