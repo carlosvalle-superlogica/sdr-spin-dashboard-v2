@@ -907,9 +907,36 @@
             // Remove overflow do body interno do modal (o flex de duas colunas)
             const modalBody = element.querySelector('#modal-body-scroll');
             if (modalBody) {
+                modalBody.classList.remove('flex-col', 'lg:flex-row', 'overflow-hidden');
+                modalBody.style.display = 'flex';
+                modalBody.style.flexDirection = 'row';
+                modalBody.style.flexWrap = 'nowrap';
+                modalBody.style.width = '1080px';
                 modalBody.style.overflow = 'visible';
                 modalBody.style.height = 'auto';
                 modalBody.style.maxHeight = 'none';
+            }
+
+            // Larguras fixas em pixel: a media query lg: do Tailwind nao calcula
+            // de forma confiavel dentro do clone isolado renderizado pelo html2canvas,
+            // entao fixamos manualmente em vez de depender de w-full/lg:w-1/3.
+            const colEsquerda = element.querySelector('#modal-matriz');
+            if (colEsquerda) {
+                colEsquerda.classList.remove('w-full', 'lg:w-1/3');
+                colEsquerda.style.width = '380px';
+                colEsquerda.style.minWidth = '380px';
+                colEsquerda.style.maxWidth = '380px';
+                colEsquerda.style.flex = '0 0 380px';
+                colEsquerda.style.boxSizing = 'border-box';
+            }
+            const colDireita = element.querySelector('#modal-tecnico');
+            if (colDireita) {
+                colDireita.classList.remove('w-full', 'lg:w-2/3');
+                colDireita.style.width = '700px';
+                colDireita.style.minWidth = '700px';
+                colDireita.style.maxWidth = '700px';
+                colDireita.style.flex = '0 0 700px';
+                colDireita.style.boxSizing = 'border-box';
             }
             
             const scrolls = element.querySelectorAll('.overflow-y-auto, .overflow-hidden, .custom-scrollbar, .max-h-72');
