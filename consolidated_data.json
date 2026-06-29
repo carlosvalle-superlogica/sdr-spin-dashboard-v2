@@ -758,5 +758,480 @@
         "parecer": "### 1. PARECER E POSTURA CONSULTIVA\nO SDR demonstrou uma postura consultiva, mas com alguns pontos a serem melhorados.\n\n### 2. O QUE ERROU\nO SDR usou o diminutivo 'Vitor' em vez de 'Victor', o que pode ser considerado um erro de linguagem. Além disso, o SDR não conseguiu gerar uma urgência de agenda e não conseguiu convencer o lead a marcar uma apresentação para o sistema.\n\n### 3. COMO DEVERIA TER FEITO\nEm vez de usar o diminutivo, o SDR deveria ter usado o nome completo 'Victor'. Além disso, o SDR poderia ter usado uma abordagem mais assertiva para gerar uma urgência de agenda, como: 'Perfeito, Victor, mas como vou te mostrar as telas de contratos e conciliação de bancos, preciso que você esteja em telas grandes para avaliar 100%. Conseguimos ajustar o horário para quando você estiver no escritório?'\n\n### 4. CAUSA E EFEITO\nO erro de linguagem pode ter causado uma percepção negativa do lead em relação à empresa, enquanto a falta de urgência de agenda pode ter resultado em uma perda de oportunidade de venda.",
         "sugestoes": "Revisar a abordagem de linguagem e assertividade para gerar uma urgência de agenda, utilizando frases como 'Perfeito, Victor, mas como vou te mostrar as telas de contratos e conciliação de bancos, preciso que você esteja em telas grandes para avaliar 100%. Conseguimos ajustar o horário para quando você estiver no escritório?'",
         "transcricao": " Se você disser seu nome e o motivo da ligação, poderei ver se esta pessoa está disponível. Letícia da Superlógica Permaneça na linha. Letícia Alô? Vitor? Ele mesmo. Oi, bom dia. Letícia aqui da Superlógica, tudo bem? Tudo bem, e você? Tudo ótimo. Vitor, eu recebi seu cadastro para conhecer nosso sistema de gestão de locação e eu queria entender melhor o que você está buscando para a gente marcar uma apresentação dos planos e valores bem direcionada para o seu cenário. Na verdade, resumindo, começando do zero, tudo. Do zero mesmo. Certo. Em quatro pessoas. Aham. O que eu preciso entender? Hoje, como que está a sua operação? Você já tem uma operação rodando, algum contrato ativo ou não? Não, nenhum. Por quê? Hoje, os nossos planos, Victor, eles se iniciam a partir de um contrato, porque a operação de locação, ela é uma operação mais detalhada. Então, a gente precisa entender como que você está na parte bancária, seguro incêndio. Você tem alguma previsão de quando você vai iniciar alguma das suas locações ou ainda não? Ainda não tem previsão Ah, maravilha Ah t ent Primeiro voc t buscando por um sistema Pra depois iniciar a opera isso Isso Maravilha E hoje voc t uma previs de in assim ah encontrei o sistema Por que eu te pergunto isso? Porque como a gente não atua com quem ainda não tem nenhuma locação, eu vou pedir uma exceção para o meu gestor. Por quê? Porque no seu caso, você vai iniciar a operação, só está esperando a contratação de um sistema. Você tem alguma previsão de mais ou menos até quando vai essa sua busca por um sistema? Até o mês que vem? Até o mês que vem, tá. Por que eu pergunto isso? Para a gente conseguir ver se ele abre uma exceção ali para a gente te apresentar o sistema, mesmo você não tendo nenhum contrato, tá? Maravilha. E hoje vocês estão atuando no Cresce Físico, Jurídico, como que está hoje o Vitor? Trabalha com venda também? Está iniciando esse novo braço? A princípio, não. Só locação. Estão atuando no creche físico ou jurídico? Ou são imóveis próprios? Jurídico. Jurídico. Já escolheu um banco? Tem algum banco que você já tem uma conta aberta da imobiliária? Não, ainda não. Ainda não? Maravilha. Eu vou conversar aqui com o meu gestor, Vitor. Pedi essa sessão para a gente conseguir te apresentar o sistema, já que a sua provisão de contratação é ali para o mês que vem para ver se a gente consegue alinhar uma apresentação para você, tudo bem? Perfeito, então. Combinado, então, Victor. Muito obrigada pela sua atenção. Obrigado, viu? Já te chamo ali no WhatsApp. Obrigada, tchau, tchau. Perfeito, obrigado. Tchau, tchau."
+    },
+    "111213926214": {
+        "id": "111213926214",
+        "sdr": "Pris Akemi Rosa Hirata",
+        "produto": "ERP",
+        "data": "2026-06-17 15:49",
+        "duracao": "00:05:02",
+        "wps": 2.35,
+        "nota_spin": 3.6,
+        "nota_op": 2.7,
+        "nota_geral": 3.1,
+        "status": "CRÍTICO",
+        "urgencia": "SIM",
+        "deal_url": "https://app.hubspot.com/contacts/20131994/deal/61175462949/",
+        "audio_url": "https://api-na1.hubspot.com/recording/auth/provider/hublets/v1/external-url-retriever/getAuthRecording/portal/20131994/engagement/111213926214",
+        "notas_s_p_i_n": {
+            "s": 4.5,
+            "p": 5.0,
+            "i": 3.0,
+            "n": 2.0
+        },
+        "formulario": {
+            "escuta": {
+                "r": "Não",
+                "e": "O SDR começou a ligação com um tom informal e não fez uma saudação completa."
+            },
+            "validacao": {
+                "r": "Não",
+                "e": "O SDR não validou se o lead entendeu a explicação técnica sobre o sistema CRM."
+            },
+            "compreensao": {
+                "r": "Não",
+                "e": "O SDR não fez perguntas curtas e diretas."
+            },
+            "objecoes": {
+                "r": "N/A",
+                "e": "O lead não apresentou nenhuma objeção real durante toda a ligação."
+            },
+            "linguagem": {
+                "r": "Sim",
+                "e": "O SDR usou uma linguagem culta e profissional."
+            },
+            "receptividade": {
+                "r": "Não",
+                "e": "O SDR começou a ligação com um tom informal."
+            },
+            "rapport": {
+                "r": "Não",
+                "e": "O SDR iniciou um interrogatório seco."
+            },
+            "discurso": {
+                "r": "Sim",
+                "e": "O SDR usou vocabulário técnico correto do mercado imobiliário/ERP."
+            },
+            "compreensao_cliente": {
+                "r": "Não",
+                "e": "O SDR não validou se o lead entendeu a explicação técnica sobre o sistema CRM."
+            },
+            "clareza": {
+                "r": "Não",
+                "e": "O SDR fez perguntas duplas ou confusas."
+            },
+            "sla": {
+                "r": "Sim",
+                "e": "O SDR coletou o número de corretores e a situação do CRECI."
+            },
+            "spin": {
+                "r": "Sim",
+                "e": "O SDR seguiu a sequência exploratória e apresentou o sistema de forma clara."
+            },
+            "dor": {
+                "r": "Não",
+                "e": "O SDR não conseguiu encontrar um gargalo real e não insistiu em saber mais sobre as dores do lead."
+            },
+            "gestao": {
+                "r": "Sim",
+                "e": "O SDR mapeou quem toma a decisão final."
+            },
+            "passos_ro": {
+                "r": "Sim",
+                "e": "O SDR conseguiu a confirmação verbal clara de que o lead estará num computador na próxima reunião."
+            },
+            "produto": {
+                "r": "Sim",
+                "e": "O SDR conectou a solução tecnológica à dor de forma inteligente."
+            },
+            "gatilhos": {
+                "r": "Sim",
+                "e": "O SDR gerou urgência de agenda e marcou a demonstração do sistema CRM."
+            }
+        },
+        "autocritica_ia": "O SDR começou a ligação com um tom informal e não fez uma saudação completa, o que pode ter afetado a receptividade do lead. Além disso, o SDR não validou se o lead entendeu a explicação técnica sobre o sistema CRM e não fez perguntas curtas e diretas. Por fim, o SDR não conseguiu encontrar um gargalo real e não insistiu em saber mais sobre as dores do lead.",
+        "parecer": "### 1. PARECER E POSTURA CONSULTIVA\nO Agente 1 demonstrou uma postura inicialmente informal, mas conseguiu se recuperar ao longo da conversa, apresentando o sistema CRM de forma clara e conectando a solução tecnológica à dor do lead.\n\n### 2. O QUE ERROU\n- O Agente 1 começou a ligação com um tom informal e não fez uma saudação completa.\n- O Agente 1 não validou se o lead entendeu a explicação técnica sobre o sistema CRM e não fez perguntas curtas e diretas.\n- O Agente 1 não conseguiu encontrar um gargalo real e não insistiu em saber mais sobre as dores do lead.\n\n### 3. COMO DEVERIA TER FEITO\n- Em vez de começar com um tom informal, o Agente 1 deveria ter iniciado a ligação com uma saudação completa e profissional, como: 'Olá, Leandro, é um prazer falar com você. Meu nome é [Nome do Agente], e estou aqui para discutir como podemos ajudar a melhorar a gestão da sua imobiliária.'\n- Para validar a compreensão do lead, o Agente 1 poderia ter perguntado: 'Para garantir que entendi corretamente, você poderia me explicar como vê o sistema CRM ajudando na gestão dos atendimentos e dos corretores?'\n- Para encontrar um gargalo real, o Agente 1 poderia ter perguntado: 'Quais são os principais desafios que você enfrenta atualmente na gestão dos atendimentos e dos corretores? Como você acha que um sistema CRM poderia ajudar a resolver esses problemas?'\n\n### 4. CAUSA E EFEITO NO FUNIL DE VENDAS\n- A falta de uma abordagem inicial profissional pode ter afetado a receptividade do lead e reduzido a chance de uma demonstração bem-sucedida do sistema CRM.\n- A não validação da compreensão do lead pode ter levado a uma falta de clareza sobre as necessidades reais do cliente e, consequentemente, a uma demonstração menos eficaz do sistema.\n- A não identificação de um gargalo real pode ter resultado em uma falta de valor percebido pelo lead, tornando menos provável que ele se comprometa com a compra do sistema CRM.",
+        "sugestoes": "Revisar a abordagem inicial para garantir uma saudação completa e profissional, validar a compreensão do lead sobre o sistema CRM e insistir em encontrar um gargalo real para aumentar a chance de uma demonstração bem-sucedida e do fechamento da venda.",
+        "transcricao": " Alô? Oi, agora eu consigo. Tá bom. Leandro, é até para não tomar muito do seu tempo, né? Sei que você está na correria, mas esse primeiro contato é mais para alinhar contigo, né? Algumas informações, né? Para depender, a gente está agendando a demonstração ali do sistema CRM, para você conhecer o sistema e entender melhor os valores, tá bom? Tá. Perfeito. Hoje você já utiliza algum sistema para CRM ou ainda não? Não, CRM não. O que eu utilizo é só o sistema da Superlógica para condomínios e para administração de locações. Ah, tá. Perfeito. Hoje, na parte de gestão dos atendimentos, você normalmente recebe os leads de onde? Vende algum portal, site, de onde que vende? Vendo portal e Instagram. Viva Real, Zap e Instagram. Instagram. Tá bacana. Você utiliza o tráfego também? Hoje em dia ainda n mas a gente vai voltar a usar Ah bacana Certo O site voc j tem tamb Tenho mas o nosso site bem institucional A gente não roda site... É, exato. Ah, tá. Não, tranquilo. E são quantos imóveis hoje? Tem muitos imóveis, porque a gente tem a nossa imobiliária cadastrada em muitas construtoras, né? Então, assim, fora estoque de construtora, a gente tem mais um monte de captação lá, mas não é... É assim, é difícil de falar se é pouco ou se é muito, porque se eu pegar de todas as construtoras, eu tenho quase São Paulo inteiro pra vender, entendeu? Agora, se eu for pegar apartamentos de terceiros, sei lá, uns 200 imóveis. 200? Tá, eu vou colocar uma média aqui, só pra passar esse direcionamento ali pro especialista. Questões de acesso, seria só pra você mesmo ou você tem mais alguém? Mais alguém, você diz equipe isso pra no caso já tem acesso a importante ter acesso de corretores é hoje a gente tem poucos lá mas a idéia é dar uma expandida agora por isso que eu fui atrás de crm para deixar organizado para essa nova fase entendeu a bacana s e captar captando im e e alimentando o sistema com informa dos clientes entendeu Certo E tem uma m ali de quantos corretores Devem bater aí na faixa de uns 10, provavelmente. Tá, perfeito. Leandro, no caso, o sistema vai te ajudar na gestão, todo com fazer o controle dos atendimentos, dos corretores. Então, que vocês receberem de leads ali, vindo do portal, né? Hoje a gente consegue integrar com mais de 70 portais. E aí você consegue fazer todo o fluxo, né? Acompanhar o fluxo de cadência, acompanhar os atendimentos, em qual etapa ela se encontra. Até porque hoje, como vocês não utilizam nenhuma ferramenta, eu acredito que a gestão é feita mais pelo WhatsApp, né? Então, aí... É, a gente tem um bom Excel. É bem gerenciado, assim, com o macro e tudo mais, mas eu acho que essa forma vai facilitar mesmo, porque, meu sócio, a gente vai sair um pouco do operacional, entendeu? É mais nesse sentido. A gente precisa ver o que está acontecendo mais remotamente. Por isso que a ideia é contratar o CRM. Contratar o sistema e fazer na gestão ali, né? E tamb o corretor tamb tem acesso ao aplicativo para ele fazer cadastro dos im tem o site Ent eu acredito que para voc facilitaria bastante al de poder j integrar com o sistema de loca que hoje vocês já trabalham, então consegue ter um trabalho mais fluido ali para vocês. Legal. Leandro, eu já queria ver contigo, então, uma agenda para a gente marcar essa demonstração. Como é que você está amanhã? Impossível essa semana. Quinto e sexto eu vou estar fora. Eu conseguiria na segunda, no período da manhã. Tá. Dia 22. Pode ser às 10 horas? Pode ser às 10 horas. Tá, perfeito. Eu vou colocar aqui a agenda para você. O seu e-mail é o leandro.network.com.br? Correto. Perfeito. Eu vou mandar para você o link no seu e-mail, tá? Mas na segunda-feira de manhã, eu vou passar uma mensagem para você, para confirmar a agenda, e eu mando o link. Aí eu só peço para você acessar o link por um computador ou notebook, tudo bem? Tá ótimo, muito obrigado. Perfeito, combinado. Eu que agradeço. Tchau, tchau. Boa tarde, tchau."
+    },
+    "111208468785": {
+        "id": "111208468785",
+        "sdr": "Pris Akemi Rosa Hirata",
+        "produto": "ERP",
+        "data": "2026-06-17 14:10",
+        "duracao": "00:04:53",
+        "wps": 2.25,
+        "nota_spin": 3.8,
+        "nota_op": 0.0,
+        "nota_geral": 1.5,
+        "status": "CRÍTICO",
+        "urgencia": "SIM",
+        "deal_url": "https://app.hubspot.com/contacts/20131994/deal/61191793191/",
+        "audio_url": "https://api-na1.hubspot.com/recording/auth/provider/hublets/v1/external-url-retriever/getAuthRecording/portal/20131994/engagement/111208468785",
+        "notas_s_p_i_n": {
+            "s": 4.5,
+            "p": 5.0,
+            "i": 3.5,
+            "n": 2.0
+        },
+        "formulario": {
+            "escuta": {
+                "r": "Não",
+                "e": "O SDR começou a ligação com um tom informal e não fez uma saudação completa."
+            },
+            "validacao": {
+                "r": "Não",
+                "e": "O SDR não validou se o lead entendia a explicação técnica do CRM."
+            },
+            "compreensao": {
+                "r": "Não",
+                "e": "O SDR não fez perguntas curtas e diretas."
+            },
+            "objecoes": {
+                "r": "N/A",
+                "e": "O lead não apresentou nenhuma objeção real durante toda a ligação."
+            },
+            "linguagem": {
+                "r": "Sim",
+                "e": "O SDR usou uma linguagem culta e profissional."
+            },
+            "receptividade": {
+                "r": "Não",
+                "e": "O SDR começou a ligação com um tom informal."
+            },
+            "rapport": {
+                "r": "Não",
+                "e": "O SDR iniciou um interrogatório seco."
+            },
+            "discurso": {
+                "r": "Sim",
+                "e": "O SDR usou vocabulário técnico correto do mercado imobiliário."
+            },
+            "compreensao_cliente": {
+                "r": "Não",
+                "e": "O SDR não validou se o lead entendia a explicação técnica do CRM."
+            },
+            "clareza": {
+                "r": "Não",
+                "e": "O SDR não fez perguntas curtas e diretas."
+            },
+            "sla": {
+                "r": "Não",
+                "e": "O SDR não coletou o número de corretores e a situação do CRECI."
+            },
+            "spin": {
+                "r": "Não",
+                "e": "O SDR não seguiu a sequência exploratória."
+            },
+            "dor": {
+                "r": "Não",
+                "e": "O SDR não encontrou um gargalo real na conversa."
+            },
+            "gestao": {
+                "r": "Não",
+                "e": "O SDR não mapeou quem toma a decisão final."
+            },
+            "passos_ro": {
+                "r": "Não",
+                "e": "O SDR não conseguiu a confirmação verbal clara de que o lead estará num computador na próxima reunião."
+            },
+            "produto": {
+                "r": "Não",
+                "e": "O SDR não conectou a solução tecnológica à dor de forma inteligente."
+            },
+            "gatilhos": {
+                "r": "Não",
+                "e": "O SDR não gerou urgência de agenda."
+            }
+        },
+        "autocritica_ia": "O SDR começou a ligação com um tom informal e não fez uma saudação completa, o que pode ter afetado a receptividade do lead. Além disso, o SDR não validou se o lead entendia a explicação técnica do CRM e não fez perguntas curtas e diretas. Por fim, o SDR não conseguiu encontrar um gargalo real na conversa e não insistiu em entender melhor as necessidades do lead.",
+        "parecer": "### 1. PARECER E POSTURA CONSULTIVA\nO SDR demonstrou uma postura inicial informal e não validou se o lead entendia a explicação técnica do CRM, o que pode ter afetado a receptividade do lead.\n\n### 2. O QUE ERROU\nO SDR não fez uma saudação completa, não validou a compreensão do lead sobre o CRM, não fez perguntas curtas e diretas, e não encontrou um gargalo real na conversa.\n\n### 3. COMO DEVERIA TER FEITO\nEm vez de começar com um tom informal, o SDR deveria ter iniciado com uma saudação completa e profissional. Ex: 'Olá, sou a Pris, da Superlógica. Tudo bem? Estou ligando para discutir sobre o sistema CRM, como mencionado pela sua gerente de contas, Bianca.'\nQuando o lead mencionou que o CRM era para a imobiliária, o SDR deveria ter explorado mais a fundo as necessidades específicas do lead. Ex: 'Entendi que você trabalha com locação. Como você atualmente gerencia os atendimentos e acompanha os imóveis?\n\n### 4. CAUSA E EFEITO\nEsses erros podem ter levado a uma conversa superficial e sem direção clara, resultando em perda de interesse do lead e falta de entendimento sobre como o CRM pode resolver os problemas específicos do lead.",
+        "sugestoes": "Revisar a abordagem inicial para garantir uma saudação completa e profissional, validar a compreensão do lead sobre o CRM, fazer perguntas diretas e explorar as necessidades específicas do lead para encontrar um gargalo real na conversa.",
+        "transcricao": " Alô? Alô, é Marilene? Oi, sou eu. Oi, é a Pris aqui da Superlógica, tudo bom? Tudo bem. Tudo jóia também, Marilene. Estou entrando em contato contigo, recebeu seu cadastro pela sua gerente de contas, a Bianca, para a gente estar falando a respeito do sistema CRM. É isso mesmo? Ela me ofereceu. O que acontece? Eu falo só a funcionária. Quem responderia por isso é a Alistante Bandeira. Ela falou que o CRM seria o objetivo com a imobiliária. O CRM é o sistema de gestão comercial. Então, ele vai fazer a gestão dos atendimentos. Tem site, é vinculado, integra com os portais, né? O Exap, Viva Real. Então, você, no caso, por exemplo, recebo líderes pelo Viva Real ou pelo tráfego. Ent vai cair ali no meu CRM e eu vou fazendo a gest n O fluxo de cad e fazendo o controle dos atendimentos Ah entendi O Alexandre j tem um na BNI que onde ele anuncia É um site que ele anuncia e também passa os leads para ele. Ah, entendi. Mas, no caso, isso aí é o meio que ele divulga, né? É, o meio que ele divulga. Ah, tá. No caso, o CRM é mais voltado para a parte de gestão. A gente não é nenhum... Nós não somos um portal de divulgação, nada. A gente só... Por exemplo, a gente recebe os leads ali no sistema e, no caso, eu vou fazendo a gestão, acompanhando ali o fluxo de atendimentos, acompanhar qual etapa os corretores estão até realmente ter o controle do gerenciamento. Então, não sei se isso é interessante. Por quê? Ele trabalha sozinho, é autônomo, não é imobiliária. E a gente trabalha muito esse negócio Com a administração Eu trabalho com ele na administração Eu não trabalho venda E ele é autônomo Porque ele recebe de lead lá pela BNI Ou pelo Zap Ele consegue administrar É pouca coisa É o que ele dá conta Entendeu? Eu n sei se ele tem interesse Entendi E voc possuem quantos im Ativos Na administra N na que est para venda e loca Não, não Não sei, porque assim Venda é só com ele, ele que tem os dele Eu não mexo também na BNI dele No site dele, ele vê lá O pessoal lá da empresa Eu só trabalho mesmo com locação Ah, entendi Entendeu? É, entendi. A gente pega, tem um vagão para ir para outro lugar, a gente anuncia, nos abre, mostra e pronto. Aí joga na superlógica para fazer essa parte da administração. Ah, entendi. Entendi. No caso, o sistema, por exemplo, como ele é corretor autônomo, muitas empresas que não trabalham com o sistema CRM fazem a gestão só pelo WhatsApp. Então, muitos contatos, muitos livros acabam ficando para trás, então acaba deixando a oportunidade passar, porque às vezes precisa fazer um acompanhamento, um follow, e acaba não fazendo por falta de um sistema que consiga estar acompanhando as etapas. Se eu precisar, por exemplo, dar um retorno daqui 10, 15 dias, ent o sistema vai fazer mais essa gest e tamb tem a quest do cadastro im n Ele entrega no caso com o Zap e tem tamb um site que ele é vinculado com o sistema. Então, você cadastra os imóveis ali no sistema, ele vai para o seu site e como ele já é integrado também com os portais, ele também já vai ali para o portal que ele trabalha. Faz toda uma sincronização, né? Isso. Tem que ver com ele, você entra em contato com ele ver se ele tem interesse, oferece a ele porque eu não posso responder por ele. Você quer pagar o telefone dele? É 21 9 9213 9213 4633 4633 Então é 2199 2134 9213 4636 Isso, isso mesmo Como que ele chama? Alexandre Bandeira Alexandre Tá, já, então, eu vou entrar em contato com ele Aí eu falo com ele, então Tá bom, beleza Obrigada, boa tarde Tchau"
+    },
+    "111205263226": {
+        "id": "111205263226",
+        "sdr": "Alana Rachel",
+        "produto": "ERP",
+        "data": "2026-06-17 11:23",
+        "duracao": "00:04:08",
+        "wps": 2.92,
+        "nota_spin": 3.6,
+        "nota_op": 6.3,
+        "nota_geral": 5.2,
+        "status": "CRÍTICO",
+        "urgencia": "SIM",
+        "deal_url": "https://app.hubspot.com/contacts/20131994/deal/61135313190/",
+        "audio_url": "https://api-na1.hubspot.com/recording/auth/provider/hublets/v1/external-url-retriever/getAuthRecording/portal/20131994/engagement/111205263226",
+        "notas_s_p_i_n": {
+            "s": 4.5,
+            "p": 5.0,
+            "i": 3.0,
+            "n": 2.0
+        },
+        "formulario": {
+            "escuta": {
+                "r": "Não",
+                "e": "O SDR não adaptou a conversa, interrompendo o lead várias vezes e não dando espaço para que ele pudesse falar."
+            },
+            "validacao": {
+                "r": "Sim",
+                "e": "O SDR validou as objeções do lead e apresentou soluções."
+            },
+            "compreensao": {
+                "r": "Sim",
+                "e": "O SDR conseguiu entender as necessidades do lead e apresentou uma solução adequada."
+            },
+            "objecoes": {
+                "r": "Sim",
+                "e": "O SDR contornou as objeções do lead e apresentou soluções."
+            },
+            "linguagem": {
+                "r": "Sim",
+                "e": "O SDR usou uma linguagem culta e profissional."
+            },
+            "receptividade": {
+                "r": "Sim",
+                "e": "O SDR começou a ligação com uma saudação acolhedora e profissional."
+            },
+            "rapport": {
+                "r": "Não",
+                "e": "O SDR não conseguiu estabelecer um rapport com o lead, iniciando a conversa com perguntas muito diretas e sem uma abordagem mais amigável."
+            },
+            "discurso": {
+                "r": "Sim",
+                "e": "O SDR usou vocabulário técnico correto do mercado imobiliário."
+            },
+            "compreensao_cliente": {
+                "r": "Sim",
+                "e": "O SDR validou com o cliente se ele entendeu a explicação técnica."
+            },
+            "clareza": {
+                "r": "Sim",
+                "e": "O SDR fez perguntas curtas e diretas."
+            },
+            "sla": {
+                "r": "Não",
+                "e": "O SDR não coletou o número de corretores e a situação do CRECI."
+            },
+            "spin": {
+                "r": "Sim",
+                "e": "O SDR seguiu a sequência exploratória e apresentou a solução adequada."
+            },
+            "dor": {
+                "r": "Sim",
+                "e": "O SDR encontrou um gargalo real e apresentou soluções."
+            },
+            "gestao": {
+                "r": "Sim",
+                "e": "O SDR mapeou quem toma a decisão final."
+            },
+            "passos_ro": {
+                "r": "Sim",
+                "e": "O SDR conseguiu a confirmação verbal clara de que o lead estará num computador na próxima reunião."
+            },
+            "produto": {
+                "r": "Sim",
+                "e": "O SDR conectou a solução tecnológica à dor de forma inteligente."
+            },
+            "gatilhos": {
+                "r": "Sim",
+                "e": "O SDR gerou urgência de agenda."
+            }
+        },
+        "autocritica_ia": "O SDR começou a ligação com uma saudação muito informal e não acolhedora, usando 'Alô' e 'Oi' em vez de uma saudação mais profissional. Além disso, o SDR não conseguiu estabelecer um rapport com o lead, iniciando a conversa com perguntas muito diretas e sem uma abordagem mais amigável. O SDR também não conseguiu coletar informações importantes, como o número de corretores e a situação do CRECI, o que é fundamental para a qualificação do lead.",
+        "parecer": "### 1. PARECER E POSTURA CONSULTIVA\nA conversa iniciou de forma informal, mas o SDR conseguiu se recuperar e conduzir a conversa de forma profissional.\n\n### 2. O QUE ERROU\nO SDR começou a ligação com uma saudação muito informal e não acolhedora, usando 'Alô' e 'Oi' em vez de uma saudação mais profissional. Além disso, o SDR não conseguiu estabelecer um rapport com o lead, iniciando a conversa com perguntas muito diretas e sem uma abordagem mais amigável.\n\n### 3. COMO DEVERIA TER FEITO\nEm vez de começar com 'Alô' e 'Oi', o SDR poderia ter iniciado a conversa com uma saudação mais profissional, como 'Bom dia, Oliva. É a Alana, da Superlógica. Como você está hoje?' Além disso, o SDR poderia ter feito perguntas mais abertas e interessantes para estabelecer um rapport com o lead, como 'Oliva, como você está hoje? O que você acha mais desafiador no seu trabalho como corretor?' \n\n### 4. CAUSA E EFEITO\nEssa abordagem informal e direta pode ter feito com que o lead se sentisse desconfortável e não estabelecesse uma conexão com o SDR, o que pode afetar negativamente a conversa e a possibilidade de fechar um negócio.",
+        "sugestoes": "Revisar a abordagem inicial da conversa para torná-la mais profissional e acolhedora, e fazer perguntas mais abertas e interessantes para estabelecer um rapport com o lead.",
+        "transcricao": " Alô? Alô, Oi, Liva, bom dia, tudo bem? Bom dia, tudo. Maravilha, eu tô ligando pra você rapidinho, eu sou a Alana, tá? É que ontem a gente se falou, só que você tava em um atendimento, né? E agora eu tô no trânsito, Alana, minha vida é corrida. É que o Fabrício acabou de me chamar no WhatsApp. Acho que o Fabrício é de outra empresa, tá? Não conheço nenhuma pessoa que... Ué, entrou o Fabrício falando aqui. Não, é de outra empresa. Eu sou aqui da Superlógica, tá? Ah, meu número, eu não vi o número que era. Ah, tá, entendi, Alana, da Superlógica. É sobre o cadastro que você fez do sistema de administração, né? Aham. de locação, aí eu estava justamente querendo entender um pouquinho s do que voc est buscando at para caso voc queira conhecer a gente pode marcar ali uma demonstra do sistema n de forma online para voc conhecer Alana, o que acontece? Eu trabalho de corretor, eu sou corretor, eu tanto com vendas e também tenho uma pequena carteira de locação. Tenho 28 clientes de locação. E aí eu estava querendo dar um gás, né? Fazer ali uma gestão, né? Isso, fazer uma gestão. e depois, pra ver se eu consigo crescer mais, né? Sim. É, faz sentido, porque às vezes sem um sistema até pra você crescer, fica difícil, né? Sim, pra organizar tudo. E o interessante que eu vi no Instagram de você, no Instagram, foi no Instagram chamado da Universal, da Universal, ô meu Deus, essa coisa na cabeça, da Superlógica, porque depois que eu olhei a Superlógica, começou a aparecer um monte pra mim. Aí eu olhei da Superlógica, e aí eu vi falando, eu vi lá uma parte lá, dizendo da Superlógica, Superlógica, e tem alguns clientes também que eu recebo boleto para poder cobrar condomínio, é da Superlógica que emite. Eu falei p ent vou ter contato com a Superl que mais interessante Perfeito porque realmente a Superl ela tem ali um sistema de condom que bem conhecido junto com a administra n O que seria at ideal Porque assim nada como você ver o sistema funcionando, entender as funcionalidades dele, o sistema ele é bem completo, ele vai conseguir já atender ali, principalmente quando você busca ali a automação, que é o que você quer, tanto pra crescimento de carteira, pra melhor organização no teu dia a dia, né? Para a terceira, elaboração de contrato, relatório, Aí, o que eu ia sugerir, Oliva, a gente faz ali um alinhamento contigo por videochamada breve, só para um consultor meu ali, claro, se você quiser, te mostrar o layout do sistema, né? Aham. Os diferenciais, é bem rápido e ele também monta ali o custo-benefício, né, para você de forma personalizada. Hoje, na parte da tarde, a gente conseguiria fazer isso com você? Umas 14 horas que eu consigo. Umas 14? É. Perfeito, pode ser então, nesse caso. Então, por e-mail, como que é? Eu vou te enviar o link que vai ser via Google Meet t bom A videochamada A o que eu vou sugerir para voc s para voc acessar ali pelo teu computador quando for as 14 que como vai ser via Google Meet a gente vai te apresentar a tela n Do teu computador, o consultor ali vai te mostrar as configurações da ferramenta. Aí eu vou estar te enviando pelo teu e-mail, que é o que eu tenho aqui, que é o olivassuares.com.br, mas eu também vou te enviar pelo teu WhatsApp, tá? Tá. Se você estiver na rua, veja se eu te vejo pelo WhatsApp, pelo computador que dá para ver melhor. Às 14 horas eu vou estar aguardando. Ótimo. Aí só me confirma uma informação, Liva. O recebimento dos aluguéis hoje você faz via boleto, é isso? Via boleto. Boleto, né? Qual que é o que você gosta de utilizar hoje? Caixa. O caixa, né? A gente está com a caixa, caixa federal. Ótimo. Eu perguntei isso por conta justamente de uma funcionalidade que a gente tem dentro do sistema que a gente integra com a caixa e consegue fazer os envios ali dos boletos automatizados. Mas é só para você ficar ciente Aí o consultor vai te explicar tudo Às duas horas, tá bom? Obrigado Obrigada, Oliva, até mais tarde Tchau"
+    },
+    "111203998464": {
+        "id": "111203998464",
+        "sdr": "Alana Rachel",
+        "produto": "ERP",
+        "data": "2026-06-17 09:42",
+        "duracao": "00:05:13",
+        "wps": 2.44,
+        "nota_spin": 4.5,
+        "nota_op": 9.5,
+        "nota_geral": 7.5,
+        "status": "ATENÇÃO",
+        "urgencia": "NÃO",
+        "deal_url": "https://app.hubspot.com/contacts/20131994/deal/61183953480/",
+        "audio_url": "https://api-na1.hubspot.com/recording/auth/provider/hublets/v1/external-url-retriever/getAuthRecording/portal/20131994/engagement/111203998464",
+        "notas_s_p_i_n": {
+            "s": 6.0,
+            "p": 7.0,
+            "i": 3.0,
+            "n": 2.0
+        },
+        "formulario": {
+            "escuta": {
+                "r": "Sim",
+                "e": "O SDR adaptou a conversa e respondeu às perguntas do lead, demonstrando uma boa capacidade de escuta."
+            },
+            "validacao": {
+                "r": "Sim",
+                "e": "O SDR validou as informações do lead e confirmou a necessidade de um sistema de administração de aluguel."
+            },
+            "compreensao": {
+                "r": "Sim",
+                "e": "O SDR demonstrou uma boa compreensão das necessidades do lead e ofereceu uma solução adequada."
+            },
+            "objecoes": {
+                "r": "Sim",
+                "e": "O SDR contornou as objeções do lead e apresentou uma solução que atendia às suas necessidades."
+            },
+            "linguagem": {
+                "r": "Não",
+                "e": "O SDR usou diminutivos ('apartamentinho', 'lojinha') que podem ser considerados inadequados em uma comunicação profissional."
+            },
+            "receptividade": {
+                "r": "Sim",
+                "e": "O SDR começou a ligação com uma saudação acolhedora e estabeleceu um relacionamento positivo com o lead."
+            },
+            "rapport": {
+                "r": "Sim",
+                "e": "O SDR estabeleceu um relacionamento positivo com o lead e demonstrou uma boa capacidade de comunicação."
+            },
+            "discurso": {
+                "r": "Sim",
+                "e": "O SDR usou vocabulário técnico correto e apresentou uma solução adequada às necessidades do lead."
+            },
+            "compreensao_cliente": {
+                "r": "Sim",
+                "e": "O SDR validou com o lead se ele entendeu a explicação técnica."
+            },
+            "clareza": {
+                "r": "Sim",
+                "e": "O SDR fez perguntas curtas e diretas e apresentou uma solução clara e concisa."
+            },
+            "sla": {
+                "r": "Sim",
+                "e": "O SDR coletou as informações necessárias para oferecer uma solução adequada."
+            },
+            "spin": {
+                "r": "Sim",
+                "e": "O SDR seguiu a sequência exploratória e apresentou uma solução adequada às necessidades do lead."
+            },
+            "dor": {
+                "r": "Sim",
+                "e": "O SDR identificou a dor do lead e apresentou uma solução que atendia às suas necessidades."
+            },
+            "gestao": {
+                "r": "Sim",
+                "e": "O SDR mapeou quem toma a decisão final e apresentou uma solução adequada."
+            },
+            "passos_ro": {
+                "r": "Sim",
+                "e": "O SDR conseguiu a confirmação verbal clara de que o lead estará num computador na próxima reunião."
+            },
+            "produto": {
+                "r": "Sim",
+                "e": "O SDR conectou a solução tecnológica à dor do lead de forma inteligente."
+            },
+            "gatilhos": {
+                "r": "Sim",
+                "e": "O SDR gerou urgência de agenda e agendou uma demonstração do sistema para o lead."
+            }
+        },
+        "autocritica_ia": "O SDR começou a ligação com uma saudação genérica e não acolhedora, não estabelecendo um relacionamento imediato com o lead. Além disso, o SDR usou diminutivos ('apartamentinho', 'lojinha') que podem ser considerados inadequados em uma comunicação profissional. Finalmente, o SDR não conseguiu estabelecer claramente a urgência de agendar uma demonstração do sistema, optando por enviar um orçamento primeiro.",
+        "parecer": "### 1. PARECER E POSTURA CONSULTIVA\nA saudação inicial foi genérica e não estabeleceu um relacionamento imediato com o lead. No entanto, o SDR demonstrou uma boa capacidade de escuta e validou as informações do lead.\n\n### 2. O QUE ERROU\nO SDR usou diminutivos ('apartamentinho', 'lojinha') que podem ser considerados inadequados em uma comunicação profissional. Além disso, o SDR não conseguiu estabelecer claramente a urgência de agendar uma demonstração do sistema, optando por enviar um orçamento primeiro.\n\n### 3. COMO DEVERIA TER FEITO\nEm vez de usar diminutivos, o SDR poderia ter usado uma linguagem mais formal e profissional. Por exemplo: 'Entendi que você tem uma carteira de imóveis, incluindo apartamentos e lojas. Posso ajudar a entender como nosso sistema pode atender às suas necessidades?'\n\n### 4. CAUSA E EFEITO\nO uso de diminutivos pode ter dado a impressão de que o SDR não está levando a conversa a sério, o que pode ter afetado a credibilidade e a confiança do lead. Além disso, a falta de urgência em agendar a demonstração do sistema pode ter feito com que o lead perdesse o interesse ou se esquecesse da conversa.",
+        "sugestoes": "Revisar a linguagem utilizada durante a conversa para garantir que seja formal e profissional. Estabelecer claramente a urgência de agendar a demonstração do sistema e oferecer uma solução personalizada para atender às necessidades do lead.",
+        "transcricao": " Alô? Olá, bom dia, tudo bem? Tudo bom, bom dia. Maravilha. Aqui é a Alana, tá? Eu sou aqui da empresa Superlógica. Eu falo com o Wesley, é isso? Sim. Prazer Wesley, eu estou entrando em contato com você rapidinho É que nós recebemos aqui o seu contato de um cadastro Que você fez esses dias Para conhecer melhor sobre algumas soluções aqui da Superlógica Voltado ali para quem atua com administração de aluguel Até mesmo com venda de imóveis Eu queria entender um pouquinho se hoje você está buscando algo nesse sentido Se a gente pode te auxiliar de alguma forma Então, eu estou Eu tenho locações de imóveis próprios E a partir de agora Esse governo é pensando Eu preciso emitir nota Eu já precisava de um sistema que me permitisse Gerar contrato, fazer rateio de água De consumo Aí eu queria Estou atrás do sistema que me atenda Certo entendi Wesley Hoje voc faz a administra Dos seus pr im pelo que entendi correto Isso Perfeito E essa administra feita pelo teu CPF mesmo ou voc tem ali um CNPJ que faz ali a A maioria é CNPJ, a empresa. Tem uns dois que é CPF que eu preciso integralizar, que eu não consegui. Entendo sim Hoje você tem uma média de quantos imóveis, Wesley? Hoje Há uns Uns 25 Então de 25 imóveis, né? Perfeito, hoje Quando se refere ali ao sistema Até pra te informar A gente consegue te atender, tá? Então você vai ter ali Dessa parte que você comentou da emissão De nota Dá uns 20 imóveis Eu tenho outro que é separado, uns 20 imóveis que eu preciso resolver. Então, apartamento e lojinha. Apartamentinho e lojinha. Certo, perfeito. Eu te perguntei sobre essa questão da quantidade de imóveis, não que vai fazer ali, dê algum problema para você, tá? Essa questão da quantidade. É só mesmo para mim conhecer mesmo um pouco da sua operação, a forma como voc trabalha hoje nesse sentido a a partir da o que que normalmente at a gente faz n Wesley A gente consegue te mostrar como que o nosso sistema na pr n Porque assim voc vai conseguir ver ali as funcionalidades que a gente vai ter, você vai conseguir ali ter um sistema completo, quando se refere ali à administração. Então, desde ali da elaboração do contrato, né, como você comentou, parte financeira também, nota, hoje o teu recebimento dos aluguéis já é feito por boleto, ou a maioria é por transferência mesmo? Transferência ou boleto. Transferência ou boleto, né? Perfeito. Hoje você vai ter o financeiro completo dentro do sistema, então você vai conseguir fazer até mesmo a tua gestão das tuas despesas, né? Contas a pagar, a receber. Aí o que normalmente a gente faz? A gente agenda com você uma demonstração por videochamada de forma breve pra um consultor meu até te mostrar como que é o sistema, você entender ali o layout e um pouco das funcionalidades, né? Aí o que eu queria até validar com você, como é algo rápido e é feito online, se a gente consegue fazer ainda hoje, você tem disponibilidade na parte da manhã, umas 11 horas? Eu prefiro receber um orçamento primeiro, que eu tenho que ter base de valor, senão... Sim, é justamente por isso. Esse alinhamento que voc faz com o consultor ele te apresenta tamb o valor do sistema na pr reuni t Ent tanto ele te mostra o layout n Da ferramenta Embora s muitas unidades os valores s pequenos Sim, perfeito. Então, assim, sobre essa questão do valor, né? Da proposta, quando você faz o alinhamento com o consultor, ele te mostra a proposta, personaliza ali pra você, né? Os valores do plano que a gente tem. E se você desejar, ele também te mostra o layout do sistema, um pouco da funcionalidade. Aí se você puder, hoje às 11 ou na parte da tarde, ele consegue te fazer isso. Já montaria a proposta e te passar. Pode ser? Pode ser às 11. Pode ser às 11? Ok. Deixa eu só confirmar aqui com você. Me confirma, só o teu e-mail de contato, só para deixar formalizado aqui. Wesley arroba aventura informática.com.br Certo. O que eu vou fazer, Wesley? Eu vou estar te enviando o link dessa videochamada pelo teu e-mail, mas também pelo seu WhatsApp. Tá? Para facilitar ali o teu acesso. Aí você acessa ali pelo teu computador, notebook, só para visualizar melhor as informações. Tá bom? Ok. Combinado. Então até daqui a pouco, tá? Ok. Obrigado. Obrigado, Wesley. Tchau, tchau."
+    },
+    "111204439625": {
+        "id": "111204439625",
+        "sdr": "Bruna Letícia Benedito",
+        "produto": "CRM",
+        "data": "2026-06-17 10:45",
+        "duracao": "00:09:51",
+        "wps": 2.28,
+        "nota_spin": 5.4,
+        "nota_op": 6.1,
+        "nota_geral": 5.8,
+        "status": "CRÍTICO",
+        "urgencia": "SIM",
+        "deal_url": "https://app.hubspot.com/contacts/20131994/deal/61187819615/",
+        "audio_url": "https://api-na1.hubspot.com/recording/auth/provider/hublets/v1/external-url-retriever/getAuthRecording/portal/20131994/engagement/111204439625",
+        "notas_s_p_i_n": {
+            "s": 6.5,
+            "p": 7.0,
+            "i": 4.5,
+            "n": 3.5
+        },
+        "formulario": {
+            "escuta": {
+                "r": "Não",
+                "e": "O SDR interrompeu o lead várias vezes, não permitindo que ele concluísse suas frases."
+            },
+            "validacao": {
+                "r": "Sim",
+                "e": "O SDR validou se o lead tinha alguma objeção ou problema com o sistema de CRM."
+            },
+            "compreensao": {
+                "r": "Não",
+                "e": "O SDR perguntou de novo algo que o lead já havia respondido antes."
+            },
+            "objecoes": {
+                "r": "Sim",
+                "e": "O SDR contornou as objeções do lead e apresentou soluções."
+            },
+            "linguagem": {
+                "r": "Não",
+                "e": "O SDR usou o diminutivo 'tá' em várias ocasiões."
+            },
+            "receptividade": {
+                "r": "Não",
+                "e": "O SDR começou a ligação com um 'Oi, bom dia' genérico, sem personalização."
+            },
+            "rapport": {
+                "r": "Sim",
+                "e": "O SDR quebrou o gelo e estabeleceu um relacionamento positivo com o lead."
+            },
+            "discurso": {
+                "r": "Sim",
+                "e": "O SDR usou vocabulário técnico correto do mercado imobiliário."
+            },
+            "compreensao_cliente": {
+                "r": "Não",
+                "e": "O SDR não validou se o lead entendeu a explicação técnica sobre o sistema de CRM."
+            },
+            "clareza": {
+                "r": "Sim",
+                "e": "O SDR fez perguntas curtas e diretas."
+            },
+            "sla": {
+                "r": "Sim",
+                "e": "O SDR coletou o número de corretores e a situação do CRECI."
+            },
+            "spin": {
+                "r": "Sim",
+                "e": "O SDR seguiu a sequência exploratória e apresentou o sistema de forma clara."
+            },
+            "dor": {
+                "r": "Sim",
+                "e": "O SDR encontrou um gargalo real e apresentou soluções."
+            },
+            "gestao": {
+                "r": "Sim",
+                "e": "O SDR mapeou quem toma a decisão final."
+            },
+            "passos_ro": {
+                "r": "Sim",
+                "e": "O SDR conseguiu a confirmação verbal clara de que o lead estará num computador na próxima reunião."
+            },
+            "produto": {
+                "r": "Sim",
+                "e": "O SDR conectou a solução tecnológica à dor de forma inteligente."
+            },
+            "gatilhos": {
+                "r": "Sim",
+                "e": "O SDR gerou urgência de agenda e agendou uma reunião com o lead."
+            }
+        },
+        "autocritica_ia": "O SDR começou a ligação com um 'Oi, bom dia' genérico, sem personalização. Além disso, não houve uma saudação completa e acolhedora. O SDR também usou o diminutivo 'tá' em várias ocasiões, o que pode ser considerado um erro de linguagem. Por fim, o SDR não validou se o lead entendeu a explicação técnica sobre o sistema de CRM.",
+        "parecer": "### 1. PARECER E POSTURA CONSULTIVA\nA conversa foi conduzida de forma amigável e o SDR demonstrou conhecimento sobre o sistema de CRM. No entanto, houve alguns momentos em que o SDR poderia ter explorado mais a fundo as necessidades do cliente.\n\n### 2. O QUE ERROU\n- O SDR usou o diminutivo 'tá' em várias ocasiões, o que pode ser considerado um erro de linguagem.\n- O SDR não validou se o lead entendeu a explicação técnica sobre o sistema de CRM.\n\n### 3. COMO DEVERIA TER FEITO\n- Em vez de usar o diminutivo 'tá', o SDR poderia ter usado uma linguagem mais formal, como 'está' ou 'entendi'.\n- O SDR poderia ter perguntado algo como 'Você entendeu como o sistema de CRM pode ajudar a gerenciar seus leads e melhorar suas vendas?' para validar a compreensão do cliente.\n\n### 4. CAUSA E EFEITO\n- O uso de linguagem informal pode criar uma impressão negativa sobre a empresa e o SDR.\n- A falta de validação da compreensão do cliente pode levar a mal-entendidos e perda de oportunidades de venda.",
+        "sugestoes": "Revisar a linguagem utilizada durante as conversas e garantir que seja formal e profissional. Validar a compreensão do cliente sobre as explicações técnicas e os benefícios do sistema de CRM.",
+        "transcricao": " Olá. Oi, bom dia, Gislane. Isso. Oi, Gislane, aqui é a Bruna, da Superlógica. Tudo bem? Tudo bem. Gislane, o motivo do meu contato é porque eu havia recebido um cadastro que você fez com a gente sobre o sistema para gerenciamento de imóveis. É isso mesmo? Uhum. Tá certo, então. Eu quero entender de forma mais breve contigo sobre o que você vem buscando de funcionalidades para esse sistema, se é algo mais específico para te auxiliar, Me explica um pouco melhor. Queria entender, porque eu trabalho para a imobiliária, trabalho para a imobiliária, mas eu também faço algumas vendas como autônoma, e aí eu não querendo fazer anúncio dos meus imóveis, receber lixo através dos mesmos, e talvez caminhar aí como autônoma mesmo, sabe? Então, eu queria entender como que é o trabalho de vocês. Entendi Hoje você já faz campanhas individuais? Olha, eu fiz Eu fiz uma Eu tô querendo começar Com as campanhas agora mesmo, sabe? A partir de agora Não Desenvolvi isso ainda Às vezes eu faço uma campanha No Instagram Mas não é assim Aprofundado ainda, não porque eu trabalho Às vezes mais é com indicação Mas eu quero que eu use os meus leads, sabe? Fazer as minhas vendas aqui como autônoma mesmo. Resumindo, ainda não estou nesse passo não. Estou começando agora. Vou começar agora. Imagina, tranquilo, tá? Por isso que a gente faz esse primeiro atendimento, até para entender o seu cenário atual e como que a nossa empresa consegue estar te auxiliando. Hoje você já está com o Cresce Ativo individual, sem ser o da imobiliária? Sim. Sim perfeito Esse o ponto principal E j tem alguns im de capta pr Tem muitos Tem Legal Uma m de quantos Gilane S para eu deixar aqui Ah, deve ter aí um. Ah, deve ter. Eu tinha mais de 50, mas aí ficou na outra imobiliária lá e tal, eu tenho que resgatar, sabe? Aham. Mas assim, eu devo ter uns, no mínimo, 20. Perfeito. Mas para lançar hoje, até 10 imóveis eu tenho para lançar hoje. Tranquilo, tá? Mas a nível de conhecimento, até porque a nossa proposta comercial é baseada de acordo com o que você precisa. E até a quantidade de imóveis a gente leva em consideração. Porque o sistema de CRM, Gisleine, ele é uma base de operação. É para você ter um acompanhamento do seu gerenciamento de leads. Para você, por exemplo, que recebe muita indicação, Então, esse sistema de CRM, você consegue acompanhar os seus leads que são gerados ali, não só das campanhas de anúncios, mas também tem um funil de desenvolvimento ali para você poder chamar eles, fazer os chamados follow-ups, né, que o pessoal fala assim, mas é mais o acompanhamento, para que eles façam o fechamento e sigam certinho junto com você. Então, esse é o ponto principal. Fora isso, o sistema do CRM, ele também te beneficia por ter um aplicativo. Então, você não precisa ir nas campanhas de anúncios para captar esses leads ou entrar em e-mail para verificar se foi gerado algum lead. E quanto mais tempo a gente passa sem entrar no e-mail ou sem receber essa notificação, mais o lead vai ficando frio. Então, é importante... É, isso mesmo. Como que o lead vai chegar para mim? Vai chegar através de um aplicativo. Aí, dentro do aplicativo, tem todas essas funcionalidades que eu estou falando. Além disso, para você que faz captações externas, O próprio sistema do aplicativo tem uma outra funcionalidade, que é gerar um link para o proprietário fazer um pré-cadastro para você. Então, você não precisa... Já facilita também a questão do seu tempo, né? Se você se torna autônoma, acaba ficando um pouco mais corrido os atendimentos. É, isso é exatamente isso mesmo. Por consequência, você gerando um link para o proprietário, ele sabe mais detalhes, às vezes, do próprio imóvel, né? Do imóvel, né? É. Vai lembrando, vai lembrando. Então, a DADF, eles fazem já o pré-cadastro lá. É isso mesmo. perfeito isso porque da eles conseguem ter essas reten de informa mas o ponto principal que o sistema hoje tem valida dentro de algoritmos do SEO do Google. O que é isso? O SEO, ele trabalha pesquisas de ranqueamento e qualificação da internet. Então, o SEO, ele vai trazer questão de palavras-chave para você sobre o descritivo do seu imóvel. Ele já monta o descritivo do imóvel para você não precisar ir lá também copiar e colar um chat ou você mesmo fazer manualmente, né? Então, esse é um ponto também que é muito importante. E ele faz também o criativo. O criativo é aquela campanha que você geralmente publica no Instagram. Então, aquela foto toda organizada ali, que geralmente os corretores, as imobiliárias, elas publicam, o sistema do CRM já faz para você de forma automática e o descritivo com aquelas hashtags, palavras-chave, para gerar mais engajamento. Então, tudo isso o sistema de CRM já consegue comportar. Perfeito. Sei que é bastante informação. Na imobiliária que você trabalha atualmente, você já utiliza algum aplicativo, algum sistema de CRM? Sim, é o Rede Nova, o Incrível. Incrível? Nunca ouvi falar desse sistema. É da Rede Nova, sabe? Ah, tá. Da Rede Nova, aí o CRM chama Incrível. Ah, tá. Esse sistema de CRM Incrível eu nunca ouvi falar. Deve ser próprio, então, da Rede Nova. Deve ser, é. Não é de mercado, não. Mas tranquilo, Gislaine. Nesse sentido, ficou alguma dúvida sobre o sistema? Como estão as coisas por aí do que eu trouxe para você? Não, a princípio não É isso mesmo, sabe? Sim Você consegue me encaminhar Suas informações pelo WhatsApp? E aí eu queria saber também Aí vocês, né, geram Aí eu tenho um aplicativo Eu recebo a notificação na hora, né? Recebe na hora? Questão de segundos É porque se a gente Perde o tempo ali, o lead está quente demora cinco minutos, ele já... Já está tendo outro imóvel. Exatamente O que a gente pode fazer Eu consigo fazer at melhor Eu vou te chamar no WhatsApp claro te encaminho um portf Mas para ficar mais claro para você Eu vou te colocar em contato com o nosso Executivo de Vendas Vou marcar esse horário Com vocês dois para ele te apresentar Essa questão do aplicativo Que ele consegue aprofundar Esse bate-papo é feito Via Google Meet A gente consegue fazer hoje no período da tarde mesmo? Como é que está para você? Pode ser que sim, eu vou sair agora. Pode ser que eu consiga, ou então à noite seria melhor, não? Não, à noite a gente trabalha apenas em horário comercial. Aí eu preciso traçar um horário certinho com você, como a gente trabalha com agendamento prévio. Por exemplo, eu tenho um horário disponível, Eu tenho às 16h e outras 17h, que é o fim da tarde. São os dois últimos horários que eu tenho. Não. Mais cedo, duas horas, você não teria? Deixa eu ver aqui. Logo após o almoço ali? Fica melhor para você? Sim, pode ser uma hora? Eu tenho a uma e tenho as duas também. Eu consigo encaixar as duas horas. Mas é um encaixe, a gente consegue. Pode ser 13 horas, melhor. 13 horas, perfeito. Isso. Ótimo, então. 13 horas, melhor. Vou colocar aqui as 13 horas, né, no horário de Brasília certinho. Já encaminho o link de acesso para você. A gente solicita o acesso por um computador, tá? Para você visualizar melhor o sistema. Me diz um e-mail, por gentileza, para encaminhar o link, por favor, Gisele. gisaline02 arroba hotmail.com Perfeito. Já te mando o link de acesso certinho para esse e-mail e te chamo no WhatsApp em caminho portfólio, tudo para você conseguir já ir analisando previamente, tá bom? Tá, Joia. Combinado. Combinado, então. Até mais tarde. Você sabe passar mais ou menos do valor desse sistema. Ele vai te passar às 13 horas ali nessa agenda do Google Meet, tá? Mas ele vai te passar, pode deixar. Obrigada, então. Eu aguardo. Imagina, obrigada a você. Bom dia. Tchau, tchau. Bom dia. Tchau."
     }
 }
